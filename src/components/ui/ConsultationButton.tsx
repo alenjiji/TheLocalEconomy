@@ -1,4 +1,9 @@
+"use client";
+
+import type { CSSProperties } from "react";
+
 import styles from "./ConsultationButton.module.css";
+import { useLiquid } from "./useLiquid";
 
 /** Arrow lifted verbatim from `public/hero/navbar_Button.svg`. */
 const ARROW =
@@ -15,8 +20,15 @@ export default function ConsultationButton({
   href?: string;
   className?: string;
 }) {
+  const { liquidStyle, liquidProps } = useLiquid<HTMLAnchorElement>();
+
   return (
-    <a className={`${styles.cta} ${className ?? ""}`} href={href}>
+    <a
+      className={`${styles.cta} ${className ?? ""}`}
+      href={href}
+      {...liquidProps}
+      style={liquidStyle}
+    >
       <span className={styles.label}>Book a Consultation</span>
       <svg
         className={styles.arrow}

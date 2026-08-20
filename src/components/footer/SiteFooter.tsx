@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import InView from "@/components/motion/InView";
 import ConsultationButton from "@/components/ui/ConsultationButton";
 import styles from "./SiteFooter.module.css";
 import { CONTACT_ROWS, DECK_TOP, PROGRAMME_LINKS, QUICK_LINKS } from "@/lib/footer";
@@ -17,25 +18,25 @@ const row = (y: number) => y - DECK_TOP;
  */
 export default function SiteFooter() {
   return (
-    <footer className={styles.footer}>
+    <InView as="footer" className={styles.footer} amount={0.15}>
       {/* --- Call to action ------------------------------------------------ */}
       <div className={styles.cta}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          className={styles.ctaText}
+          className={`${styles.ctaText} u-rise`}
           src="/footer/text_1.svg"
           alt="Ready to Transform Your Business? Let's build the business you envisioned."
           width={895}
           height={92}
         />
-        <ConsultationButton className={styles.ctaButton} />
+        <ConsultationButton className={`${styles.ctaButton} u-rise`} />
       </div>
 
       {/* --- Link deck ------------------------------------------------------ */}
       <div className={styles.deck}>
         {/* `display: contents` at desktop, one grid cell once the deck flows. */}
         <div className={styles.brand}>
-        <Link className={styles.logoLink} href="/" aria-label="The Local Economy — home">
+        <Link className={`${styles.logoLink} u-rise`} href="/" aria-label="The Local Economy — home">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className={styles.logo}
@@ -45,7 +46,7 @@ export default function SiteFooter() {
             height={59}
           />
         </Link>
-        <p className={styles.tagline}>
+        <p className={`${styles.tagline} u-rise`} style={{ "--d": 1 } as React.CSSProperties}>
           Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh
         </p>
         </div>
@@ -53,7 +54,7 @@ export default function SiteFooter() {
         <span className={styles.rule} style={{ "--x": 795.7 } as React.CSSProperties} />
         <span className={styles.rule} style={{ "--x": 1079.16 } as React.CSSProperties} />
 
-        <nav className={`${styles.column} ${styles.quick}`} aria-labelledby="footer-quick">
+        <nav className={`${styles.column} ${styles.quick} u-rise`} style={{ "--d": 2 } as React.CSSProperties} aria-labelledby="footer-quick">
           <h2 id="footer-quick" className={styles.columnHeading}>
             Quick Links
           </h2>
@@ -66,7 +67,7 @@ export default function SiteFooter() {
           </ul>
         </nav>
 
-        <nav className={`${styles.column} ${styles.programmes}`} aria-labelledby="footer-programmes">
+        <nav className={`${styles.column} ${styles.programmes} u-rise`} style={{ "--d": 3 } as React.CSSProperties} aria-labelledby="footer-programmes">
           <h2 id="footer-programmes" className={styles.columnHeading}>
             Programmes
           </h2>
@@ -79,7 +80,7 @@ export default function SiteFooter() {
           </ul>
         </nav>
 
-        <div className={`${styles.column} ${styles.contact}`}>
+        <div className={`${styles.column} ${styles.contact} u-rise`} style={{ "--d": 4 } as React.CSSProperties}>
           <h2 className={styles.columnHeading}>Contact Us</h2>
           <ul className={styles.contactList}>
             {CONTACT_ROWS.map((c) => (
@@ -130,6 +131,6 @@ export default function SiteFooter() {
         </p>
         </div>
       </div>
-    </footer>
+    </InView>
   );
 }

@@ -64,3 +64,155 @@ a {
     scroll-behavior: auto !important;
   }
 }
+
+/*
+ * Scroll-in reveal utilities.
+ *
+ * These use the `translate` property rather than `transform`, because most of
+ * this layout positions with transforms already (centred stages, tails,
+ * notches) and a reveal must not overwrite them.
+ *
+ * An element opts in with `u-rise`; `--d` staggers it within its group. The
+ * flag comes from the nearest `InView` ancestor.
+ */
+.js .u-rise,
+.js .u-fade,
+.js .u-pop {
+  opacity: 0;
+  transition:
+    opacity 720ms ease,
+    translate 720ms cubic-bezier(0.16, 1, 0.3, 1),
+    scale 720ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition-delay: calc(var(--d, 0) * 90ms);
+}
+
+.js .u-rise {
+  translate: 0 22px;
+}
+
+.js .u-pop {
+  scale: 0.82;
+}
+
+[data-inview="true"] .u-rise,
+[data-inview="true"] .u-fade,
+[data-inview="true"] .u-pop {
+  opacity: 1;
+  translate: 0 0;
+  scale: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .u-rise,
+  .js .u-fade,
+  .js .u-pop {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+    transition: none;
+  }
+}
+
+/*
+ * Liquid button fill.
+ *
+ * The surface deepens into a richer shade of its *own* colour rather than
+ * flooding with the opposite brand hue — that kept the button's identity, kept
+ * the label's contrast safe at every point of the transition, and stopped a
+ * repeated element from shouting. Two layers sell the liquid: the fill itself,
+ * and a lighter wavefront that runs slightly ahead of it and fades as it goes.
+ *
+ * `--lx`/`--ly` are the point the pointer crossed the edge, set by `useLiquid`.
+ * They are only rewritten while the circle is scaled to nothing, so a second
+ * hover never shows it jump.
+ */
+.u-liquid {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    box-shadow 320ms ease,
+    translate 220ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.u-liquid::before,
+.u-liquid::after {
+  content: "";
+  position: absolute;
+  left: var(--lx, 50%);
+  top: var(--ly, 50%);
+  width: var(--liquid-reach);
+  height: var(--liquid-reach);
+  margin: calc(var(--liquid-reach) / -2);
+  border-radius: 50%;
+  transform: scale(0);
+  pointer-events: none;
+}
+
+.u-liquid::before {
+  background: var(--liquid-fill);
+  transition: transform 560ms cubic-bezier(0.33, 0.9, 0.36, 1);
+}
+
+/* The wavefront: runs ahead of the fill and thins out as it spreads. */
+.u-liquid::after {
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0) 52%,
+    var(--liquid-crest) 68%,
+    rgba(255, 255, 255, 0) 76%
+  );
+  opacity: 0;
+  transition:
+    transform 620ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 620ms ease;
+}
+
+.u-liquid[data-liquid="in"] {
+  box-shadow: 0 calc(6 * var(--u)) calc(22 * var(--u)) calc(-8 * var(--u)) var(--liquid-glow);
+  translate: 0 calc(-1 * var(--u));
+}
+
+.u-liquid[data-liquid="in"]::before {
+  transform: scale(1);
+}
+
+.u-liquid[data-liquid="in"]::after {
+  transform: scale(1.12);
+  opacity: 1;
+}
+
+/* Label and arrow ride above both layers; the arrow leans into the direction. */
+.u-liquid > * {
+  position: relative;
+  z-index: 1;
+}
+
+.u-liquid[data-liquid="in"] .u-liquid-arrow {
+  translate: calc(3 * var(--u)) 0;
+}
+
+.u-liquid-arrow {
+  transition: translate 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.u-liquid-amber {
+  --liquid-fill: #e08c0b;
+  --liquid-crest: rgba(255, 236, 200, 0.55);
+  --liquid-glow: rgba(245, 166, 35, 0.5);
+}
+
+.u-liquid-cyan {
+  --liquid-fill: #0090c9;
+  --liquid-crest: rgba(214, 244, 255, 0.5);
+  --liquid-glow: rgba(0, 173, 238, 0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .u-liquid,
+  .u-liquid::before,
+  .u-liquid::after,
+  .u-liquid-arrow {
+    transition: none;
+  }
+}

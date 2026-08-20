@@ -5,6 +5,17 @@ import styles from "./Hero.module.css";
 import { HERO_ACTIVE_SLIDE, HERO_SLIDE_COUNT } from "@/lib/design";
 
 /**
+ * Top and bottom insets, as percentages of the headline artwork, that isolate
+ * each of its four lines. Boundaries sit in the leading between lines.
+ */
+const TITLE_BANDS: [number, number][] = [
+  [0, 76.2],
+  [23.8, 49],
+  [51, 23.8],
+  [76.2, 0],
+];
+
+/**
  * Hero section, rebuilt 1:1 from `public/design/web_tle.png`.
  *
  * The headline, sub-heads and flourish ship as outlined SVG from the design
@@ -42,15 +53,33 @@ export default function Hero() {
         <NavBar />
 
         <div className={styles.copy}>
-          <h1>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              className={styles.title}
-              src="/hero/hero-title.svg"
-              alt="Total transformation of your business with our one-month programme."
-              width={724}
-              height={294}
-            />
+          {/* The headline ships as one outlined SVG, so its four lines are four
+              clipped copies of it — that lets them rise in sequence while the
+              type stays exactly as the comp drew it. */}
+          <h1 className={styles.title}>
+            <span className={styles.srOnly}>
+              Total transformation of your business with our one-month programme.
+            </span>
+            <span className={styles.titleLines} aria-hidden="true">
+              {TITLE_BANDS.map((band, i) => (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  key={i}
+                  className={styles.titleLine}
+                  src="/hero/hero-title.svg"
+                  alt=""
+                  width={724}
+                  height={294}
+                  style={
+                    {
+                      "--clip-top": `${band[0]}%`,
+                      "--clip-bottom": `${band[1]}%`,
+                      "--i": i,
+                    } as React.CSSProperties
+                  }
+                />
+              ))}
+            </span>
           </h1>
 
           {/* eslint-disable-next-line @next/next/no-img-element */}

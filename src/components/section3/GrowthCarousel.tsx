@@ -1,3 +1,5 @@
+import InView from "@/components/motion/InView";
+import PillButton from "@/components/ui/PillButton";
 import styles from "./GrowthCarousel.module.css";
 import {
   GROWTH_ACTIVE_SLIDE,
@@ -45,7 +47,7 @@ function Chevron({ direction }: { direction: "prev" | "next" }) {
  */
 export default function GrowthCarousel() {
   return (
-    <section className={styles.section} aria-label="Growth programmes">
+    <InView as="section" className={styles.section} amount={0.2} aria-label="Growth programmes">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img className={styles.grain} src="/bg_grains_overlay.png" alt="" aria-hidden="true" />
       <div className={styles.divider} aria-hidden="true" />
@@ -58,8 +60,8 @@ export default function GrowthCarousel() {
         {GROWTH_SLIDES.map((slide, i) => (
           <article
             key={slide.id}
-            className={styles.slide}
-            style={{ "--col": i } as React.CSSProperties}
+            className={`${styles.slide} u-rise`}
+            style={{ "--col": i, "--d": i } as React.CSSProperties}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -100,10 +102,16 @@ export default function GrowthCarousel() {
               </p>
             </div>
 
-            <a className={styles.cta} href={slide.cta.href}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={slide.cta.art} alt={slide.cta.label} width={311} height={40} />
-            </a>
+            <PillButton
+              className={styles.cta}
+              href={slide.cta.href}
+              label={slide.cta.label}
+              tone={slide.cta.tone}
+              width={311.1}
+              radius={5.76}
+              labelX={slide.cta.labelX}
+              arrowX={slide.cta.arrowX}
+            />
           </article>
         ))}
       </div>
@@ -140,6 +148,6 @@ export default function GrowthCarousel() {
         </button>
       </div>
 
-    </section>
+    </InView>
   );
 }

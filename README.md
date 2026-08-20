@@ -109,9 +109,11 @@ second lockup was a base64 PNG inside that file; it now sits beside it as
   near-white drops out and the (much darker) table and furniture survive. The
   result is composited back against the source's own alpha, or the transparent
   edge of the filter region renders as opaque black.
-- **Card CTAs** use the exported button art inside real anchors, so the labels
-  are images rather than live text. The anchors carry the accessible name. Worth
-  revisiting if these need to be localised.
+- **Card CTAs are rebuilt as live buttons.** They shipped as flat SVG art with
+  the label baked in, which cannot be recoloured, localised or animated. They
+  are now `PillButton`s — Inter 500 / 19.95px on the comp's pill geometry,
+  verified back to within a pixel of the export — which is what lets the liquid
+  hover work on them.
 
 ## Growth carousel notes
 
@@ -175,6 +177,52 @@ second lockup was a base64 PNG inside that file; it now sits beside it as
 - **The contact rows are pitched evenly at 38 units but the icons are not** —
   each mark is a different height and sits on its own baseline, so icon and text
   offsets are carried separately per row.
+
+## Motion
+
+Everything animates `opacity`, `transform`/`translate`, `clip-path` or
+`stroke-dashoffset` — no layout, no repaint of the heavy raster layers. Every
+keyframe set ends on the comp's resting composition, so each section still
+measures against the design once it settles.
+
+- **Scroll-in reveals.** `InView` (`src/components/motion/`) flags a subtree
+  with `data-inview` via IntersectionObserver; the `u-rise` / `u-pop` utilities
+  in `globals.css` key off that, staggered with `--d`. They use the `translate`
+  property rather than `transform`, because most of this layout already
+  positions with transforms and a reveal must not overwrite them. The hidden
+  state is scoped to `html.js`, set by an inline script before first paint — so
+  with scripting unavailable nothing is ever stuck invisible.
+- **Liquid buttons.** Hover floods a pill with its opposite brand colour from
+  wherever the pointer crossed the edge: amber fills blue, blue fills amber,
+  and the label swaps with it. The circle is only repositioned while it is
+  scaled to nothing, so a second hover never shows it jump (`useLiquid`).
+- **The roadmap types itself.** See below.
+
+## The roadmap timeline
+
+Section four's eight steps type in numbered order when the band scrolls into
+view, the serpentine track draws left to right in step, and each node marker
+grows out of the line as its step begins.
+
+The whole thing is one declarative clock: `src/lib/roadmapTimeline.ts` computes
+every character's delay at module load from a seeded generator (so the server
+and client agree and React sees no mismatch), and the animations sit
+`paused` until `data-inview` releases them. The cadence is jittered per
+character, with extra rest after spaces and punctuation, so it reads like
+typing rather than a metronome. End to end it runs about 7.5 seconds.
+
+Two consequences of splitting text into per-character spans, both handled:
+
+- **Automatic hyphenation stops working** — a browser will not hyphenate across
+  element boundaries. The three bodies the comp hyphenates carry soft hyphens
+  (U+00AD) at those exact points instead, with `hyphens: manual`.
+- **Kerning is lost between letters**, so the same words take marginally more
+  room. Seven of the eight measures were unaffected; step 05's is widened by
+  five units to hold the comp's five-line break.
+
+Spaces stay plain text nodes rather than spans — wrapping them, or swapping in
+non-breaking spaces, removes the browser's soft-wrap opportunities and the
+paragraphs run straight past their measure.
 
 ## Hero backdrop motion
 

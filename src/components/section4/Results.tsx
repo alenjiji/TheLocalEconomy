@@ -1,4 +1,9 @@
+import InView from "@/components/motion/InView";
+import RoadmapTrack from "./RoadmapTrack";
+import TypedText from "./TypedText";
+import roadmap from "./Roadmap.module.css";
 import styles from "./Results.module.css";
+import { ROADMAP_TIMELINE } from "@/lib/roadmapTimeline";
 import { STATS, STAT_RULES, STEPS, RESULTS_TOP } from "@/lib/results";
 
 /** Absolute comp row -> offset from the top of this section, in design units. */
@@ -16,7 +21,7 @@ const row = (y: number) => y - RESULTS_TOP;
  */
 export default function Results() {
   return (
-    <section className={styles.section} aria-labelledby="results-heading">
+    <InView as="section" className={styles.section} amount={0.06} aria-labelledby="results-heading">
       <div className={styles.ground} aria-hidden="true" />
       <div className={styles.closingBg} aria-hidden="true" />
 
@@ -26,11 +31,11 @@ export default function Results() {
           blocks and the section flows. */}
       <div className={styles.strip}>
       <ul className={styles.stats}>
-        {STATS.map((s) => (
+        {STATS.map((s, i) => (
           <li key={s.id}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              className={styles.statIcon}
+              className={`${styles.statIcon} u-pop`}
               src={s.icon.src}
               alt=""
               width={s.icon.width}
@@ -41,19 +46,25 @@ export default function Results() {
                   "--y": row(s.iconY),
                   "--w": s.icon.width,
                   "--h": s.icon.height,
+                  "--d": i,
                 } as React.CSSProperties
               }
             />
             <p
-              className={`${styles.statValue} ${s.tone === "cyan" ? styles.cyan : styles.amber}`}
-              style={{ "--x": s.valueX } as React.CSSProperties}
+              className={`${styles.statValue} ${s.tone === "cyan" ? styles.cyan : styles.amber} u-rise`}
+              style={{ "--x": s.valueX, "--d": i } as React.CSSProperties}
             >
               {s.value}
             </p>
             <p
-              className={styles.statCaption}
+              className={`${styles.statCaption} u-rise`}
               style={
-                { "--x": s.textX, "--y": row(s.captionTop), "--w": s.captionWidth } as React.CSSProperties
+                {
+                  "--x": s.textX,
+                  "--y": row(s.captionTop),
+                  "--w": s.captionWidth,
+                  "--d": i + 1,
+                } as React.CSSProperties
               }
             >
               {s.caption}
@@ -67,7 +78,7 @@ export default function Results() {
       </div>
 
       {/* --- Promise card --------------------------------------------------- */}
-      <figure className={styles.promise}>
+      <figure className={`${styles.promise} u-rise`} style={{ "--d": 4 } as React.CSSProperties}>
         <blockquote className={styles.promiseQuote}>
           <p>
             {/* Non-breaking hyphens: the comp keeps "day-to-day" whole on its line. */}
@@ -83,8 +94,8 @@ export default function Results() {
 
       {/* --- Heading -------------------------------------------------------- */}
       <div className={styles.roadmapBand}>
-      <p className={styles.eyebrow}>The Real Results</p>
-      <svg className={styles.flourish} viewBox="0 0 182.36 10.08" aria-hidden="true">
+      <p className={`${styles.eyebrow} u-rise`}>The Real Results</p>
+      <svg className={`${styles.flourish} u-rise`} style={{ "--d": 1 } as React.CSSProperties} viewBox="0 0 182.36 10.08" aria-hidden="true">
         <path
           d="M182.36.5h-78.46c-1.14,0-2.23.45-3.03,1.26l-6.57,6.57c-1.68,1.68-4.39,1.68-6.07,0l-6.57-6.57c-.8-.8-1.9-1.26-3.03-1.26H0"
           fill="none"
@@ -95,7 +106,7 @@ export default function Results() {
 
       {/* One box holds both halves of the headline at their comp ratios, so it
           scales as a unit. */}
-      <h2 id="results-heading" className={styles.heading}>
+      <h2 id="results-heading" className={`${styles.heading} u-rise`} style={{ "--d": 2 } as React.CSSProperties}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className={styles.headingWhite}
@@ -114,46 +125,64 @@ export default function Results() {
         />
       </h2>
 
-      <p className={styles.lede}>
+      <p className={`${styles.lede} u-rise`} style={{ "--d": 3 } as React.CSSProperties}>
         Our clients don&rsquo;t just grow, they transform. Here&rsquo;s what you gain when
         The Local Economy becomes your growth partner.
       </p>
 
-      {/* --- Roadmap -------------------------------------------------------- */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        className={styles.track}
-        src="/section_3/el_5.svg"
-        alt=""
-        aria-hidden="true"
-        width={1503}
-        height={345}
-      />
+      {/* --- Roadmap --------------------------------------------------------
+          One clock drives the whole thing: the track draws itself left to
+          right while each step types in numbered order and its marker grows
+          out of the line as that step begins. Nothing runs until the section
+          is in view. */}
+      <InView
+        as="div"
+        className={styles.roadmap}
+        amount={0.15}
+        style={
+          {
+            "--track-duration": `${Math.round(ROADMAP_TIMELINE.trackDuration)}ms`,
+          } as React.CSSProperties
+        }
+      >
+        <RoadmapTrack className={styles.track} />
 
-      <ol className={styles.steps}>
-        {STEPS.map((s) => (
-          <li
-            key={s.id}
-            className={styles.step}
-            style={
-              {
-                "--x": s.x,
-                "--y": row(s.y),
-                "--w": s.width,
-                "--body-offset": s.bodyOffset ?? 0,
-                "--align": s.align ?? "justify",
-              } as React.CSSProperties
-            }
-          >
-            <p className={styles.stepLabel}>
-              <span className={styles.stepNumber}>{s.number}</span>
-              <span>{s.label}</span>
-            </p>
-            <h3 className={styles.stepHeading}>{s.heading}</h3>
-            <p className={styles.stepBody}>{s.body}</p>
-          </li>
-        ))}
-      </ol>
+        <ol className={styles.steps}>
+          {STEPS.map((s, i) => {
+            const t = ROADMAP_TIMELINE.steps[i];
+            return (
+              <li
+                key={s.id}
+                className={styles.step}
+                style={
+                  {
+                    "--x": s.x,
+                    "--y": row(s.y),
+                    "--w": s.width,
+                    "--body-offset": s.bodyOffset ?? 0,
+                    "--align": s.align ?? "justify",
+                  } as React.CSSProperties
+                }
+              >
+                <p className={styles.stepLabel}>
+                  <span className={styles.stepNumber}>
+                    <TypedText chars={t.number} />
+                  </span>
+                  <span>
+                    <TypedText chars={t.label} />
+                  </span>
+                </p>
+                <h3 className={styles.stepHeading}>
+                  <TypedText chars={t.heading} />
+                </h3>
+                <p className={styles.stepBody}>
+                  <TypedText chars={t.body} />
+                </p>
+              </li>
+            );
+          })}
+        </ol>
+      </InView>
 
       </div>
 
@@ -162,7 +191,7 @@ export default function Results() {
       <div className={styles.notch} aria-hidden="true" />
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        className={styles.closingMark}
+        className={`${styles.closingMark} u-rise`}
         src="/section_3/el_6.svg"
         alt=""
         aria-hidden="true"
@@ -171,13 +200,13 @@ export default function Results() {
       />
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        className={styles.closingText}
+        className={`${styles.closingText} u-rise`}
         src="/section_3/text_2.svg"
         alt="You were always meant to be the leader. The greatest transformation isn't just in your business, it's in you."
         width={639}
         height={182}
       />
       </div>
-    </section>
+    </InView>
   );
 }

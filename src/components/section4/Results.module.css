@@ -235,11 +235,25 @@
 
 /* --- Roadmap ---------------------------------------------------------------- */
 
+/*
+ * The roadmap band. It needs a real box for the in-view observer to have
+ * anything to watch, so it is a positioned frame over comp rows 3172–3972 and
+ * its children are offset from its top rather than the section's.
+ */
+.roadmap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(900 * var(--u));
+  height: calc(800 * var(--u));
+  pointer-events: none;
+}
+
 /* Wider than the canvas in the comp, so it bleeds off both edges. */
 .track {
   position: absolute;
   left: calc(-32 * var(--u));
-  top: calc(1101 * var(--u));
+  top: calc(201 * var(--u));
   width: calc(1503.1 * var(--u));
   height: calc(344.82 * var(--u));
   max-width: none;
@@ -256,7 +270,7 @@
 .step {
   position: absolute;
   left: calc(var(--x) * var(--u));
-  top: calc((var(--y) - 3) * var(--u));
+  top: calc((var(--y) - 903) * var(--u));
   width: calc(var(--w) * var(--u));
 }
 
@@ -293,7 +307,8 @@
   line-height: calc(21.5 * var(--u));
   font-weight: 300;
   text-align: var(--align, justify);
-  hyphens: auto;
+  /* `manual`: the break points are the soft hyphens carried in the copy. */
+  hyphens: manual;
   color: #ffffff;
 }
 
@@ -453,6 +468,14 @@
     margin: clamp(22px, 3.5vw, 36px) auto 0;
     font-size: clamp(16px, 2vw, 23px);
     line-height: 1.35;
+  }
+
+  /* The band is a positioned frame at desktop so the in-view observer has a
+     box to watch; below the breakpoint it has to flow with everything else. */
+  .roadmap {
+    position: static;
+    height: auto;
+    pointer-events: auto;
   }
 
   .track {

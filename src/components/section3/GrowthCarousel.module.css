@@ -135,25 +135,10 @@
 
 /* --- CTA ----------------------------------------------------------------- */
 
+/* Geometry lives in PillButton; only its place on the slide is set here. */
 .cta {
-  position: absolute;
   left: 0;
   top: calc(282.5 * var(--u));
-  width: calc(311.1 * var(--u));
-  height: calc(39.51 * var(--u));
-  border-radius: calc(5.76 * var(--u));
-  transition: filter 160ms ease, transform 160ms ease;
-}
-
-.cta img {
-  width: 100%;
-  height: 100%;
-}
-
-.cta:hover,
-.cta:focus-visible {
-  filter: brightness(1.08);
-  transform: translateY(calc(-1 * var(--u)));
 }
 
 /* --- Controls ------------------------------------------------------------ */

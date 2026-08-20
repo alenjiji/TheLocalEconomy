@@ -77,6 +77,43 @@
   top: calc(346.28 * var(--u));
   width: calc(723.77 * var(--u));
   height: calc(294.06 * var(--u));
+  margin: 0;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.titleLines,
+.titleLine {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Each copy shows one line and rises into place a beat after the one above. */
+.titleLine {
+  clip-path: inset(var(--clip-top) 0 var(--clip-bottom) 0);
+  animation: title-line 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(240ms + var(--i) * 110ms);
+}
+
+@keyframes title-line {
+  from {
+    opacity: 0;
+    transform: translate3d(0, calc(26 * var(--u)), 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 .name {
@@ -190,8 +227,12 @@
     height: auto;
   }
 
+  /* The line copies are absolutely positioned inside this box, so it has to
+     keep the artwork's proportions or it collapses to nothing. */
   .title {
     width: 100%;
+    height: auto;
+    aspect-ratio: 723.77 / 294.06;
   }
 
   .name {
@@ -221,5 +262,113 @@
   .dot {
     width: calc(9 * var(--m));
     height: calc(9 * var(--m));
+  }
+}
+
+/* --- Intro ------------------------------------------------------------------
+ * The hero is above the fold, so its entrance runs on load. Everything lands
+ * on the comp's composition; the only thing that keeps moving afterwards is
+ * the portrait's float and the active slide dot.
+ */
+.name,
+.company {
+  animation: rise-in 760ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.name {
+  animation-delay: 760ms;
+}
+
+.company {
+  animation-delay: 850ms;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, calc(16 * var(--u)), 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* The rule under the sub-heads draws out from its centre notch. */
+.flourish {
+  transform-origin: 50% 50%;
+  animation: flourish-draw 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 980ms;
+}
+
+@keyframes flourish-draw {
+  from {
+    opacity: 0;
+    transform: scaleX(0.1);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+.portrait {
+  animation:
+    portrait-in 1200ms cubic-bezier(0.16, 1, 0.3, 1) both,
+    portrait-float 13s ease-in-out 1200ms infinite;
+}
+
+@keyframes portrait-in {
+  from {
+    opacity: 0;
+    transform: translate3d(calc(18 * var(--u)), 0, 0) scale(1.035);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes portrait-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, calc(-7 * var(--u)), 0);
+  }
+}
+
+.dots {
+  animation: rise-in 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 1120ms;
+}
+
+/* The live slide keeps a slow halo so the control reads as active. */
+.dotActive {
+  animation: dot-live 2600ms ease-in-out 1800ms infinite;
+}
+
+@keyframes dot-live {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 173, 238, 0.55);
+  }
+  55% {
+    box-shadow: 0 0 0 calc(7 * var(--u)) rgba(0, 173, 238, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .titleLine,
+  .name,
+  .company,
+  .flourish,
+  .portrait,
+  .dots,
+  .dotActive {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
   }
 }

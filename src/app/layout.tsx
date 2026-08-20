@@ -28,6 +28,19 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${inter.variable} ${manrope.variable}`}>
+      <head>
+        {/*
+          Scroll-in reveals start hidden and are released by an observer. If
+          scripting is unavailable nothing would ever release them, so the
+          hidden state is scoped to `html.js` and this sets that flag before
+          first paint.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.documentElement.classList.add('js')`,
+          }}
+        />
+      </head>
       <body>{children}</body>
     </html>
   );

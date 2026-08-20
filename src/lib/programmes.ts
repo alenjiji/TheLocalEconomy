@@ -10,7 +10,7 @@ export type ProgrammeCard = {
   body: string;
   /** Width the body copy wraps at, so the line breaks match the comp. */
   bodyWidth: number;
-  cta: { href: string; label: string; art: string };
+  cta: { href: string; label: string; tone: "amber" | "cyan"; labelX: number; arrowX: number };
 };
 
 export const PROGRAMME_CARDS: ProgrammeCard[] = [
@@ -22,7 +22,9 @@ export const PROGRAMME_CARDS: ProgrammeCard[] = [
     cta: {
       href: "#total-biz-fix",
       label: "Join the Programme",
-      art: "/section_2/total_biz_fix_cta.svg",
+      tone: "amber",
+      labelX: 17.01,
+      arrowX: 218.32,
     },
   },
   {
@@ -33,7 +35,9 @@ export const PROGRAMME_CARDS: ProgrammeCard[] = [
     cta: {
       href: "#business-checkup",
       label: "Find your Cure",
-      art: "/section_2/360degreecta.svg",
+      tone: "cyan",
+      labelX: 46.76,
+      arrowX: 194.81,
     },
   },
   {
@@ -44,7 +48,9 @@ export const PROGRAMME_CARDS: ProgrammeCard[] = [
     cta: {
       href: "#consultancy",
       label: "Go for More",
-      art: "/section_2/consultancy_cta.svg",
+      tone: "amber",
+      labelX: 59.77,
+      arrowX: 181.31,
     },
   },
 ];

@@ -2,6 +2,11 @@
  * "What Changes When You Work With TLE?" — comp rows 2272–4308.
  *
  * Every number is a design unit measured off `public/design/web_tle.png`.
+ *
+ * Three of the bodies carry soft hyphens (U+00AD) at the exact points the comp
+ * breaks them. Automatic hyphenation cannot work once the text is split into
+ * per-character spans for the typing animation — the browser will not hyphenate
+ * across element boundaries — so the breaks are made explicit instead.
  * The comp hand-places each roadmap step, so each carries its own left edge,
  * top and measure rather than sharing a grid.
  */
@@ -131,7 +136,7 @@ export const STEPS: Step[] = [
     number: "03.",
     label: "Sales",
     heading: "Sales that Scale Without You",
-    body: "Positioning that makes you the obvious choice in your category, locally and beyond.",
+    body: "Positioning that makes you the obvi­ous choice in your category, locally and beyond.",
     x: 482.6,
     y: 3419.8,
     width: 172,
@@ -153,10 +158,13 @@ export const STEPS: Step[] = [
     number: "05.",
     label: "System",
     heading: "Systems That Run the Show",
-    body: "Standard operating procedures, delegation frameworks, and workflows for consistency and freedom.",
+    body: "Standard operating procedures, delega­tion frameworks, and workflows for consis­tency and freedom.",
     x: 785.6,
     y: 3461.9,
-    width: 181,
+    /* A shade wider than the comp measures: splitting the text into
+       per-character spans loses kerning between letters, so the same words
+       take marginally more room. */
+    width: 186,
     align: "left",
   },
   {
@@ -186,7 +194,7 @@ export const STEPS: Step[] = [
     number: "08.",
     label: "Result",
     heading: "Total Business Clarity",
-    body: "With the core pillars aligned, gain the confidence and clarity to run a self-sustaining, highly profitable enterprise.",
+    body: "With the core pillars aligned, gain the confidence and clarity to run a self-sustaining, highly profitable en­terprise.",
     x: 1049.3,
     y: 3735.1,
     width: 291,

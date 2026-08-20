@@ -1,0 +1,95 @@
+/*
+ * The roadmap's entrance.
+ *
+ * The whole timeline is declarative: every character, node and the track share
+ * one clock that starts paused and is released when the section scrolls into
+ * view. Delays come from `src/lib/roadmapTimeline.ts`, which is computed once
+ * from a seeded generator so the server and client agree.
+ */
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/*
+ * Characters occupy their space from the start, so the comp's justified line
+ * breaks hold still while the text types in.
+ */
+.char {
+  opacity: 0;
+  animation: char-in 1ms linear both;
+  animation-delay: var(--at);
+  animation-play-state: paused;
+}
+
+[data-inview="true"] .char {
+  animation-play-state: running;
+}
+
+@keyframes char-in {
+  to {
+    opacity: 1;
+  }
+}
+
+/* --- Track ------------------------------------------------------------------
+ * The path runs right to left, so the reveal grows from -1 to 0 — that fills
+ * from the path's end, which is the left edge, in step order.
+ */
+.line {
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: -1;
+  animation: line-draw var(--track-duration) linear both;
+  animation-play-state: paused;
+}
+
+[data-inview="true"] .line {
+  animation-play-state: running;
+}
+
+@keyframes line-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Each marker grows out of the track as its own step starts typing. */
+.node {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  opacity: 0;
+  animation: node-pop 460ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation-delay: calc(var(--node-at) - 90ms);
+  animation-play-state: paused;
+}
+
+[data-inview="true"] .node {
+  animation-play-state: running;
+}
+
+@keyframes node-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.15);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .char,
+  .line,
+  .node {
+    animation: none !important;
+    opacity: 1;
+    stroke-dashoffset: 0;
+    transform: none;
+  }
+}

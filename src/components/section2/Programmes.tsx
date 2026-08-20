@@ -1,12 +1,14 @@
+import InView from "@/components/motion/InView";
+import PillButton from "@/components/ui/PillButton";
 import TotalBizFixLockup from "./TotalBizFixLockup";
 import BusinessCheckupLockup from "./BusinessCheckupLockup";
 import styles from "./Programmes.module.css";
 import { PROGRAMME_CARDS } from "@/lib/programmes";
 
 /** The dip-and-rise rule the comp repeats under section headings. */
-function Flourish({ className }: { className?: string }) {
+function Flourish({ className, style }: { className?: string; style?: React.CSSProperties }) {
   return (
-    <svg className={className} viewBox="0 0 182.36 10.08" aria-hidden="true">
+    <svg className={className} style={style} viewBox="0 0 182.36 10.08" aria-hidden="true">
       <path
         d="M182.36.5h-78.46c-1.14,0-2.23.45-3.03,1.26l-6.57,6.57c-1.68,1.68-4.39,1.68-6.07,0l-6.57-6.57c-.8-.8-1.9-1.26-3.03-1.26H0"
         fill="none"
@@ -28,7 +30,7 @@ export default function Programmes() {
   const [bizFix, checkup, consultancy] = PROGRAMME_CARDS;
 
   return (
-    <section className={styles.section} aria-labelledby="programmes-heading">
+    <InView as="section" className={styles.section} amount={0.12} aria-labelledby="programmes-heading">
       {/* Knocks the white studio backdrop out of the consultancy photo, which
           was exported flattened onto white. Luminance becomes alpha, then the
           transfer table inverts it with a steep ramp so only near-white drops
@@ -67,15 +69,15 @@ export default function Programmes() {
           re-flows, so the band can wrap the heading instead. */}
       <div className={styles.head}>
         <div className={styles.band} aria-hidden="true" />
-        <h2 id="programmes-heading" className={styles.heading}>
+        <h2 id="programmes-heading" className={`${styles.heading} u-rise`}>
           Comprehensive Brand Programmes
         </h2>
-        <Flourish className={styles.flourish} />
+        <Flourish className={`${styles.flourish} u-rise`} style={{ "--d": 1 } as React.CSSProperties} />
       </div>
 
       <div className={styles.cards}>
         {/* --- Total Biz Fix --------------------------------------------- */}
-        <article className={`${styles.card} ${styles.cardDark}`}>
+        <article className={`${styles.card} ${styles.cardDark} u-rise`} style={{ "--d": 2 } as React.CSSProperties}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className={styles.bizFixPortrait}
@@ -88,14 +90,19 @@ export default function Programmes() {
           <p className={styles.bizFixBody}>{bizFix.body}</p>
           <p className={styles.bizFixName}>Prasanth Sukumaran</p>
           <p className={styles.bizFixRole}>Business Coach</p>
-          <a className={`${styles.cta} ${styles.ctaBizFix}`} href={bizFix.cta.href}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={bizFix.cta.art} alt={bizFix.cta.label} width={257} height={40} />
-          </a>
+          <PillButton
+            className={`${styles.cta} ${styles.ctaBizFix}`}
+            href={bizFix.cta.href}
+            label={bizFix.cta.label}
+            tone={bizFix.cta.tone}
+            width={256.58}
+            labelX={bizFix.cta.labelX}
+            arrowX={bizFix.cta.arrowX}
+          />
         </article>
 
         {/* --- 360° Business Checkup ------------------------------------- */}
-        <article className={`${styles.card} ${styles.cardLight}`}>
+        <article className={`${styles.card} ${styles.cardLight} u-rise`} style={{ "--d": 3 } as React.CSSProperties}>
           <div className={styles.checkupPhoto}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -108,14 +115,19 @@ export default function Programmes() {
           <BusinessCheckupLockup className={styles.checkupLockup} />
           <span className={styles.checkupRule} aria-hidden="true" />
           <p className={styles.checkupBody}>{checkup.body}</p>
-          <a className={styles.cta} href={checkup.cta.href}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={checkup.cta.art} alt={checkup.cta.label} width={257} height={40} />
-          </a>
+          <PillButton
+            className={styles.cta}
+            href={checkup.cta.href}
+            label={checkup.cta.label}
+            tone={checkup.cta.tone}
+            width={256.58}
+            labelX={checkup.cta.labelX}
+            arrowX={checkup.cta.arrowX}
+          />
         </article>
 
         {/* --- Consultancy ----------------------------------------------- */}
-        <article className={`${styles.card} ${styles.cardDark}`}>
+        <article className={`${styles.card} ${styles.cardDark} u-rise`} style={{ "--d": 4 } as React.CSSProperties}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className={styles.consultancyArt}
@@ -126,12 +138,17 @@ export default function Programmes() {
           />
           <h3 className={styles.consultancyHeading}>Consultancy</h3>
           <p className={styles.consultancyBody}>{consultancy.body}</p>
-          <a className={styles.cta} href={consultancy.cta.href}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={consultancy.cta.art} alt={consultancy.cta.label} width={257} height={40} />
-          </a>
+          <PillButton
+            className={styles.cta}
+            href={consultancy.cta.href}
+            label={consultancy.cta.label}
+            tone={consultancy.cta.tone}
+            width={256.58}
+            labelX={consultancy.cta.labelX}
+            arrowX={consultancy.cta.arrowX}
+          />
         </article>
       </div>
-    </section>
+    </InView>
   );
 }

@@ -4,9 +4,7 @@
  *
  * `bodyWidth` is the measure the comp wraps each body at, in design units —
  * the comp gives every slide its own, so they are carried per slide.
- *
- * Note the button exports are not in slide order: `button_1.svg` carries "See
- * What We Do" and `button_3.svg` carries "Join for Business Success".
+
  */
 export type InkSpan = { text: string; tone?: "cyan" | "amber" };
 
@@ -28,7 +26,7 @@ export type GrowthSlide = {
   headline: InkSpan[];
   body: string;
   bodyWidth: number;
-  cta: { href: string; label: string; art: string };
+  cta: { href: string; label: string; tone: "amber" | "cyan"; labelX: number; arrowX: number };
 };
 
 /** Every slide's icon label wraps at the same measure in the comp. */
@@ -55,7 +53,9 @@ export const GROWTH_SLIDES: GrowthSlide[] = [
     cta: {
       href: "#business-transformation",
       label: "Join for Business Success",
-      art: "/section2_extend/button_3.svg",
+      tone: "cyan",
+      labelX: 17.51,
+      arrowX: 277.59,
     },
   },
   {
@@ -74,7 +74,9 @@ export const GROWTH_SLIDES: GrowthSlide[] = [
     cta: {
       href: "#growth-framework",
       label: "Start the Journey",
-      art: "/section2_extend/button_2.svg",
+      tone: "amber",
+      labelX: 57.52,
+      arrowX: 236.83,
     },
   },
   {
@@ -96,7 +98,9 @@ export const GROWTH_SLIDES: GrowthSlide[] = [
     cta: {
       href: "#sme-coaching",
       label: "See What We Do",
-      art: "/section2_extend/button_1.svg",
+      tone: "cyan",
+      labelX: 63.77,
+      arrowX: 231.82,
     },
   },
 ];
