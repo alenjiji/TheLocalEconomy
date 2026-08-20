@@ -1,0 +1,306 @@
+/*
+ * Growth carousel — offsets in design units off the comp (rows 1780–2272),
+ * scaled by `--u` exactly as the sections above it.
+ */
+.section {
+  position: relative;
+  width: 100%;
+  height: calc(492 * var(--u));
+  background: #0c0c0c;
+  overflow: hidden;
+}
+
+/*
+ * `bg_grains_overlay.png` is the comp's own grain, exported at design scale
+ * with a 1px artboard border baked into its top and bottom rows. `cover` on a
+ * shorter box crops those rows away and keeps the noise at 1:1.
+ */
+.grain {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* Hairline that opens the section, brightest at the centre and fading out. */
+.divider {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: max(1px, calc(1 * var(--u)));
+  background: linear-gradient(
+    90deg,
+    transparent 8%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 92%
+  );
+}
+
+/* --- Track and columns --------------------------------------------------- */
+
+.track {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  width: calc(1280 * var(--u));
+  height: 100%;
+  --col-w: calc(1280 / 3 * var(--u));
+  /* Left inset of every column's content, measured off the comp. */
+  --pad: calc(47 * var(--u));
+}
+
+.rule {
+  position: absolute;
+  left: calc(var(--col) * var(--col-w));
+  top: calc(82.2 * var(--u));
+  width: max(1px, calc(0.72 * var(--u)));
+  height: calc(192.2 * var(--u));
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/*
+ * The slide box holds its own composition: icon down to CTA, 379.67 x 322.01
+ * design units. Keeping it self-contained lets the fluid layout re-use every
+ * offset inside it unchanged.
+ */
+.slide {
+  position: absolute;
+  left: calc(var(--col) * var(--col-w) + var(--pad));
+  top: 0;
+  width: calc(var(--col-w) - var(--pad));
+  height: calc(322.01 * var(--u));
+}
+
+/* Icons differ in height but all sit on one baseline in the comp. */
+.icon {
+  position: absolute;
+  left: calc(var(--icon-x) * var(--u));
+  bottom: calc(183.71 * var(--u));
+  width: calc(var(--icon-w) * var(--u));
+  height: calc(var(--icon-h) * var(--u));
+}
+
+/* Two or three lines depending on the slide, centred on a fixed line. */
+.label {
+  position: absolute;
+  left: calc((var(--icon-x) + var(--icon-w) + 17.4) * var(--u));
+  top: calc(113 * var(--u));
+  transform: translateY(-50%);
+  width: calc(140 * var(--u));
+  margin: 0;
+  font-size: calc(17.9 * var(--u));
+  line-height: calc(20.88 * var(--u));
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/*
+ * Headline and body hang from the body's last line, so a longer body grows
+ * upward and leaves the CTA where it is — the behaviour the comp shows.
+ */
+.copy {
+  position: absolute;
+  left: 0;
+  bottom: calc(69.31 * var(--u));
+}
+
+.headline {
+  margin: 0 0 calc(16.56 * var(--u));
+  font-size: calc(19.61 * var(--u));
+  line-height: 1;
+  font-weight: 700;
+  white-space: nowrap;
+  color: #ffffff;
+}
+
+.body {
+  width: calc(var(--body-w) * var(--u));
+  margin: 0;
+  font-size: calc(14.35 * var(--u));
+  line-height: calc(17.4 * var(--u));
+  font-weight: 300;
+  color: #ffffff;
+}
+
+.cyan {
+  color: #00adee;
+}
+
+.amber {
+  color: #f5a623;
+}
+
+/* --- CTA ----------------------------------------------------------------- */
+
+.cta {
+  position: absolute;
+  left: 0;
+  top: calc(282.5 * var(--u));
+  width: calc(311.1 * var(--u));
+  height: calc(39.51 * var(--u));
+  border-radius: calc(5.76 * var(--u));
+  transition: filter 160ms ease, transform 160ms ease;
+}
+
+.cta img {
+  width: 100%;
+  height: 100%;
+}
+
+.cta:hover,
+.cta:focus-visible {
+  filter: brightness(1.08);
+  transform: translateY(calc(-1 * var(--u)));
+}
+
+/* --- Controls ------------------------------------------------------------ */
+
+/* Spans the section so the arrows and dots keep their comp positions; becomes
+   a single flex row once the layout re-flows. */
+.controls {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.controls > * {
+  pointer-events: auto;
+}
+
+.arrow {
+  position: absolute;
+  top: calc(188.28 * var(--u));
+  transform: translateY(-50%);
+  width: calc(19.44 * var(--u));
+  height: calc(36.72 * var(--u));
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #00adee;
+  cursor: pointer;
+  transition: opacity 160ms ease;
+}
+
+.arrow svg {
+  width: 100%;
+  height: 100%;
+}
+
+.arrow:hover,
+.arrow:focus-visible {
+  opacity: 0.7;
+}
+
+.arrowPrev {
+  left: calc(36.4 * var(--u));
+}
+
+.arrowNext {
+  right: calc(36.08 * var(--u));
+}
+
+.dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(360.56 * var(--u));
+  display: flex;
+  justify-content: center;
+  gap: calc(18.22 * var(--u));
+  margin: 0;
+  padding: 0;
+}
+
+.dot {
+  width: calc(9.7 * var(--u));
+  height: calc(9.7 * var(--u));
+  border-radius: 50%;
+  background: #d3d3d3;
+}
+
+.dotActive {
+  background: #00adee;
+}
+
+/* --- Below the comp -----------------------------------------------------
+ * Under 1280px the row re-flows to as many slides as fit, each capped at
+ * 400px. Every slide becomes a container and derives `--u` from its own
+ * width, so the composition inside it holds without a second set of numbers.
+ */
+@media (max-width: 1279px) {
+  .section {
+    height: auto;
+    padding: clamp(48px, 7vw, 88px) 0 clamp(56px, 8vw, 96px);
+  }
+
+  .track {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: clamp(40px, 6vw, 64px) 40px;
+    padding: 0 var(--gutter);
+  }
+
+  .rule {
+    display: none;
+  }
+
+  .slide {
+    position: relative;
+    left: auto;
+    top: auto;
+    flex: 1 1 340px;
+    max-width: 400px;
+    width: auto;
+    height: auto;
+    aspect-ratio: 379.67 / 322.01;
+    container-type: inline-size;
+    --u: calc(100cqw / 379.67);
+  }
+
+  /* Controls sit together under the slides once the arrows have no gutter. */
+  /* `relative`, not `static`: the grain is absolutely positioned, so in-flow
+     content would otherwise paint underneath it. */
+  .controls {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-top: clamp(40px, 6vw, 64px);
+  }
+
+  .arrow {
+    position: static;
+    transform: none;
+    width: 14px;
+    height: 26px;
+    flex: 0 0 auto;
+  }
+
+  .arrowPrev,
+  .arrowNext {
+    left: auto;
+    right: auto;
+  }
+
+  .dots {
+    position: static;
+    gap: 14px;
+  }
+
+  .dot {
+    width: 9px;
+    height: 9px;
+  }
+}

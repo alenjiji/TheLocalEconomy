@@ -1,0 +1,320 @@
+/*
+ * "Comprehensive Brand Programmes" — offsets in design units off the 1440-wide
+ * comp, scaled by `--u` exactly as the hero is.
+ *
+ * The grain is a 180px noise tile of white-with-low-alpha, laid over a flat
+ * base: #000 reads as the comp's near-black ground, #191919 as its card face.
+ * It is deliberately *not* scaled by `--u` — film grain belongs to the device,
+ * not to the layout.
+ */
+.section {
+  position: relative;
+  width: 100%;
+  height: calc(824 * var(--u));
+  background-color: #020202;
+  background-image: url("/section_2/grain.png");
+  background-repeat: repeat;
+  overflow: hidden;
+}
+
+.defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.head {
+  display: contents;
+}
+
+/* Light band behind the heading and the top two thirds of the cards. */
+.band {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: calc(579.84 * var(--u));
+  background: #b2b1b1;
+}
+
+.heading {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(69.87 * var(--u));
+  margin: 0;
+  font-size: calc(36.96 * var(--u));
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-align: center;
+  color: #2b2a2a;
+}
+
+.flourish {
+  position: absolute;
+  left: calc(628.88 * var(--u));
+  top: calc(123.2 * var(--u));
+  width: calc(182.36 * var(--u));
+  height: calc(10.08 * var(--u));
+  color: #2b2a2a;
+}
+
+/*
+ * The comp centres the 1280-unit card row in the 1440 artboard, so the grid is
+ * centred rather than offset from the left edge — that keeps it on the same
+ * axis as the hero once the viewport passes the 1600px scale cap.
+ */
+.cards {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: calc(172.9 * var(--u));
+  display: grid;
+  grid-template-columns: repeat(3, calc(410.67 * var(--u)));
+  gap: calc(24 * var(--u));
+}
+
+.card {
+  position: relative;
+  height: calc(583.9 * var(--u));
+  border-radius: calc(12 * var(--u));
+  overflow: hidden;
+}
+
+/*
+ * The comp lays the same grain over the cards at roughly a third of its
+ * strength, so a flat wash sits on top of the tile to dilute it back to the
+ * measured spread while keeping the card's mean value.
+ */
+.cardDark {
+  background-color: #020202;
+  background-image: linear-gradient(rgba(88, 88, 88, 0.355), rgba(88, 88, 88, 0.355)),
+    url("/section_2/grain.png");
+  background-repeat: repeat;
+}
+
+.cardLight {
+  background: #d3d3d3;
+}
+
+/* Shared CTA: the exported button art sits inside a real anchor. */
+.cta {
+  position: absolute;
+  left: calc(77.05 * var(--u));
+  top: calc(495 * var(--u));
+  width: calc(256.58 * var(--u));
+  height: calc(39.51 * var(--u));
+  border-radius: calc(5.23 * var(--u));
+  transition: filter 160ms ease, transform 160ms ease;
+}
+
+.cta img {
+  width: 100%;
+  height: 100%;
+}
+
+.ctaBizFix {
+  left: calc(78.05 * var(--u));
+}
+
+.cta:hover,
+.cta:focus-visible {
+  filter: brightness(1.08);
+  transform: translateY(calc(-1 * var(--u)));
+}
+
+/* --- Card 1: Total Biz Fix ---------------------------------------------- */
+
+.bizFixPortrait {
+  position: absolute;
+  left: calc(191 * var(--u));
+  top: calc(33.1 * var(--u));
+  width: calc(338.3 * var(--u));
+  height: calc(552.39 * var(--u));
+  max-width: none;
+}
+
+.bizFixLockup {
+  position: absolute;
+  left: calc(40.6 * var(--u));
+  top: calc(56.06 * var(--u));
+  width: calc(174.25 * var(--u));
+  height: calc(225.66 * var(--u));
+}
+
+.bizFixBody {
+  position: absolute;
+  left: calc(39.42 * var(--u));
+  top: calc(293.1 * var(--u));
+  width: calc(180 * var(--u));
+  margin: 0;
+  font-size: calc(15 * var(--u));
+  line-height: calc(18 * var(--u));
+  font-weight: 300;
+  color: #ffffff;
+}
+
+.bizFixName {
+  position: absolute;
+  left: calc(39.88 * var(--u));
+  top: calc(419.53 * var(--u));
+  margin: 0;
+  font-size: calc(19.95 * var(--u));
+  line-height: 1;
+  font-weight: 500;
+  color: #00adee;
+}
+
+.bizFixRole {
+  position: absolute;
+  left: calc(40 * var(--u));
+  top: calc(441.8 * var(--u));
+  margin: 0;
+  font-size: calc(19.98 * var(--u));
+  line-height: 1;
+  font-weight: 300;
+  color: #ffffff;
+}
+
+/* --- Card 2: 360° Business Checkup -------------------------------------- */
+
+.checkupPhoto {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: calc(306.6 * var(--u));
+  overflow: hidden;
+}
+
+.checkupPhoto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 46.6%;
+}
+
+.checkupLockup {
+  position: absolute;
+  left: calc(16.03 * var(--u));
+  top: calc(328.45 * var(--u));
+  width: calc(189.23 * var(--u));
+  height: calc(137.06 * var(--u));
+}
+
+.checkupRule {
+  position: absolute;
+  left: calc(216.57 * var(--u));
+  top: calc(376.38 * var(--u));
+  width: max(1px, calc(1.2 * var(--u)));
+  height: calc(67.44 * var(--u));
+  background: #0f2a3d;
+}
+
+.checkupBody {
+  position: absolute;
+  left: calc(228.87 * var(--u));
+  top: calc(373.45 * var(--u));
+  width: calc(170 * var(--u));
+  margin: 0;
+  font-size: calc(15 * var(--u));
+  line-height: calc(18 * var(--u));
+  font-weight: 300;
+  color: #0f2a3d;
+}
+
+/* --- Card 3: Consultancy ------------------------------------------------- */
+
+.consultancyArt {
+  position: absolute;
+  left: calc(-83.13 * var(--u));
+  top: calc(1 * var(--u));
+  width: calc(542.21 * var(--u));
+  height: calc(361.47 * var(--u));
+  max-width: none;
+  filter: url("#knockout-white");
+}
+
+.consultancyHeading {
+  position: absolute;
+  left: calc(35.61 * var(--u));
+  top: calc(353.17 * var(--u));
+  margin: 0;
+  font-size: calc(42.41 * var(--u));
+  line-height: 1;
+  font-weight: 600;
+  color: #f5a623;
+}
+
+.consultancyBody {
+  position: absolute;
+  left: calc(35.4 * var(--u));
+  top: calc(406.05 * var(--u));
+  width: calc(312 * var(--u));
+  margin: 0;
+  font-size: calc(15 * var(--u));
+  line-height: calc(18 * var(--u));
+  font-weight: 300;
+  color: #ffffff;
+}
+
+/* --- Below the comp -----------------------------------------------------
+ * Under 1280px the row re-flows to as many cards as fit, each capped at 440px
+ * so nothing balloons on a tablet. Each card becomes a container and derives
+ * `--u` from its own width, so every offset inside it keeps the comp's
+ * proportions without a second set of numbers.
+ */
+@media (max-width: 1279px) {
+  .section {
+    height: auto;
+  }
+
+  .head {
+    display: block;
+    position: relative;
+    padding: clamp(48px, 7vw, 88px) var(--gutter) clamp(40px, 6vw, 72px);
+  }
+
+  .band {
+    inset: 0;
+    height: auto;
+  }
+
+  .heading {
+    position: relative;
+    top: auto;
+    font-size: clamp(24px, 3.2vw, 40px);
+    line-height: 1.2;
+  }
+
+  .flourish {
+    position: relative;
+    left: auto;
+    top: auto;
+    display: block;
+    width: clamp(120px, 16vw, 182px);
+    height: auto;
+    margin: clamp(14px, 2vw, 22px) auto 0;
+  }
+
+  /* Flex rather than grid: a row that cannot hold all three centres the
+     remainder instead of leaving it stranded in the first column. */
+  .cards {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+    padding: clamp(32px, 5vw, 56px) var(--gutter) clamp(48px, 7vw, 80px);
+  }
+
+  .card {
+    flex: 1 1 380px;
+    max-width: 440px;
+    container-type: inline-size;
+    --u: calc(100cqw / 410.67);
+    height: auto;
+    aspect-ratio: 410.67 / 583.9;
+    border-radius: 12px;
+  }
+}

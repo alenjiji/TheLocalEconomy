@@ -1,0 +1,58 @@
+/*
+ * The comp uses the same 326.2 x 53.59 amber button in the nav bar and in the
+ * footer's call to action, down to the arrow. Position comes from the caller.
+ */
+.cta {
+  position: var(--cta-position, absolute);
+  width: calc(326.4 * var(--u));
+  height: calc(53.76 * var(--u));
+  border: calc(0.71 * var(--u)) solid #ffc166;
+  border-radius: calc(6.86 * var(--u));
+  background: #f5a623;
+  color: #282727;
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+
+.cta:hover,
+.cta:focus-visible {
+  background: #ffb844;
+}
+
+.cta:active {
+  transform: translateY(calc(1 * var(--u)));
+}
+
+.label {
+  position: absolute;
+  left: calc(16.11 * var(--u));
+  top: calc(9.99 * var(--u));
+  font-size: calc(27.01 * var(--u));
+  line-height: 1;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.arrow {
+  position: absolute;
+  left: calc(286.96 * var(--u));
+  top: calc(16.03 * var(--u));
+  width: calc(19.95 * var(--u));
+  height: calc(17.76 * var(--u));
+  fill: currentColor;
+}
+
+/* Below the comp the button becomes a container and scales from its own width,
+   so the label and arrow keep their places inside it. */
+@media (max-width: 1279px) {
+  .cta {
+    /* `relative`, not `static`: the label and arrow inside are absolute. */
+    --cta-position: relative;
+    --u: calc(100cqw / 326.4);
+    container-type: inline-size;
+    width: min(100%, 300px);
+    height: auto;
+    aspect-ratio: 326.4 / 53.76;
+    border-width: 1px;
+    border-radius: 7px;
+  }
+}

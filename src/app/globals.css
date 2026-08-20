@@ -1,0 +1,66 @@
+/*
+ * The comp is drawn on a 1440-unit artboard. `--u` is the size of one of those
+ * units at the current viewport, so every offset can be written as
+ * `calc(<design number> * var(--u))` and stays pixel-faithful at any width.
+ *
+ * The scale is capped at 1600px: past that every section centres its content on
+ * the same axis and the full-bleed backgrounds carry on to both edges. It is
+ * floored by the 1280px breakpoint below — scaling the comp down any further
+ * drops the card body copy under 12px, so the layout re-flows instead.
+ */
+:root {
+  --u: calc(min(100vw, 1600px) / 1440);
+  --font-sans: var(--font-inter), "Inter", "Helvetica Neue", Arial, sans-serif;
+}
+
+/*
+ * Below the comp the layout re-flows. `--m` is one unit of a 390-wide phone
+ * artboard, capped at 520px so nothing balloons on a tablet.
+ */
+@media (max-width: 1279px) {
+  :root {
+    --m: calc(min(100vw, 520px) / 390);
+    --gutter: clamp(20px, 5vw, 40px);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #282727;
+  color: #ffffff;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+svg {
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

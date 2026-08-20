@@ -1,0 +1,131 @@
+/*
+ * Every offset is in design units (1440-wide artboard) multiplied by `--u`.
+ * The comp does not centre the nav row inside the bar — the logo, links and
+ * CTA all sit low, so each one is placed from its measured position rather
+ * than from a shared flex baseline.
+ */
+.nav {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: calc(144.56 * var(--u));
+  background: #191919;
+  z-index: 3;
+}
+
+/* Soft highlight the comp paints along the bottom edge of the bar. */
+.shadow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.logo {
+  position: absolute;
+  left: calc(67.52 * var(--u));
+  top: calc(59.16 * var(--u));
+  width: calc(170.04 * var(--u));
+  height: calc(51.47 * var(--u));
+}
+
+.links {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  position: absolute;
+  left: calc(var(--left) * var(--u));
+  /* `--baseline` is where the glyph baseline sits in the comp; 0.8635em is
+     Inter's ascent plus half-leading at line-height 1. */
+  top: calc(var(--baseline) * var(--u) - 0.8635em);
+  font-size: calc(19.57 * var(--u));
+  line-height: 1;
+  font-weight: 400;
+  white-space: nowrap;
+  color: #8c8c8c;
+  transition: color 160ms ease;
+}
+
+.link:hover,
+.link:focus-visible {
+  color: #ffffff;
+}
+
+.linkActive {
+  color: #ffffff;
+}
+
+.linkActive::after {
+  content: "";
+  position: absolute;
+  left: calc(0.39 * var(--u));
+  top: calc(23.6 * var(--u));
+  width: calc(84.48 * var(--u));
+  height: max(1px, calc(0.5 * var(--u)));
+  background: #ffffff;
+}
+
+/* --- CTA ---------------------------------------------------------------- */
+
+/* Geometry lives in ConsultationButton; only its place on the bar is set here. */
+.cta {
+  left: calc(1046.08 * var(--u));
+  top: calc(56.76 * var(--u));
+}
+
+/* --- Narrow viewports ---------------------------------------------------- */
+
+.menuButton {
+  display: none;
+}
+
+@media (max-width: 1279px) {
+  .nav {
+    height: calc(96 * var(--m));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--gutter);
+  }
+
+  .logo,
+  .cta {
+    position: static;
+  }
+
+  .logo {
+    width: calc(132 * var(--m));
+    height: calc(40 * var(--m));
+  }
+
+  .links,
+  .cta,
+  .shadow {
+    display: none;
+  }
+
+  .menuButton {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: calc(6 * var(--m));
+    width: calc(40 * var(--m));
+    height: calc(40 * var(--m));
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  .menuButton span {
+    display: block;
+    width: 100%;
+    height: max(2px, calc(2 * var(--m)));
+    background: #ffffff;
+  }
+}

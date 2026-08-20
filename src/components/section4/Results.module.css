@@ -1,0 +1,538 @@
+/*
+ * Results section — offsets in design units off the comp (rows 2272–4308),
+ * scaled by `--u` as everywhere else. Absolute rows are converted to
+ * section-relative ones in the component, so the numbers here read as offsets
+ * from the top of the section.
+ */
+.section {
+  position: relative;
+  width: 100%;
+  height: calc(2036 * var(--u));
+  background: #282727;
+  overflow: hidden;
+}
+
+/* --- Bands ---------------------------------------------------------------- */
+
+.strip,
+.roadmapBand,
+.closing {
+  display: contents;
+}
+
+/* Painted bands, drawn behind everything in comp mode. */
+.section::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: calc(429.5 * var(--u));
+  background: #edebeb;
+}
+
+/* A real element, not a pseudo: `::after` paints after the content and would
+   cover the closing band's own copy. */
+.closingBg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(1689 * var(--u));
+  bottom: 0;
+  background: #f5a623;
+}
+
+.ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(429.5 * var(--u));
+  height: calc(1259.5 * var(--u));
+  background: #282727;
+}
+
+/* Dark tab that drops out of the roadmap into the amber band. */
+.notch {
+  position: absolute;
+  left: 50%;
+  top: calc(1689 * var(--u));
+  width: calc(86.6 * var(--u));
+  height: calc(40 * var(--u));
+  margin-left: calc(-43.3 * var(--u));
+  background: #282727;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+/* --- Stat strip ----------------------------------------------------------- */
+
+.stats {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.statIcon {
+  position: absolute;
+  left: calc(var(--x) * var(--u));
+  top: calc(var(--y) * var(--u));
+  width: calc(var(--w) * var(--u));
+  height: calc(var(--h) * var(--u));
+}
+
+/* Values share one baseline with the icons; 61.7px puts the cap at 44.9. */
+.statValue {
+  position: absolute;
+  left: calc(var(--x) * var(--u));
+  top: calc(70.63 * var(--u));
+  margin: 0;
+  font-size: calc(60.48 * var(--u));
+  line-height: 1;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.statCaption {
+  position: absolute;
+  left: calc(var(--x) * var(--u));
+  top: calc((var(--y) - 4.56) * var(--u));
+  width: calc(var(--w) * var(--u));
+  margin: 0;
+  font-size: calc(20.15 * var(--u));
+  line-height: calc(23.76 * var(--u));
+  font-weight: 300;
+  color: #282727;
+}
+
+.statRule {
+  position: absolute;
+  left: calc(var(--x) * var(--u));
+  top: calc(80.8 * var(--u));
+  width: max(1px, calc(1 * var(--u)));
+  height: calc(133.2 * var(--u));
+  background: rgba(40, 39, 39, 0.28);
+}
+
+.amber {
+  color: #f5a623;
+}
+
+.cyan {
+  color: #00adee;
+}
+
+/* --- Promise card ---------------------------------------------------------- */
+
+.promise {
+  position: absolute;
+  left: calc(302.4 * var(--u));
+  top: calc(259.7 * var(--u));
+  width: calc(835 * var(--u));
+  height: calc(220.3 * var(--u));
+  margin: 0;
+  border-radius: calc(20 * var(--u));
+  background: #00adee;
+}
+
+.promiseTail {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: calc(88 * var(--u));
+  height: calc(41 * var(--u));
+  margin-left: calc(-44 * var(--u));
+  background: #00adee;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.promiseQuote {
+  margin: 0;
+  padding: calc(31.5 * var(--u)) calc(87.5 * var(--u)) 0;
+}
+
+.promiseQuote p {
+  margin: 0;
+  font-size: calc(31.4 * var(--u));
+  line-height: calc(37.2 * var(--u));
+  font-weight: 400;
+  text-align: center;
+  color: #ffffff;
+}
+
+.promiseBy {
+  margin: calc(16 * var(--u)) 0 0;
+  font-size: calc(20 * var(--u));
+  line-height: 1;
+  font-weight: 300;
+  text-align: center;
+  color: #ffffff;
+}
+
+.promiseBy strong {
+  font-weight: 700;
+}
+
+/* --- Heading --------------------------------------------------------------- */
+
+.eyebrow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(556.96 * var(--u));
+  margin: 0;
+  font-size: calc(36.9 * var(--u));
+  line-height: 1;
+  font-weight: 600;
+  text-align: center;
+  color: #f5a623;
+}
+
+.flourish {
+  position: absolute;
+  left: calc(621.68 * var(--u));
+  top: calc(607.36 * var(--u));
+  width: calc(182.36 * var(--u));
+  height: calc(10.08 * var(--u));
+  color: #f5a623;
+}
+
+/* 772.7 x 138.47 is the union of both halves in the comp; the children are
+   percentages of that, so the pair scales as one. */
+.heading {
+  position: absolute;
+  left: calc(332.84 * var(--u));
+  top: calc(644.08 * var(--u));
+  width: calc(772.7 * var(--u));
+  aspect-ratio: 772.7 / 138.47;
+  margin: 0;
+}
+
+.headingWhite {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 91.37%;
+  height: 100%;
+}
+
+.headingCyan {
+  position: absolute;
+  left: 40.35%;
+  top: 66.32%;
+  width: 59.65%;
+  height: 33.62%;
+}
+
+.lede {
+  position: absolute;
+  left: 50%;
+  top: calc(780.7 * var(--u));
+  width: calc(810 * var(--u));
+  margin-left: calc(-405 * var(--u));
+  font-size: calc(28 * var(--u));
+  line-height: calc(34.08 * var(--u));
+  font-weight: 300;
+  text-align: center;
+  color: #ffffff;
+}
+
+/* --- Roadmap ---------------------------------------------------------------- */
+
+/* Wider than the canvas in the comp, so it bleeds off both edges. */
+.track {
+  position: absolute;
+  left: calc(-32 * var(--u));
+  top: calc(1101 * var(--u));
+  width: calc(1503.1 * var(--u));
+  height: calc(344.82 * var(--u));
+  max-width: none;
+}
+
+.steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* `--y` is the cap top of the step number; the flex line box starts 3 units
+   above it. */
+.step {
+  position: absolute;
+  left: calc(var(--x) * var(--u));
+  top: calc((var(--y) - 3) * var(--u));
+  width: calc(var(--w) * var(--u));
+}
+
+.stepLabel {
+  /* A flex row strips the whitespace between the number and the label, so the
+     word space is restored as a gap. */
+  display: flex;
+  align-items: baseline;
+  gap: calc(5.6 * var(--u));
+  margin: 0;
+  font-size: calc(23.76 * var(--u));
+  line-height: 1;
+  font-weight: 600;
+  color: #f5a623;
+}
+
+.stepNumber {
+  font-size: calc(31.81 * var(--u));
+  font-weight: 500;
+}
+
+.stepHeading {
+  margin: calc(8 * var(--u)) 0 0;
+  font-size: calc(17.98 * var(--u));
+  line-height: calc(23.5 * var(--u));
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* The comp justifies and hyphenates the step copy. */
+.stepBody {
+  margin: calc((9 + var(--body-offset, 0)) * var(--u)) 0 0;
+  font-size: calc(17.98 * var(--u));
+  line-height: calc(21.5 * var(--u));
+  font-weight: 300;
+  text-align: var(--align, justify);
+  hyphens: auto;
+  color: #ffffff;
+}
+
+/* --- Closing band ------------------------------------------------------------ */
+
+.closingMark {
+  position: absolute;
+  left: calc(347.16 * var(--u));
+  top: calc(1787.56 * var(--u));
+  width: calc(53.58 * var(--u));
+  height: calc(175.1 * var(--u));
+}
+
+.closingText {
+  position: absolute;
+  left: calc(451.64 * var(--u));
+  top: calc(1787.52 * var(--u));
+  width: calc(639.41 * var(--u));
+  height: calc(182.2 * var(--u));
+}
+
+/* --- Below the comp ---------------------------------------------------------
+ * Under 1280px the four bands become real blocks and flow. The serpentine
+ * track is a desktop device — it cannot survive a narrow column — so it is
+ * dropped and the eight steps become an ordinary numbered list.
+ */
+@media (max-width: 1279px) {
+  .section {
+    height: auto;
+  }
+
+  .section::before,
+  .closingBg,
+  .ground {
+    display: none;
+  }
+
+  .strip {
+    display: block;
+    padding: clamp(40px, 6vw, 72px) var(--gutter);
+    background: #edebeb;
+  }
+
+  /* Explicit column counts: `auto-fit` leaves a stranded fourth cell at the
+     widths this band actually hits. */
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(28px, 4vw, 44px);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .stats li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: end;
+    column-gap: 16px;
+    row-gap: 10px;
+  }
+
+  .statIcon,
+  .statValue,
+  .statCaption {
+    position: static;
+    width: auto;
+  }
+
+  .statIcon {
+    width: calc(var(--w) * 1px);
+    height: calc(var(--h) * 1px);
+    grid-row: 1;
+  }
+
+  .statValue {
+    grid-row: 1;
+    font-size: clamp(38px, 5vw, 56px);
+  }
+
+  .statCaption {
+    grid-row: 2;
+    grid-column: 1 / -1;
+    max-width: 24ch;
+    font-size: clamp(15px, 1.7vw, 19px);
+    line-height: 1.35;
+  }
+
+  .statRule {
+    display: none;
+  }
+
+  /* Straddles the seam the way it does in the comp. */
+  .promise {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: min(100% - 2 * var(--gutter), 700px);
+    height: auto;
+    margin: calc(-1 * clamp(24px, 4vw, 48px)) auto 0;
+    padding-bottom: clamp(20px, 3vw, 30px);
+    border-radius: 16px;
+  }
+
+  .promiseQuote {
+    padding: clamp(22px, 3.5vw, 34px) clamp(24px, 4vw, 44px) 0;
+  }
+
+  .promiseQuote p {
+    font-size: clamp(19px, 2.4vw, 27px);
+    line-height: 1.25;
+  }
+
+  .promiseBy {
+    margin-top: clamp(12px, 2vw, 18px);
+    font-size: clamp(13px, 1.5vw, 17px);
+  }
+
+  .promiseTail {
+    width: 60px;
+    height: 28px;
+    margin-left: -30px;
+  }
+
+  .roadmapBand {
+    display: block;
+    padding: clamp(52px, 8vw, 96px) var(--gutter) clamp(56px, 8vw, 96px);
+    background: #282727;
+  }
+
+  .eyebrow,
+  .flourish,
+  .heading,
+  .lede {
+    position: relative;
+    left: auto;
+    top: auto;
+  }
+
+  .eyebrow {
+    font-size: clamp(22px, 3vw, 34px);
+  }
+
+  .flourish {
+    display: block;
+    width: clamp(120px, 14vw, 170px);
+    height: auto;
+    margin: clamp(12px, 1.8vw, 18px) auto clamp(24px, 4vw, 40px);
+  }
+
+  .heading {
+    width: min(100%, 720px);
+    margin: 0 auto;
+  }
+
+  .lede {
+    width: min(100%, 620px);
+    margin: clamp(22px, 3.5vw, 36px) auto 0;
+    font-size: clamp(16px, 2vw, 23px);
+    line-height: 1.35;
+  }
+
+  .track {
+    display: none;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    gap: clamp(30px, 4.5vw, 48px);
+    max-width: 1000px;
+    margin: clamp(40px, 6vw, 68px) auto 0;
+  }
+
+  .step {
+    position: static;
+    width: auto;
+  }
+
+  .stepLabel {
+    gap: 6px;
+    font-size: clamp(18px, 2.2vw, 23px);
+  }
+
+  .stepNumber {
+    font-size: clamp(24px, 3vw, 31px);
+  }
+
+  .stepHeading {
+    margin-top: 10px;
+    font-size: clamp(15px, 1.8vw, 18px);
+    line-height: 1.3;
+  }
+
+  .stepBody {
+    margin-top: 8px;
+    font-size: clamp(15px, 1.8vw, 18px);
+    line-height: 1.35;
+    text-align: left;
+  }
+
+  .closing {
+    display: block;
+    position: relative;
+    padding: clamp(56px, 8vw, 96px) var(--gutter) clamp(48px, 7vw, 80px);
+    background: #f5a623;
+  }
+
+  .notch {
+    top: 0;
+    width: 60px;
+    height: 28px;
+    margin-left: -30px;
+  }
+
+  .closingMark,
+  .closingText {
+    position: static;
+  }
+
+  .closingMark {
+    display: none;
+  }
+
+  .closingText {
+    display: block;
+    width: min(100%, 560px);
+    height: auto;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 520px) and (max-width: 1279px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1279px) {
+  .stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

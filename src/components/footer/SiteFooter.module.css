@@ -1,0 +1,382 @@
+/*
+ * Footer — offsets in design units off the comp (rows 5183–5613), scaled by
+ * `--u` as everywhere else. Comp rows are converted to section-relative ones
+ * in the component.
+ */
+.footer {
+  position: relative;
+  width: 100%;
+  height: calc(430.1 * var(--u));
+  background: #191919;
+  overflow: hidden;
+}
+
+/* --- Call to action -------------------------------------------------------- */
+
+.cta {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: calc(137.4 * var(--u));
+  background: #00adee;
+}
+
+.ctaText {
+  position: absolute;
+  left: calc(67.84 * var(--u));
+  top: calc(29.56 * var(--u));
+  width: calc(894.89 * var(--u));
+  height: calc(92.13 * var(--u));
+}
+
+.ctaButton {
+  left: calc(1046.56 * var(--u));
+  top: calc(48.52 * var(--u));
+}
+
+/* --- Link deck -------------------------------------------------------------- */
+
+.deck {
+  position: absolute;
+  inset: calc(137.4 * var(--u)) 0 0 0;
+}
+
+.logoLink {
+  position: absolute;
+  left: calc(79.44 * var(--u));
+  top: calc(45.36 * var(--u));
+}
+
+.logo {
+  width: calc(194.16 * var(--u));
+  height: calc(58.7 * var(--u));
+}
+
+.tagline {
+  position: absolute;
+  left: calc(80.64 * var(--u));
+  top: calc(128.21 * var(--u));
+  width: calc(300 * var(--u));
+  margin: 0;
+  font-size: calc(15 * var(--u));
+  line-height: calc(17.04 * var(--u));
+  font-weight: 300;
+  color: #848484;
+}
+
+.rule {
+  position: absolute;
+  left: calc(var(--x) * var(--u));
+  top: calc(51.12 * var(--u));
+  width: max(1px, calc(1 * var(--u)));
+  height: calc(164.4 * var(--u));
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.column {
+  position: absolute;
+  top: 0;
+}
+
+/* Size lives on the list, not the anchor: an inline child leaves the line box
+   to the parent's strut, which would set the row pitch instead. */
+.column ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: calc(15 * var(--u));
+  line-height: 1;
+}
+
+.columnHeading {
+  position: absolute;
+  top: calc(44.75 * var(--u));
+  margin: 0;
+  font-size: calc(15 * var(--u));
+  line-height: 1;
+  font-weight: 600;
+  white-space: nowrap;
+  color: #00adee;
+}
+
+.column a {
+  font-weight: 300;
+  white-space: nowrap;
+  color: #ffffff;
+  transition: color 160ms ease;
+}
+
+.column a:hover,
+.column a:focus-visible {
+  color: #00adee;
+}
+
+.quick {
+  left: calc(652 * var(--u));
+}
+
+.quick ul {
+  position: absolute;
+  top: calc(81.47 * var(--u));
+  left: 0;
+}
+
+.quick li + li {
+  margin-top: calc(9 * var(--u));
+}
+
+.programmes {
+  left: calc(845.6 * var(--u));
+}
+
+.programmes ul {
+  position: absolute;
+  top: calc(90.59 * var(--u));
+  left: 0;
+}
+
+.programmes li + li {
+  margin-top: calc(13 * var(--u));
+}
+
+.contact {
+  left: calc(1137 * var(--u));
+}
+
+/* The comp does not pitch the contact rows evenly, so each carries its own. */
+.contactList {
+  position: static;
+}
+
+.contactList li {
+  position: static;
+}
+
+.contactIcon {
+  position: absolute;
+  left: 0;
+  top: calc(var(--y) * var(--u));
+  width: calc(var(--w) * var(--u));
+  height: calc(var(--h) * var(--u));
+}
+
+.contactLink {
+  position: absolute;
+  left: calc(28 * var(--u));
+  top: calc((var(--y) - 2.1) * var(--u));
+  font-size: calc(15 * var(--u));
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* --- Base line ---------------------------------------------------------------- */
+
+.brand,
+.base {
+  display: contents;
+}
+
+.divider {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(241.12 * var(--u));
+  height: max(1px, calc(0.5 * var(--u)));
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.copyright {
+  position: absolute;
+  left: calc(80.64 * var(--u));
+  top: calc(256.32 * var(--u));
+  width: calc(300.16 * var(--u));
+  height: calc(12.63 * var(--u));
+}
+
+.legal {
+  position: absolute;
+  right: calc(80.8 * var(--u));
+  top: calc(254.82 * var(--u));
+  display: flex;
+  gap: calc(8 * var(--u));
+  margin: 0;
+  font-size: calc(13.02 * var(--u));
+  line-height: 1;
+  font-weight: 300;
+  color: #848484;
+}
+
+.legal a {
+  color: inherit;
+  transition: color 160ms ease;
+}
+
+.legal a:hover,
+.legal a:focus-visible {
+  color: #ffffff;
+}
+
+/* --- Below the comp ---------------------------------------------------------
+ * Under 1280px the two bands become real blocks and flow: the call to action
+ * stacks, and the three link columns become a grid with the rules dropped.
+ */
+@media (max-width: 1279px) {
+  .footer {
+    height: auto;
+  }
+
+  .cta {
+    position: relative;
+    inset: auto;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(20px, 3vw, 32px);
+    padding: clamp(32px, 5vw, 56px) var(--gutter);
+  }
+
+  .ctaText {
+    position: static;
+    width: auto;
+    max-width: 560px;
+    height: auto;
+    flex: 1 1 320px;
+  }
+
+  /* The comp offsets are still declared; `relative` would shift the button by
+     them, so they are cleared here. */
+  .ctaButton {
+    left: auto;
+    top: auto;
+    flex: 0 0 auto;
+  }
+
+  .deck {
+    position: relative;
+    inset: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(32px, 5vw, 48px);
+    padding: clamp(40px, 6vw, 64px) var(--gutter) 0;
+  }
+
+  .logoLink,
+  .logo,
+  .tagline,
+  .column,
+  .columnHeading,
+  .contactIcon,
+  .contactLink,
+  .copyright,
+  .legal {
+    position: static;
+  }
+
+  .logoLink {
+    display: block;
+    width: max-content;
+  }
+
+  .logo {
+    width: 175px;
+    height: auto;
+  }
+
+  .tagline {
+    width: min(100%, 340px);
+    margin-top: 18px;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+
+  .rule,
+  .divider {
+    display: none;
+  }
+
+  .columns {
+    display: contents;
+  }
+
+  .column {
+    left: auto;
+  }
+
+  .columnHeading {
+    margin-bottom: 16px;
+    font-size: 15px;
+  }
+
+  .column ul {
+    position: static;
+    display: grid;
+    gap: 12px;
+    font-size: 15px;
+    line-height: 1.2;
+  }
+
+  .quick li + li,
+  .programmes li + li {
+    margin-top: 0;
+  }
+
+  .contactList {
+    display: grid;
+    gap: 16px;
+  }
+
+  .contactList li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .contactIcon {
+    width: calc(var(--w) * 1px);
+    height: calc(var(--h) * 1px);
+    flex: 0 0 auto;
+  }
+
+  .contactLink {
+    font-size: 15px;
+  }
+
+  .brand {
+    display: block;
+  }
+
+  .base {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-top: clamp(32px, 5vw, 48px);
+    padding: clamp(20px, 3vw, 28px) 0 clamp(28px, 4vw, 40px);
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .copyright {
+    width: 260px;
+    height: auto;
+  }
+
+  .legal {
+    right: auto;
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 560px) and (max-width: 1279px) {
+  .deck {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1279px) {
+  .deck {
+    grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+  }
+}

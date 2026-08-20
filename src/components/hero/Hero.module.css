@@ -1,0 +1,225 @@
+/*
+ * Hero geometry, in design units off the 1440 x 956 comp.
+ *
+ * Layer order matches the comp: flat ground, the masked data-graph artwork,
+ * the cut-out portrait, then the type. The nav bar sits above all of it.
+ */
+.hero {
+  position: relative;
+  width: 100%;
+  background: #282727;
+  overflow: hidden;
+}
+
+.stage {
+  position: relative;
+  width: calc(1440 * var(--u));
+  height: calc(956 * var(--u));
+  margin: 0 auto;
+}
+
+/*
+ * `bg-elements.svg` is drawn at 1:1 and hangs off the top-left of the stage.
+ * In the comp it fades out towards the left so the headline stays readable;
+ * the mask reproduces that ramp (fully hidden at x=0, fully visible by x=700).
+ */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 calc(700 * var(--u))
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 calc(700 * var(--u))
+  );
+  pointer-events: none;
+}
+
+.backdropArt {
+  position: absolute;
+  left: calc(-164.5 * var(--u));
+  top: calc(-363.44 * var(--u));
+  width: calc(1624.35 * var(--u));
+  height: calc(1689.2 * var(--u));
+  max-width: none;
+}
+
+/*
+ * Scale and offset solved against the comp on the head/torso, which is where
+ * `DSC_3834.webp` and the comp agree. The comp's arms sit a few pixels apart
+ * from this export — it was composed from a different frame of the same shoot —
+ * so the portrait keeps its true aspect rather than being stretched to chase it.
+ */
+.portrait {
+  position: absolute;
+  left: calc(601 * var(--u));
+  top: calc(12 * var(--u));
+  width: calc(799.84 * var(--u));
+  height: calc(1120.75 * var(--u));
+  max-width: none;
+  z-index: 1;
+}
+
+.copy {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.title {
+  position: absolute;
+  left: calc(78.24 * var(--u));
+  top: calc(346.28 * var(--u));
+  width: calc(723.77 * var(--u));
+  height: calc(294.06 * var(--u));
+}
+
+.name {
+  position: absolute;
+  left: calc(80.28 * var(--u));
+  top: calc(719.52 * var(--u));
+  width: calc(363.66 * var(--u));
+  height: calc(27.89 * var(--u));
+}
+
+.company {
+  position: absolute;
+  left: calc(79.8 * var(--u));
+  top: calc(757.8 * var(--u));
+  width: calc(305.4 * var(--u));
+  height: calc(29.47 * var(--u));
+}
+
+.flourish {
+  position: absolute;
+  left: calc(143.04 * var(--u));
+  top: calc(808.96 * var(--u));
+  width: calc(182.36 * var(--u));
+  height: calc(10.08 * var(--u));
+}
+
+/* --- Slide indicator ----------------------------------------------------- */
+
+.dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(888.4 * var(--u));
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  gap: calc(17.25 * var(--u));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dot {
+  width: calc(10.4 * var(--u));
+  height: calc(10.4 * var(--u));
+  border-radius: 50%;
+  background: #d3d3d3;
+}
+
+.dotActive {
+  background: #00adee;
+}
+
+/* --- Below the comp -----------------------------------------------------
+ * The comp only covers desktop. Under 1280px the composition re-flows: the
+ * headline block becomes a centred column and the portrait drops behind it.
+ *
+ * Inside that column every element is sized as a percentage of the headline
+ * width, using the same ratios the comp uses at 1440 — so the sub-heads and
+ * flourish keep their relationship to the headline at any column width.
+ * Percentage margins resolve against the column width, which is what makes the
+ * vertical rhythm scale with it too.
+ */
+@media (max-width: 1279px) {
+  .stage {
+    width: 100%;
+    height: auto;
+    padding: calc(144 * var(--m)) 0 calc(72 * var(--m));
+  }
+
+  .backdrop {
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 42%);
+    mask-image: linear-gradient(to right, transparent 0, #000 42%);
+  }
+
+  .backdropArt {
+    left: -12%;
+    top: calc(-40 * var(--m));
+    width: 150%;
+    height: auto;
+  }
+
+  .portrait {
+    left: auto;
+    right: max(-12vw, -120px);
+    top: auto;
+    bottom: 0;
+    width: min(64vw, 420px);
+    height: auto;
+    opacity: 0.3;
+  }
+
+  .copy {
+    position: relative;
+    inset: auto;
+    width: min(100% - 2 * var(--gutter), 620px);
+    margin: 0 auto;
+  }
+
+  .copy h1 {
+    margin: 0;
+  }
+
+  .title,
+  .name,
+  .company,
+  .flourish {
+    position: relative;
+    left: auto;
+    top: auto;
+    height: auto;
+  }
+
+  .title {
+    width: 100%;
+  }
+
+  .name {
+    width: 50.25%;
+    margin: 10.94% 0 0 0.28%;
+  }
+
+  .company {
+    width: 42.2%;
+    margin: 1.44% 0 0 0.22%;
+  }
+
+  .flourish {
+    width: 25.2%;
+    margin: 3% 0 0 8.95%;
+  }
+
+  .dots {
+    position: relative;
+    top: auto;
+    justify-content: flex-start;
+    width: min(100% - 2 * var(--gutter), 620px);
+    margin: 6% auto 0;
+    gap: calc(12 * var(--m));
+  }
+
+  .dot {
+    width: calc(9 * var(--m));
+    height: calc(9 * var(--m));
+  }
+}
