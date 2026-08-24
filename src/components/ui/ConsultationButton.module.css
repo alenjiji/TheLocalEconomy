@@ -10,45 +10,16 @@
   border-radius: calc(6.86 * var(--u));
   background: #f5a623;
   color: #282727;
-  overflow: hidden;
-  isolation: isolate;
-  transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Floods blue from wherever the pointer crossed the edge. */
-.cta::before {
-  content: "";
-  position: absolute;
-  left: var(--lx, 50%);
-  top: var(--ly, 50%);
-  width: calc(720 * var(--u));
-  height: calc(720 * var(--u));
-  margin: calc(-360 * var(--u));
-  border-radius: 50%;
-  background: #00adee;
-  transform: scale(0);
-  transition: transform 540ms cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: transform;
-}
-
-.cta[data-liquid="in"]::before {
-  transform: scale(1);
-}
-
-.cta[data-liquid="in"] .label,
-.cta[data-liquid="in"] .arrow {
-  color: #ffffff;
+  --liquid-reach: calc(720 * var(--u));
 }
 
 .cta:active {
-  transform: translateY(calc(1 * var(--u)));
+  translate: 0 calc(1 * var(--u));
 }
 
 .label {
   position: absolute;
-  z-index: 1;
   color: inherit;
-  transition: color 320ms ease 90ms;
   left: calc(16.11 * var(--u));
   top: calc(9.99 * var(--u));
   font-size: calc(27.01 * var(--u));
@@ -59,9 +30,7 @@
 
 .arrow {
   position: absolute;
-  z-index: 1;
   color: inherit;
-  transition: color 320ms ease 90ms;
   left: calc(286.96 * var(--u));
   top: calc(16.03 * var(--u));
   width: calc(19.95 * var(--u));
@@ -71,15 +40,6 @@
 
 /* Below the comp the button becomes a container and scales from its own width,
    so the label and arrow keep their places inside it. */
-@media (prefers-reduced-motion: reduce) {
-  .cta,
-  .cta::before,
-  .label,
-  .arrow {
-    transition: none;
-  }
-}
-
 @media (max-width: 1279px) {
   .cta {
     /* `relative`, not `static`: the label and arrow inside are absolute. */

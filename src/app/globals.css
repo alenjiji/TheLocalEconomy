@@ -11,6 +11,10 @@
 :root {
   --u: calc(min(100vw, 1600px) / 1440);
   --font-sans: var(--font-inter), "Inter", "Helvetica Neue", Arial, sans-serif;
+  /* Page gutter, also used by the header row once it compacts. */
+  --gutter: clamp(24px, 4vw, 64px);
+  /* Anchor targets have to clear the fixed header. */
+  scroll-padding-top: clamp(78px, 10vw, 96px);
 }
 
 /*
@@ -20,7 +24,7 @@
 @media (max-width: 1279px) {
   :root {
     --m: calc(min(100vw, 520px) / 390);
-    --gutter: clamp(20px, 5vw, 40px);
+    --gutter: clamp(14px, 5vw, 40px);
   }
 }
 

@@ -196,14 +196,19 @@
     height: auto;
   }
 
+  /*
+   * A backdrop, not a subject: pushed further off the right edge and dropped
+   * behind the copy so the headline never has to compete with his face.
+   */
   .portrait {
+    --portrait-opacity: 0.22;
     left: auto;
-    right: max(-12vw, -120px);
+    right: max(-20vw, -150px);
     top: auto;
     bottom: 0;
-    width: min(64vw, 420px);
+    width: min(50vw, 320px);
     height: auto;
-    opacity: 0.3;
+    opacity: var(--portrait-opacity);
   }
 
   .copy {
@@ -324,7 +329,9 @@
     transform: translate3d(calc(18 * var(--u)), 0, 0) scale(1.035);
   }
   to {
-    opacity: 1;
+    /* Resting opacity is a variable: below the comp the portrait sits back as
+       a wash behind the copy, and the intro must not override that. */
+    opacity: var(--portrait-opacity, 1);
     transform: translate3d(0, 0, 0) scale(1);
   }
 }

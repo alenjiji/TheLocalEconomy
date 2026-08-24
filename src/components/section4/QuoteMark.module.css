@@ -1,0 +1,77 @@
+/*
+ * The closing quote mark.
+ *
+ * Kept deliberately quiet: the rules draw away from the mark, the two glyphs
+ * settle in behind them, and then everything holds apart from a very slow
+ * breath that only reads if you are looking straight at it.
+ */
+
+.glyph {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transition:
+    opacity 620ms ease,
+    translate 620ms cubic-bezier(0.16, 1, 0.3, 1);
+  translate: 0 8px;
+}
+
+.glyphSecond {
+  transition-delay: 110ms;
+}
+
+[data-inview="true"] .glyph {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* Once settled, the pair drifts a hair — enough to feel alive, not to notice. */
+[data-inview="true"] .glyphs {
+  animation: quote-breath 9s ease-in-out 1.2s infinite;
+}
+
+@keyframes quote-breath {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -1.6px, 0);
+  }
+}
+
+.ruleUp,
+.ruleDown {
+  stroke-dasharray: 1 1;
+  transition: stroke-dashoffset 760ms cubic-bezier(0.16, 1, 0.3, 1) 240ms;
+}
+
+/* The upper rule starts at the top of the artwork, so it fills toward the
+   mark from -1; the lower one starts nearest the mark and fills from 1. */
+.ruleUp {
+  stroke-dashoffset: -1;
+}
+
+.ruleDown {
+  stroke-dashoffset: 1;
+}
+
+[data-inview="true"] .ruleUp,
+[data-inview="true"] .ruleDown {
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glyph,
+  .ruleUp,
+  .ruleDown {
+    opacity: 1;
+    translate: 0 0;
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+
+  [data-inview="true"] .glyphs {
+    animation: none;
+  }
+}

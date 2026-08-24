@@ -1,7 +1,7 @@
 import InView from "@/components/motion/InView";
+import QuoteMark from "./QuoteMark";
 import RoadmapTrack from "./RoadmapTrack";
 import TypedText from "./TypedText";
-import roadmap from "./Roadmap.module.css";
 import styles from "./Results.module.css";
 import { ROADMAP_TIMELINE } from "@/lib/roadmapTimeline";
 import { STATS, STAT_RULES, STEPS, RESULTS_TOP } from "@/lib/results";
@@ -24,6 +24,10 @@ export default function Results() {
     <InView as="section" className={styles.section} amount={0.06} aria-labelledby="results-heading">
       <div className={styles.ground} aria-hidden="true" />
       <div className={styles.closingBg} aria-hidden="true" />
+
+      {/* Everything below is placed on comp coordinates, so it lives on a
+          centred 1440-unit stage. The painted bands above stay full-bleed. */}
+      <div className={styles.stage}>
 
       {/* --- Stat strip ----------------------------------------------------
           Each band wrapper is `display: contents` in comp mode, so its children
@@ -189,15 +193,7 @@ export default function Results() {
       {/* --- Closing band ---------------------------------------------------- */}
       <div className={styles.closing}>
       <div className={styles.notch} aria-hidden="true" />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        className={`${styles.closingMark} u-rise`}
-        src="/section_3/el_6.svg"
-        alt=""
-        aria-hidden="true"
-        width={54}
-        height={175}
-      />
+      <QuoteMark className={styles.closingMark} />
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         className={`${styles.closingText} u-rise`}
@@ -206,6 +202,7 @@ export default function Results() {
         width={639}
         height={182}
       />
+      </div>
       </div>
     </InView>
   );

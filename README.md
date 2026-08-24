@@ -57,6 +57,13 @@ Body copy holds at 16px from 1279px down to about 600px, then tracks the card
 width down to 12.8px on a 390px phone. There is no horizontal overflow at any
 width from 320px to 2560px.
 
+Between 900 and 1280 the nav keeps its real menu — logo, links and CTA in a
+flow row, with the CTA giving way as the row tightens — and only collapses to
+the button below 900. The programme cards each re-declare `--u` from their own
+width, so the comp's composition holds inside them at any size; below about
+340px that scaling puts their body copy under 11px, which is the floor of this
+approach. A phone at 360px and up is comfortable.
+
 **The fluid arrangement is an interpretation, not a spec** — the comp only
 covers desktop. Replace it when narrower comps arrive.
 
@@ -192,10 +199,16 @@ measures against the design once it settles.
   positions with transforms and a reveal must not overwrite them. The hidden
   state is scoped to `html.js`, set by an inline script before first paint — so
   with scripting unavailable nothing is ever stuck invisible.
-- **Liquid buttons.** Hover floods a pill with its opposite brand colour from
-  wherever the pointer crossed the edge: amber fills blue, blue fills amber,
-  and the label swaps with it. The circle is only repositioned while it is
-  scaled to nothing, so a second hover never shows it jump (`useLiquid`).
+- **Liquid buttons.** Hover deepens a pill into a richer shade of its *own*
+  colour, spreading from wherever the pointer crossed the edge, with a lighter
+  wavefront running just ahead of the fill, a soft glow in the pill's hue and
+  the arrow leaning into the direction of travel. An earlier version flooded
+  with the opposite brand colour; it cost the button its identity and pushed
+  the label through low-contrast states mid-transition. The circle is only
+  repositioned while it is scaled to nothing, so a second hover never shows it
+  jump (`useLiquid`, `u-liquid` in `globals.css`).
+- **The closing quote mark** draws its rules away from the glyphs, settles the
+  two halves in behind them, and then holds apart from a nine-second breath.
 - **The roadmap types itself.** See below.
 
 ## The roadmap timeline

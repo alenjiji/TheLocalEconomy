@@ -1,7 +1,5 @@
 "use client";
 
-import type { CSSProperties } from "react";
-
 import styles from "./ConsultationButton.module.css";
 import { useLiquid } from "./useLiquid";
 
@@ -24,14 +22,14 @@ export default function ConsultationButton({
 
   return (
     <a
-      className={`${styles.cta} ${className ?? ""}`}
+      className={`${styles.cta} u-liquid u-liquid-amber ${className ?? ""}`}
       href={href}
       {...liquidProps}
       style={liquidStyle}
     >
       <span className={styles.label}>Book a Consultation</span>
       <svg
-        className={styles.arrow}
+        className={`${styles.arrow} u-liquid-arrow`}
         viewBox="288.18 16.75 19.95 17.76"
         aria-hidden="true"
         focusable="false"

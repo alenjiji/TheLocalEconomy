@@ -20,6 +20,19 @@
   background: #00adee;
 }
 
+/*
+ * Comp coordinates come off a 1440-wide artboard, so past the scale cap they
+ * resolve against this centred box instead of the band's left edge.
+ */
+.stage {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  width: calc(1440 * var(--u));
+  height: 100%;
+}
+
 .ctaText {
   position: absolute;
   left: calc(67.84 * var(--u));
@@ -37,7 +50,11 @@
 
 .deck {
   position: absolute;
-  inset: calc(137.4 * var(--u)) 0 0 0;
+  left: 50%;
+  transform: translateX(-50%);
+  top: calc(137.4 * var(--u));
+  bottom: 0;
+  width: calc(1440 * var(--u));
 }
 
 .logoLink {
@@ -236,7 +253,20 @@
     padding: clamp(32px, 5vw, 56px) var(--gutter);
   }
 
-  .ctaText {
+  /*
+ * Comp coordinates come off a 1440-wide artboard, so past the scale cap they
+ * resolve against this centred box instead of the band's left edge.
+ */
+.stage {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  width: calc(1440 * var(--u));
+  height: 100%;
+}
+
+.ctaText {
     position: static;
     width: auto;
     max-width: 560px;
@@ -252,9 +282,20 @@
     flex: 0 0 auto;
   }
 
+  .stage {
+    position: static;
+    transform: none;
+    width: auto;
+    height: auto;
+  }
+
   .deck {
     position: relative;
-    inset: auto;
+    left: auto;
+    top: auto;
+    bottom: auto;
+    transform: none;
+    width: auto;
     display: grid;
     grid-template-columns: 1fr;
     gap: clamp(32px, 5vw, 48px);

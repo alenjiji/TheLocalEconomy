@@ -21,6 +21,8 @@ export default function SiteFooter() {
     <InView as="footer" className={styles.footer} amount={0.15}>
       {/* --- Call to action ------------------------------------------------ */}
       <div className={styles.cta}>
+        {/* The band paints full-bleed; its contents sit on the centred stage. */}
+        <div className={styles.stage}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className={`${styles.ctaText} u-rise`}
@@ -30,6 +32,7 @@ export default function SiteFooter() {
           height={92}
         />
         <ConsultationButton className={`${styles.ctaButton} u-rise`} />
+        </div>
       </div>
 
       {/* --- Link deck ------------------------------------------------------ */}

@@ -1,5 +1,4 @@
 import HeroBackdropMotion from "./HeroBackdropMotion";
-import NavBar from "./NavBar";
 import backdrop from "./HeroBackdrop.module.css";
 import styles from "./Hero.module.css";
 import { HERO_ACTIVE_SLIDE, HERO_SLIDE_COUNT } from "@/lib/design";
@@ -50,7 +49,6 @@ export default function Hero() {
           fetchPriority="high"
         />
 
-        <NavBar />
 
         <div className={styles.copy}>
           {/* The headline ships as one outlined SVG, so its four lines are four

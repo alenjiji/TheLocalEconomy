@@ -36,7 +36,7 @@ export default function PillButton({
 
   return (
     <a
-      className={`${styles.pill} ${styles[tone]} ${className ?? ""}`}
+      className={`${styles.pill} ${styles[tone]} u-liquid u-liquid-${tone} ${className ?? ""}`}
       href={href}
       {...liquidProps}
       style={
@@ -51,7 +51,7 @@ export default function PillButton({
     >
       <span className={styles.label}>{label}</span>
       <svg
-        className={styles.arrow}
+        className={`${styles.arrow} u-liquid-arrow`}
         viewBox="218.36 12.36 14.72 13.11"
         aria-hidden="true"
         focusable="false"

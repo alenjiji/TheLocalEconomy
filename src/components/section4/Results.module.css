@@ -12,6 +12,20 @@
   overflow: hidden;
 }
 
+/*
+ * Comp coordinates are measured from a 1440-wide artboard, so past the scale
+ * cap they have to resolve against a centred box rather than the left edge —
+ * otherwise the whole section drifts left of the sections above it.
+ */
+.stage {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  width: calc(1440 * var(--u));
+  height: 100%;
+}
+
 /* --- Bands ---------------------------------------------------------------- */
 
 .strip,
@@ -340,6 +354,13 @@
     height: auto;
   }
 
+  .stage {
+    position: static;
+    transform: none;
+    width: auto;
+    height: auto;
+  }
+
   .section::before,
   .closingBg,
   .ground {
@@ -531,20 +552,37 @@
     margin-left: -30px;
   }
 
+  /* The mark stays — it is the one thing in this band that moves. It sits
+     beside the copy at a size that suits the column rather than the comp. */
   .closingMark,
   .closingText {
     position: static;
   }
 
-  .closingMark {
-    display: none;
+  .closing {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(16px, 4vw, 32px);
   }
 
+  .closingMark {
+    display: block;
+    flex: 0 0 auto;
+    width: auto;
+    height: clamp(88px, 17vw, 140px);
+  }
+
+  /* `min-width: 0` so the artwork may shrink below its intrinsic width — a
+     flex item will not otherwise, and it ran off the right edge. */
   .closingText {
     display: block;
-    width: min(100%, 560px);
+    flex: 1 1 auto;
+    min-width: 0;
+    width: 100%;
+    max-width: 560px;
     height: auto;
-    margin: 0 auto;
+    margin: 0;
   }
 }
 

@@ -1,11 +1,7 @@
 /*
  * The comp's pill CTA, rebuilt from its exports so the label is live text and
- * the surface can be animated.
- *
- * Hover floods the pill with its opposite brand colour from wherever the
- * pointer crossed the edge: amber pills fill blue, blue pills fill amber. The
- * circle only moves while it is scaled to nothing, so a second hover never
- * shows it jump.
+ * the surface can be animated. The hover fill itself lives in `globals.css`
+ * as `u-liquid`, so both button sizes share one implementation.
  */
 .pill {
   position: absolute;
@@ -15,59 +11,27 @@
   border-radius: calc(var(--r) * var(--u));
   background: var(--pill-face);
   color: #ffffff;
-  overflow: hidden;
-  isolation: isolate;
-  transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1);
+  /* Radius of the fill circle: enough to cover the pill from any corner. */
+  --liquid-reach: calc(var(--w) * 2.2 * var(--u));
 }
 
 .amber {
   --pill-face: #f5a623;
   --pill-edge: #ffc166;
-  --liquid: #00adee;
-  --liquid-ink: #ffffff;
 }
 
 .cyan {
   --pill-face: #00adee;
   --pill-edge: #43d3ff;
-  --liquid: #f5a623;
-  --liquid-ink: #282727;
-}
-
-.pill::before {
-  content: "";
-  position: absolute;
-  left: var(--lx, 50%);
-  top: var(--ly, 50%);
-  /* Wide enough to cover the pill from any corner it may be entered from. */
-  width: calc(var(--w) * 2.2 * var(--u));
-  height: calc(var(--w) * 2.2 * var(--u));
-  margin: calc(var(--w) * -1.1 * var(--u));
-  border-radius: 50%;
-  background: var(--liquid);
-  transform: scale(0);
-  transition: transform 540ms cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: transform;
-}
-
-.pill[data-liquid="in"]::before {
-  transform: scale(1);
 }
 
 .pill:active {
-  transform: translateY(calc(1 * var(--u)));
+  translate: 0 calc(1 * var(--u));
 }
 
 .label,
 .arrow {
   position: absolute;
-  z-index: 1;
-  transition: color 320ms ease 90ms;
-}
-
-.pill[data-liquid="in"] .label,
-.pill[data-liquid="in"] .arrow {
-  color: var(--liquid-ink);
 }
 
 .label {
@@ -89,11 +53,3 @@
   color: inherit;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .pill,
-  .pill::before,
-  .label,
-  .arrow {
-    transition: none;
-  }
-}

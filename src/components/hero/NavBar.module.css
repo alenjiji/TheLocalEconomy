@@ -149,3 +149,61 @@
     background: #ffffff;
   }
 }
+
+/*
+ * Tablet: there is still room for the real menu, so the bar keeps its links
+ * and CTA and only collapses to the button below 900px. The comp's absolute
+ * offsets are dropped here in favour of a flow row.
+ */
+@media (min-width: 900px) and (max-width: 1279px) {
+  .nav {
+    gap: clamp(16px, 3vw, 40px);
+  }
+
+  .links {
+    position: static;
+    display: flex;
+    align-items: center;
+    gap: clamp(14px, 2.2vw, 30px);
+    margin-left: auto;
+  }
+
+  .link {
+    position: relative;
+    top: auto;
+    left: auto;
+    font-size: clamp(14px, 1.4vw, 17px);
+  }
+
+  .linkActive::after {
+    left: 0;
+    top: calc(100% + 5px);
+    width: 100%;
+  }
+
+  /* The comp offsets above are still declared; `relative` would shift the
+     button by them, so they are cleared here. Width comes from
+     ConsultationButton's own fluid rule. */
+  /* The comp offsets above are still declared; `relative` would shift the
+     button by them, so they are cleared here. The width is scoped through
+     `.nav` so it beats ConsultationButton's own fluid rule and can give way
+     as the row tightens. */
+  .nav .cta {
+    display: block;
+    position: relative;
+    left: auto;
+    top: auto;
+    flex: 0 1 auto;
+    min-width: 0;
+    width: clamp(158px, 23vw, 262px);
+  }
+
+  .nav .logo {
+    width: clamp(120px, 13vw, 150px);
+    height: auto;
+  }
+
+  .menuButton {
+    display: none;
+  }
+}
