@@ -16,13 +16,13 @@
 .bar {
   position: relative;
   height: clamp(64px, 9vw, 76px);
+  /* At desktop these two carry the whole scroll transition, so nothing has to
+     jump between layouts. */
+  transition-property: height, background-color, border-color, box-shadow;
   background: #191919;
   border-bottom: 1px solid rgba(255, 255, 255, 0);
-  transition:
-    height 320ms cubic-bezier(0.16, 1, 0.3, 1),
-    background-color 320ms ease,
-    border-color 320ms ease,
-    box-shadow 320ms ease;
+  transition-duration: 460ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .stage {
@@ -256,44 +256,63 @@
 }
 
 /*
- * Desktop, at the top of the page: the comp's bar, on its measured
- * coordinates. Everything reverts to the compact row once scrolled.
+ * Desktop: always the comp's bar, on its measured coordinates. Scrolling does
+ * not switch layouts — it eases the bar's height and scales its contents by
+ * the same factor, so the whole row settles smoothly instead of snapping
+ * between two arrangements, and it stays close to the size the comp draws.
  */
 @media (min-width: 1280px) {
-  .header:not(.scrolled) .bar {
-    height: calc(144.56 * var(--u));
+  .header {
+    --bar-h: 144.56;
+    --bar-scale: 1;
   }
 
-  .header:not(.scrolled) .shadow {
+  .scrolled {
+    --bar-h: 118;
+    --bar-scale: 0.816;
+  }
+
+  .bar {
+    height: calc(var(--bar-h) * var(--u));
+  }
+
+  .shadow {
     opacity: 1;
   }
 
-  .header:not(.scrolled) .stage {
+  .scrolled .shadow {
+    opacity: 0;
+  }
+
+  .stage {
     display: block;
     width: calc(1440 * var(--u));
     margin: 0 auto;
     padding: 0;
+    transform: scale(var(--bar-scale));
+    transform-origin: 50% 0;
+    transition: transform 460ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .header:not(.scrolled) .logoLink {
+  .logoLink {
     position: absolute;
     left: calc(67.52 * var(--u));
     top: calc(59.16 * var(--u));
   }
 
-  .header:not(.scrolled) .logo {
+  .logo {
     width: calc(170.04 * var(--u));
     height: calc(51.47 * var(--u));
   }
 
-  .header:not(.scrolled) .links {
+  .links {
     position: absolute;
     inset: 0;
     display: block;
     margin: 0;
   }
 
-  .header:not(.scrolled) .link {
+  .link {
     position: absolute;
     left: calc(var(--left) * var(--u));
     /* `--baseline` is where the glyph baseline sits in the comp; 0.8635em is
@@ -302,17 +321,19 @@
     font-size: calc(19.57 * var(--u));
   }
 
-  .header:not(.scrolled) .linkActive::after {
+  .linkActive::after {
     left: calc(0.39 * var(--u));
     top: calc(23.6 * var(--u));
     width: calc(84.48 * var(--u));
     height: max(1px, calc(0.5 * var(--u)));
   }
 
-  .header:not(.scrolled) .cta {
-    /* Back to the page unit — this repeats the root definition because a
-       custom property cannot be un-set without invalidating it. */
+  .cta {
+    /* Back to the page unit. The compact rule below 1280 turns this button
+       into its own container and redefines `--u` from `cqw`; without resetting
+       it here that unit leaks in and throws the button off-screen. */
     --u: calc(min(100vw, 1600px) / 1440);
+    --cta-position: absolute;
     container-type: normal;
     position: absolute;
     left: calc(1046.08 * var(--u));
@@ -325,6 +346,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .bar,
+  .stage,
   .shadow,
   .menuButton span,
   .panel,

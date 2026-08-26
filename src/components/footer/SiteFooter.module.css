@@ -282,11 +282,11 @@
     flex: 0 0 auto;
   }
 
+  /* `contents`, not `static`: the band lays its text and button out with flex,
+     and a block wrapper here hides them from that layout — which collapsed the
+     button to a couple of pixels. */
   .stage {
-    position: static;
-    transform: none;
-    width: auto;
-    height: auto;
+    display: contents;
   }
 
   .deck {

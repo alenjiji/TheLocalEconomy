@@ -54,6 +54,11 @@
  * from this export — it was composed from a different frame of the same shoot —
  * so the portrait keeps its true aspect rather than being stretched to chase it.
  */
+/* Transparent to layout at desktop; a cropping window on a phone. */
+.portraitFrame {
+  display: contents;
+}
+
 .portrait {
   position: absolute;
   left: calc(601 * var(--u));
@@ -377,5 +382,48 @@
     animation: none !important;
     opacity: 1;
     transform: none;
+  }
+}
+
+/* --- Phone: the portrait becomes a bust -------------------------------------
+ * Below 900px the copy fills the width, so a portrait washed in behind it just
+ * reads as noise — and cropping him at the viewport edge left a sliver rather
+ * than a person. Instead he sits bottom-right at full strength, cut off by the
+ * hero's lower edge exactly the way the comp cuts him on desktop, with the
+ * copy given enough room to clear his head.
+ */
+@media (max-width: 899px) {
+  .stage {
+    /* Reserve the portrait's zone so the copy always clears his head. */
+    --frame-w: min(64vw, 292px);
+    padding-bottom: calc(var(--frame-w) * 0.83 + 14px);
+  }
+
+  .portraitFrame {
+    display: block;
+    position: absolute;
+    right: max(-4vw, -26px);
+    bottom: 0;
+    width: var(--frame-w);
+    /* 0.83 of the width frames him from the crown to just below his hands. */
+    height: calc(var(--frame-w) * 0.83);
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  /*
+   * The cutout carries ~12.7% empty space above his head. Left in, it pushed
+   * him down the frame and the crop landed across his chest. Percentage
+   * margins resolve against the width, so -17.85% is exactly that band and
+   * puts his crown at the top of the window.
+   */
+  .portrait {
+    --portrait-opacity: 1;
+    position: static;
+    width: 100%;
+    height: auto;
+    max-width: none;
+    margin-top: -17.85%;
+    opacity: var(--portrait-opacity);
   }
 }

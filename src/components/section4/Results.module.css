@@ -354,11 +354,10 @@
     height: auto;
   }
 
+  /* Same reasoning as the footer: the stage exists only to centre comp
+     coordinates, so below the breakpoint it should disappear from layout. */
   .stage {
-    position: static;
-    transform: none;
-    width: auto;
-    height: auto;
+    display: contents;
   }
 
   .section::before,

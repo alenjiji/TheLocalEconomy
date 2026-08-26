@@ -39,15 +39,20 @@ export default function Hero() {
           <HeroBackdropMotion className={`${styles.backdropArt} ${backdrop.motion}`} />
         </div>
 
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          className={styles.portrait}
-          src="/hero/DSC_3834.webp"
-          alt="Prasanth Sukumaran"
-          width={2946}
-          height={4128}
-          fetchPriority="high"
-        />
+        {/* The frame is `display: contents` at desktop, so the portrait keeps
+            its comp coordinates; on a phone it becomes the window that crops
+            him to a bust cut by the hero's edge. */}
+        <div className={styles.portraitFrame}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className={styles.portrait}
+            src="/hero/DSC_3834.webp"
+            alt="Prasanth Sukumaran"
+            width={2946}
+            height={4128}
+            fetchPriority="high"
+          />
+        </div>
 
 
         <div className={styles.copy}>

@@ -29,7 +29,11 @@ and multiplied by a single custom property:
 ```
 
 So `left: calc(78.24 * var(--u))` puts the headline exactly where the comp puts
-it. There are two modes:
+it. Because those coordinates are measured from the *left* of a 1440 artboard,
+every section that uses them sits on a **centred stage** — a box of
+`calc(1440 * var(--u))` with `margin: 0 auto`. Without it a section anchors to
+the viewport's left edge once the scale caps at 1600px, and drifts out of line
+with the sections above it. There are two modes:
 
 **Comp mode, 1280px and up.** Pixel-faithful. The scale is capped at 1600px, so
 past that every section centres its content on the same axis — the hero stage
@@ -56,6 +60,12 @@ body copy under 12px, so the layout re-flows instead of shrinking:
 Body copy holds at 16px from 1279px down to about 600px, then tracks the card
 width down to 12.8px on a 390px phone. There is no horizontal overflow at any
 width from 320px to 2560px.
+
+On a phone the hero portrait is cropped to a bust — bottom-right, at full
+strength, cut off by the hero's lower edge the same way the comp cuts him on
+desktop, with the copy given enough room to clear his head. He was previously
+washed back to 22% and pushed off the right edge, which left a sliver rather
+than a person.
 
 Between 900 and 1280 the nav keeps its real menu — logo, links and CTA in a
 flow row, with the CTA giving way as the row tightens — and only collapses to
@@ -210,6 +220,26 @@ measures against the design once it settles.
 - **The closing quote mark** draws its rules away from the glyphs, settles the
   two halves in behind them, and then holds apart from a nine-second breath.
 - **The roadmap types itself.** See below.
+
+## The header
+
+One element, two faces, and no layout switch between them — switching layouts
+was what made it snap on scroll.
+
+- **Desktop** always uses the comp's bar: logo, links and CTA on their measured
+  coordinates. Scrolling past 80px eases the bar's height from 144.56 to 118
+  units and scales its contents by the same factor, so the whole row settles
+  smoothly and stays close to the size the comp draws.
+- **900–1279px** is a compact flow row carrying the same links and CTA; the
+  button becomes its own container so its label and arrow scale to whatever
+  width the row can spare.
+- **Below 900px** it collapses to a real menu button: the burger folds into a
+  cross, a panel drops with its links staggered in, Escape and a tap outside
+  close it, body scroll locks while it is open, and the panel is `inert` when
+  shut so its links stay out of the tab order.
+
+It is `position: fixed` and lives above `<main>` rather than inside the hero,
+so navigation is reachable from anywhere on the page.
 
 ## The roadmap timeline
 
