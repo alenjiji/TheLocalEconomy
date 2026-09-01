@@ -73,7 +73,13 @@
   gap: calc(24 * var(--u));
 }
 
+/*
+ * `--pad-x` is the single left inset every card's content hangs off — the
+ * lockup or heading, the body copy and the CTA all start on it, so the three
+ * cards read as one row rather than three separately measured ones.
+ */
 .card {
+  --pad-x: 40;
   position: relative;
   height: calc(583.9 * var(--u));
   border-radius: calc(12 * var(--u));
@@ -99,7 +105,7 @@
 /* Shared CTA: the exported button art sits inside a real anchor. */
 .cta {
   position: absolute;
-  left: calc(77.05 * var(--u));
+  left: calc(var(--pad-x) * var(--u));
   top: calc(495 * var(--u));
   width: calc(256.58 * var(--u));
   height: calc(39.51 * var(--u));
@@ -110,10 +116,6 @@
 .cta img {
   width: 100%;
   height: 100%;
-}
-
-.ctaBizFix {
-  left: calc(78.05 * var(--u));
 }
 
 .cta:hover,
@@ -135,7 +137,7 @@
 
 .bizFixLockup {
   position: absolute;
-  left: calc(40.6 * var(--u));
+  left: calc((var(--pad-x) - 1.98) * var(--u));
   top: calc(56.06 * var(--u));
   width: calc(174.25 * var(--u));
   height: calc(225.66 * var(--u));
@@ -143,7 +145,7 @@
 
 .bizFixBody {
   position: absolute;
-  left: calc(39.42 * var(--u));
+  left: calc(var(--pad-x) * var(--u));
   top: calc(293.1 * var(--u));
   width: calc(180 * var(--u));
   margin: 0;
@@ -155,7 +157,7 @@
 
 .bizFixName {
   position: absolute;
-  left: calc(39.88 * var(--u));
+  left: calc(var(--pad-x) * var(--u));
   top: calc(419.53 * var(--u));
   margin: 0;
   font-size: calc(19.95 * var(--u));
@@ -166,7 +168,7 @@
 
 .bizFixRole {
   position: absolute;
-  left: calc(40 * var(--u));
+  left: calc(var(--pad-x) * var(--u));
   top: calc(441.8 * var(--u));
   margin: 0;
   font-size: calc(19.98 * var(--u));
@@ -191,17 +193,19 @@
   object-position: 50% 46.6%;
 }
 
+/* The blue plate is the lockup's leftmost ink and starts 3.49 units into the
+   scaled artwork, so that is what lands on `--pad-x`. */
 .checkupLockup {
   position: absolute;
-  left: calc(16.03 * var(--u));
-  top: calc(328.45 * var(--u));
-  width: calc(189.23 * var(--u));
-  height: calc(137.06 * var(--u));
+  left: calc((var(--pad-x) - 3.49) * var(--u));
+  top: calc(335.4 * var(--u));
+  width: calc(170 * var(--u));
+  height: calc(123.14 * var(--u));
 }
 
 .checkupRule {
   position: absolute;
-  left: calc(216.57 * var(--u));
+  left: calc(219 * var(--u));
   top: calc(376.38 * var(--u));
   width: max(1px, calc(1.2 * var(--u)));
   height: calc(67.44 * var(--u));
@@ -210,9 +214,10 @@
 
 .checkupBody {
   position: absolute;
-  left: calc(228.87 * var(--u));
+  left: calc(229 * var(--u));
   top: calc(373.45 * var(--u));
-  width: calc(170 * var(--u));
+  /* Ends on the mirror of `--pad-x`, 370.67 into the 410.67-wide card. */
+  width: calc(141.67 * var(--u));
   margin: 0;
   font-size: calc(15 * var(--u));
   line-height: calc(18 * var(--u));
@@ -232,9 +237,10 @@
   filter: url("#knockout-white");
 }
 
+/* 1.4 units of left side bearing on the cap C, so the ink lands on the inset. */
 .consultancyHeading {
   position: absolute;
-  left: calc(35.61 * var(--u));
+  left: calc((var(--pad-x) - 1.4) * var(--u));
   top: calc(353.17 * var(--u));
   margin: 0;
   font-size: calc(42.41 * var(--u));
@@ -245,7 +251,7 @@
 
 .consultancyBody {
   position: absolute;
-  left: calc(35.4 * var(--u));
+  left: calc(var(--pad-x) * var(--u));
   top: calc(406.05 * var(--u));
   width: calc(312 * var(--u));
   margin: 0;

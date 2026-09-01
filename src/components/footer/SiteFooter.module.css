@@ -6,7 +6,7 @@
 .footer {
   position: relative;
   width: 100%;
-  height: calc(430.1 * var(--u));
+  height: calc(408.7 * var(--u));
   background: #191919;
   overflow: hidden;
 }
@@ -16,7 +16,7 @@
 .cta {
   position: absolute;
   inset: 0 0 auto 0;
-  height: calc(137.4 * var(--u));
+  height: calc(116 * var(--u));
   background: #00adee;
 }
 
@@ -36,14 +36,30 @@
 .ctaText {
   position: absolute;
   left: calc(67.84 * var(--u));
-  top: calc(29.56 * var(--u));
-  width: calc(894.89 * var(--u));
-  height: calc(92.13 * var(--u));
+  top: calc(27.7 * var(--u));
+  width: calc(715 * var(--u));
+  height: calc(73.6 * var(--u));
 }
 
+/*
+ * The amber button is shared with the nav bar, and it sizes itself off `--u`,
+ * so this instance cannot simply redefine that unit — the offsets below would
+ * read the shrunken value too. Instead the button becomes its own query
+ * container and is placed and sized in percentages of the stage: `--u` inside
+ * it then derives from its own width, and the label and arrow keep their
+ * places at whatever size the footer asks for.
+ *
+ * 18.611% is 268 of the comp's 1440, down from 326.4; the right edge stays on
+ * the comp's 1372.96.
+ */
 .ctaButton {
-  left: calc(1046.56 * var(--u));
-  top: calc(48.52 * var(--u));
+  container-type: inline-size;
+  --u: calc(100cqw / 326.4);
+  left: 76.733%;
+  top: 35.948%;
+  width: 18.611%;
+  height: auto;
+  aspect-ratio: 326.4 / 53.76;
 }
 
 /* --- Link deck -------------------------------------------------------------- */
@@ -52,7 +68,7 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: calc(137.4 * var(--u));
+  top: calc(116 * var(--u));
   bottom: 0;
   width: calc(1440 * var(--u));
 }
@@ -253,25 +269,12 @@
     padding: clamp(32px, 5vw, 56px) var(--gutter);
   }
 
-  /*
- * Comp coordinates come off a 1440-wide artboard, so past the scale cap they
- * resolve against this centred box instead of the band's left edge.
- */
-.stage {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 0;
-  width: calc(1440 * var(--u));
-  height: 100%;
-}
-
-.ctaText {
+  .ctaText {
     position: static;
     width: auto;
-    max-width: 560px;
+    max-width: 470px;
     height: auto;
-    flex: 1 1 320px;
+    flex: 1 1 300px;
   }
 
   /* The comp offsets are still declared; `relative` would shift the button by
@@ -279,6 +282,7 @@
   .ctaButton {
     left: auto;
     top: auto;
+    width: min(100%, 300px);
     flex: 0 0 auto;
   }
 

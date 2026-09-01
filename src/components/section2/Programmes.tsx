@@ -91,7 +91,7 @@ export default function Programmes() {
           <p className={styles.bizFixName}>Prasanth Sukumaran</p>
           <p className={styles.bizFixRole}>Business Coach</p>
           <PillButton
-            className={`${styles.cta} ${styles.ctaBizFix}`}
+            className={styles.cta}
             href={bizFix.cta.href}
             label={bizFix.cta.label}
             tone={bizFix.cta.tone}

@@ -134,14 +134,15 @@
 
 /* --- Promise card ---------------------------------------------------------- */
 
+/* Centred on the 1440 artboard: (1440 - 660) / 2. */
 .promise {
   position: absolute;
-  left: calc(302.4 * var(--u));
-  top: calc(259.7 * var(--u));
-  width: calc(835 * var(--u));
-  height: calc(220.3 * var(--u));
+  left: calc(390 * var(--u));
+  top: calc(290 * var(--u));
+  width: calc(660 * var(--u));
+  height: calc(166 * var(--u));
   margin: 0;
-  border-radius: calc(20 * var(--u));
+  border-radius: calc(18 * var(--u));
   background: #00adee;
 }
 
@@ -149,30 +150,30 @@
   position: absolute;
   left: 50%;
   top: 100%;
-  width: calc(88 * var(--u));
-  height: calc(41 * var(--u));
-  margin-left: calc(-44 * var(--u));
+  width: calc(70 * var(--u));
+  height: calc(32 * var(--u));
+  margin-left: calc(-35 * var(--u));
   background: #00adee;
   clip-path: polygon(0 0, 100% 0, 50% 100%);
 }
 
 .promiseQuote {
   margin: 0;
-  padding: calc(31.5 * var(--u)) calc(87.5 * var(--u)) 0;
+  padding: calc(24 * var(--u)) calc(64 * var(--u)) 0;
 }
 
 .promiseQuote p {
   margin: 0;
-  font-size: calc(31.4 * var(--u));
-  line-height: calc(37.2 * var(--u));
+  font-size: calc(23 * var(--u));
+  line-height: calc(27.5 * var(--u));
   font-weight: 400;
   text-align: center;
   color: #ffffff;
 }
 
 .promiseBy {
-  margin: calc(16 * var(--u)) 0 0;
-  font-size: calc(20 * var(--u));
+  margin: calc(12 * var(--u)) 0 0;
+  font-size: calc(15 * var(--u));
   line-height: 1;
   font-weight: 300;
   text-align: center;
@@ -191,7 +192,7 @@
   right: 0;
   top: calc(556.96 * var(--u));
   margin: 0;
-  font-size: calc(36.9 * var(--u));
+  font-size: calc(27 * var(--u));
   line-height: 1;
   font-weight: 600;
   text-align: center;
@@ -200,10 +201,10 @@
 
 .flourish {
   position: absolute;
-  left: calc(621.68 * var(--u));
-  top: calc(607.36 * var(--u));
-  width: calc(182.36 * var(--u));
-  height: calc(10.08 * var(--u));
+  left: calc(650 * var(--u));
+  top: calc(597 * var(--u));
+  width: calc(140 * var(--u));
+  height: calc(7.74 * var(--u));
   color: #f5a623;
 }
 
@@ -211,9 +212,9 @@
    percentages of that, so the pair scales as one. */
 .heading {
   position: absolute;
-  left: calc(332.84 * var(--u));
-  top: calc(644.08 * var(--u));
-  width: calc(772.7 * var(--u));
+  left: calc(430 * var(--u));
+  top: calc(630.7 * var(--u));
+  width: calc(580 * var(--u));
   aspect-ratio: 772.7 / 138.47;
   margin: 0;
 }
@@ -237,11 +238,11 @@
 .lede {
   position: absolute;
   left: 50%;
-  top: calc(780.7 * var(--u));
-  width: calc(810 * var(--u));
-  margin-left: calc(-405 * var(--u));
-  font-size: calc(28 * var(--u));
-  line-height: calc(34.08 * var(--u));
+  top: calc(733 * var(--u));
+  width: calc(660 * var(--u));
+  margin-left: calc(-330 * var(--u));
+  font-size: calc(21 * var(--u));
+  line-height: calc(25.6 * var(--u));
   font-weight: 300;
   text-align: center;
   color: #ffffff;
@@ -425,7 +426,7 @@
     position: relative;
     left: auto;
     top: auto;
-    width: min(100% - 2 * var(--gutter), 700px);
+    width: min(100% - 2 * var(--gutter), 560px);
     height: auto;
     margin: calc(-1 * clamp(24px, 4vw, 48px)) auto 0;
     padding-bottom: clamp(20px, 3vw, 30px);
@@ -437,13 +438,13 @@
   }
 
   .promiseQuote p {
-    font-size: clamp(19px, 2.4vw, 27px);
+    font-size: clamp(16px, 1.9vw, 20px);
     line-height: 1.25;
   }
 
   .promiseBy {
     margin-top: clamp(12px, 2vw, 18px);
-    font-size: clamp(13px, 1.5vw, 17px);
+    font-size: clamp(11px, 1.2vw, 14px);
   }
 
   .promiseTail {
@@ -468,25 +469,25 @@
   }
 
   .eyebrow {
-    font-size: clamp(22px, 3vw, 34px);
+    font-size: clamp(17px, 2.3vw, 25px);
   }
 
   .flourish {
     display: block;
-    width: clamp(120px, 14vw, 170px);
+    width: clamp(105px, 12vw, 150px);
     height: auto;
     margin: clamp(12px, 1.8vw, 18px) auto clamp(24px, 4vw, 40px);
   }
 
   .heading {
-    width: min(100%, 720px);
+    width: min(100%, 545px);
     margin: 0 auto;
   }
 
   .lede {
-    width: min(100%, 620px);
+    width: min(100%, 530px);
     margin: clamp(22px, 3.5vw, 36px) auto 0;
-    font-size: clamp(16px, 2vw, 23px);
+    font-size: clamp(14px, 1.6vw, 18px);
     line-height: 1.35;
   }
 

@@ -4,25 +4,30 @@
  * Written the other way round from the rest of this build: the compact flow
  * row is the base, and the comp's measured coordinates are an enhancement that
  * only applies on a wide screen while the page is still at the top. That way
- * one rule set serves the tablet bar and the scrolled bar, and the design's
- * exact bar is a state rather than a special case.
+ * one rule set serves the tablet bar and the compacted bar, and the design's
+ * exact bar is one end of a range rather than a special case.
  */
 .header {
   position: fixed;
   inset: 0 0 auto 0;
   z-index: 60;
+  /* 0 at the top of the page, 1 once the bar has finished compacting. Written
+     from JS on every scroll frame; the fallback keeps the tall bar if scripting
+     never runs. */
+  --p: 0;
 }
 
+/*
+ * Everything the bar changes on scroll is interpolated off `--p` rather than
+ * transitioned between two states, so it tracks the scroll position exactly
+ * and never has a 460ms tail chasing the wheel.
+ */
 .bar {
   position: relative;
   height: clamp(64px, 9vw, 76px);
-  /* At desktop these two carry the whole scroll transition, so nothing has to
-     jump between layouts. */
-  transition-property: height, background-color, border-color, box-shadow;
   background: #191919;
-  border-bottom: 1px solid rgba(255, 255, 255, 0);
-  transition-duration: 460ms;
-  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  border-bottom: 1px solid rgba(255, 255, 255, calc(0.08 * var(--p)));
+  box-shadow: 0 10px 30px -18px rgba(0, 0, 0, calc(0.9 * var(--p)));
 }
 
 .stage {
@@ -42,7 +47,6 @@
   height: 100%;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 320ms ease;
 }
 
 .logoLink {
@@ -219,13 +223,6 @@
   transition: opacity 320ms ease, visibility 0s;
 }
 
-/* --- Scrolled ------------------------------------------------------------- */
-
-.scrolled .bar {
-  border-bottom-color: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 10px 30px -18px rgba(0, 0, 0, 0.9);
-}
-
 /* --- Tablet and up: the real menu ----------------------------------------- */
 
 @media (min-width: 900px) {
@@ -257,19 +254,17 @@
 
 /*
  * Desktop: always the comp's bar, on its measured coordinates. Scrolling does
- * not switch layouts — it eases the bar's height and scales its contents by
- * the same factor, so the whole row settles smoothly instead of snapping
- * between two arrangements, and it stays close to the size the comp draws.
+ * not switch layouts — it shortens the bar and scales its contents by the same
+ * factor, both driven continuously by `--p`, so the row settles smoothly with
+ * the scroll instead of snapping between two arrangements, and it stays close
+ * to the size the comp draws.
  */
 @media (min-width: 1280px) {
   .header {
-    --bar-h: 144.56;
-    --bar-scale: 1;
-  }
-
-  .scrolled {
-    --bar-h: 118;
-    --bar-scale: 0.816;
+    /* Both ends of the compaction, read straight off `--p`: 144.56 → 118 tall
+       and 1 → 0.816 scale. */
+    --bar-h: calc(144.56 - 26.56 * var(--p));
+    --bar-scale: calc(1 - 0.184 * var(--p));
   }
 
   .bar {
@@ -277,11 +272,7 @@
   }
 
   .shadow {
-    opacity: 1;
-  }
-
-  .scrolled .shadow {
-    opacity: 0;
+    opacity: calc(1 - var(--p));
   }
 
   .stage {
@@ -291,7 +282,9 @@
     padding: 0;
     transform: scale(var(--bar-scale));
     transform-origin: 50% 0;
-    transition: transform 460ms cubic-bezier(0.22, 1, 0.36, 1);
+    /* Promoted so the per-frame rescale composites instead of re-rasterising
+       the whole row. */
+    will-change: transform;
   }
 
   .logoLink {
@@ -345,9 +338,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bar,
-  .stage,
-  .shadow,
   .menuButton span,
   .panel,
   .panel li,

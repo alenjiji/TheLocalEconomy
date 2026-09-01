@@ -27,7 +27,13 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${manrope.variable}`}>
+    /* The inline script below adds `js` to this element before React hydrates,
+       so the server and client class lists never match here by design. */
+    <html
+      lang="en"
+      className={`${inter.variable} ${manrope.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         {/*
           Scroll-in reveals start hidden and are released by an observer. If
