@@ -1,6 +1,6 @@
 /**
  * Slides for the growth carousel that follows the programme cards, measured
- * off `public/design/web_tle.png` (comp rows 1780–2272).
+ * off `design-source/web_tle.png` (comp rows 1780–2272).
  *
  * `bodyWidth` is the measure the comp wraps each body at, in design units —
  * the comp gives every slide its own, so they are carried per slide.
@@ -68,8 +68,8 @@ export const GROWTH_SLIDES: GrowthSlide[] = [
       inset: 10.1,
     },
     label: [{ text: "360° Growth ", tone: "amber" }, { text: "Framework" }],
-    headline: [{ text: "We Mean\u2003" }, { text: "Business.", tone: "amber" }],
-    body: "Sales, profit, systems, leadership, we build the complete machinery that takes your business from local to legendary.",
+    headline: [{ text: "We Mean " }, { text: "Business.", tone: "amber" }],
+    body: "Sales, profit, systems, leadership; we build the complete machinery that takes your business from local to legendary.",
     bodyWidth: 341,
     cta: {
       href: "#growth-framework",

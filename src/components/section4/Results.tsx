@@ -1,3 +1,4 @@
+import CountUp from "./CountUp";
 import InView from "@/components/motion/InView";
 import QuoteMark from "./QuoteMark";
 import RoadmapTrack from "./RoadmapTrack";
@@ -11,7 +12,7 @@ const row = (y: number) => y - RESULTS_TOP;
 
 /**
  * "What Changes When You Work With TLE?", rebuilt 1:1 from
- * `public/design/web_tle.png` (comp rows 2272–4308) with the exports in
+ * `design-source/web_tle.png` (comp rows 2272–4308) with the exports in
  * `public/section_3/`.
  *
  * Four stacked bands share one absolutely-positioned canvas: the light stat
@@ -22,8 +23,12 @@ const row = (y: number) => y - RESULTS_TOP;
 export default function Results() {
   return (
     <InView as="section" className={styles.section} amount={0.06} aria-labelledby="results-heading">
+      {/* `data-surface="light"` is what tells the cursor to invert over these;
+          it is matched geometrically, so it works even though the copy sitting
+          on these bands is not descended from them. */}
+      <div className={styles.stripBg} data-surface="light" aria-hidden="true" />
       <div className={styles.ground} aria-hidden="true" />
-      <div className={styles.closingBg} aria-hidden="true" />
+      <div className={styles.closingBg} data-surface="light" aria-hidden="true" />
 
       {/* Everything below is placed on comp coordinates, so it lives on a
           centred 1440-unit stage. The painted bands above stay full-bleed. */}
@@ -33,7 +38,7 @@ export default function Results() {
           Each band wrapper is `display: contents` in comp mode, so its children
           keep positioning against the section; below 1280px they become real
           blocks and the section flows. */}
-      <div className={styles.strip}>
+      <div className={styles.strip} data-surface="light">
       <ul className={styles.stats}>
         {STATS.map((s, i) => (
           <li key={s.id}>
@@ -53,12 +58,14 @@ export default function Results() {
                   "--d": i,
                 } as React.CSSProperties
               }
-            />
+            loading="lazy"
+            decoding="async"
+          />
             <p
               className={`${styles.statValue} ${s.tone === "cyan" ? styles.cyan : styles.amber} u-rise`}
               style={{ "--x": s.valueX, "--d": i } as React.CSSProperties}
             >
-              {s.value}
+              <CountUp value={s.value} replay />
             </p>
             <p
               className={`${styles.statCaption} u-rise`}
@@ -118,7 +125,9 @@ export default function Results() {
           alt="What Changes When You"
           width={706}
           height={138}
-        />
+            loading="lazy"
+            decoding="async"
+          />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className={styles.headingCyan}
@@ -126,7 +135,9 @@ export default function Results() {
           alt="Work With TLE?"
           width={461}
           height={47}
-        />
+            loading="lazy"
+            decoding="async"
+          />
       </h2>
 
       <p className={`${styles.lede} u-rise`} style={{ "--d": 3 } as React.CSSProperties}>
@@ -164,7 +175,6 @@ export default function Results() {
                     "--y": row(s.y),
                     "--w": s.width,
                     "--body-offset": s.bodyOffset ?? 0,
-                    "--align": s.align ?? "justify",
                   } as React.CSSProperties
                 }
               >
@@ -201,7 +211,9 @@ export default function Results() {
         alt="You were always meant to be the leader. The greatest transformation isn't just in your business, it's in you."
         width={639}
         height={182}
-      />
+            loading="lazy"
+            decoding="async"
+          />
       </div>
       </div>
     </InView>

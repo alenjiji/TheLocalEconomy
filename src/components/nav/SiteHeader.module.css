@@ -21,13 +21,27 @@
  * Everything the bar changes on scroll is interpolated off `--p` rather than
  * transitioned between two states, so it tracks the scroll position exactly
  * and never has a 460ms tail chasing the wheel.
+ *
+ * The box itself holds a constant height and the painted bar is a pseudo
+ * element that scales. Animating `height` ran layout and paint on every scroll
+ * frame while the contents composited on the GPU, and the two could not stay in
+ * step — the background stepped in whole pixels while the type slid smoothly,
+ * which is the jitter. Now both sides of it are transforms.
  */
 .bar {
   position: relative;
   height: clamp(64px, 9vw, 76px);
+}
+
+.bar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background: #191919;
   border-bottom: 1px solid rgba(255, 255, 255, calc(0.08 * var(--p)));
   box-shadow: 0 10px 30px -18px rgba(0, 0, 0, calc(0.9 * var(--p)));
+  transform-origin: 50% 0;
 }
 
 .stage {
@@ -51,6 +65,9 @@
 
 .logoLink {
   flex: 0 0 auto;
+  /* Vertical pad only, so the bar's flex row is unaffected but the link is a
+     real tap target on a phone. */
+  padding: 6px 0;
   line-height: 0;
 }
 
@@ -87,14 +104,32 @@
   color: #ffffff;
 }
 
-.linkActive::after {
+/*
+ * One rule for every link: the active one is drawn, the rest draw themselves
+ * out from the left on hover. `scaleX` rather than `width`, so it composites.
+ */
+.link::after {
   content: "";
   position: absolute;
   left: 0;
   top: calc(100% + 5px);
   width: 100%;
   height: 1px;
-  background: #ffffff;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.link:focus-visible::after,
+.linkActive::after {
+  transform: scaleX(1);
+}
+
+@media (hover: hover) {
+  .link:hover::after {
+    transform: scaleX(1);
+  }
 }
 
 .cta {
@@ -232,8 +267,9 @@
   }
 
   /* Compact: the button becomes its own container so its label and arrow
-     scale to whatever width the row can spare. */
-  .cta {
+     scale to whatever width the row can spare. Scoped through `.stage` for the
+     same reason the footer's copy is — see the note there. */
+  .stage .cta {
     --cta-position: relative;
     container-type: inline-size;
     --u: calc(100cqw / 326.4);
@@ -261,14 +297,18 @@
  */
 @media (min-width: 1280px) {
   .header {
-    /* Both ends of the compaction, read straight off `--p`: 144.56 → 118 tall
-       and 1 → 0.816 scale. */
-    --bar-h: calc(144.56 - 26.56 * var(--p));
-    --bar-scale: calc(1 - 0.184 * var(--p));
+    /* 1 → 0.8163, which takes the bar from the comp's 144.56 to 118. */
+    --bar-scale: calc(1 - 0.1837 * var(--p));
   }
 
   .bar {
-    height: calc(var(--bar-h) * var(--u));
+    height: calc(144.56 * var(--u));
+  }
+
+  /* 118 / 144.56 — the same proportion the contents scale by, so the painted
+     edge and the type land together. */
+  .bar::before {
+    transform: scaleY(calc(1 - 0.1837 * var(--p)));
   }
 
   .shadow {
@@ -321,11 +361,11 @@
     height: max(1px, calc(0.5 * var(--u)));
   }
 
-  .cta {
+  .stage .cta {
     /* Back to the page unit. The compact rule below 1280 turns this button
        into its own container and redefines `--u` from `cqw`; without resetting
        it here that unit leaks in and throws the button off-screen. */
-    --u: calc(min(100vw, 1600px) / 1440);
+    --u: calc(min(100vw, 1920px) / 1440);
     --cta-position: absolute;
     container-type: normal;
     position: absolute;
@@ -338,6 +378,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .link::after,
   .menuButton span,
   .panel,
   .panel li,

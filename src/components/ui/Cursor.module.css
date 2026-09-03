@@ -1,0 +1,185 @@
+/*
+ * The custom pointer.
+ *
+ * Only the two layers move, and they only ever move by `transform`, so the
+ * whole thing lives on the compositor and never touches layout.
+ */
+
+/* Set on <html> by the component, so the native cursor is only given up once
+   the replacement is actually running. `!important` because half the buttons
+   in this build set `cursor: pointer` at the same specificity. */
+.enabled *,
+.enabled {
+  cursor: none !important;
+}
+
+/*
+ * Two exceptions. Native video controls need their own pointer, and anything
+ * that opts out with `data-cursor="native"` keeps the system cursor — that is
+ * the escape hatch for a control the dot would get in the way of.
+ */
+.enabled video,
+.enabled video *,
+.enabled [data-cursor="native"],
+.enabled [data-cursor="native"] * {
+  cursor: auto !important;
+}
+
+.root {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+  /* Above the payment sheet, and never in the way of a click. */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.visible {
+  opacity: 1;
+}
+
+.dot,
+.ring {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 50%;
+  /* The transform carries the pointer position, so the centring has to be a
+     margin — otherwise it would be overwritten every frame. */
+  will-change: transform;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  background: #f5a623;
+  transition:
+    width 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    height 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    margin 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 240ms ease,
+    opacity 240ms ease;
+}
+
+.ring {
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border: 1.5px solid rgba(245, 166, 35, 0.55);
+  transition:
+    width 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    height 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    margin 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 240ms ease,
+    background-color 240ms ease;
+}
+
+/* --- Over a light band ----------------------------------------------------
+ * Amber has nowhere near enough contrast on the light strips, the grey card or
+ * the amber closing band, so the pointer turns to the other brand colour. Kept
+ * at a lower specificity than the `data-state` rules below, so a button that
+ * declares its own surface still wins.
+ */
+
+.light .dot {
+  background: #00adee;
+}
+
+.light .ring {
+  border-color: rgba(0, 173, 238, 0.7);
+}
+
+/* --- Over something interactive ------------------------------------------- */
+
+.root[data-state="link"] .ring,
+.root[data-state="amber"] .ring,
+.root[data-state="cyan"] .ring {
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border-color: rgba(245, 166, 35, 0.9);
+  background: rgba(245, 166, 35, 0.1);
+}
+
+.root[data-state="link"] .dot,
+.root[data-state="amber"] .dot,
+.root[data-state="cyan"] .dot {
+  width: 4px;
+  height: 4px;
+  margin: -2px 0 0 -2px;
+}
+
+/*
+ * An amber ring on an amber button is invisible, and the same is true of the
+ * cyan ones. A surface declares its own colour with `data-cursor` and the
+ * pointer inverts to the ink that sits on it.
+ */
+.root[data-state="amber"] .ring {
+  border-color: rgba(40, 39, 39, 0.85);
+  background: rgba(40, 39, 39, 0.1);
+}
+
+.root[data-state="amber"] .dot {
+  background: #282727;
+}
+
+.root[data-state="cyan"] .ring {
+  border-color: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.root[data-state="cyan"] .dot {
+  background: #ffffff;
+}
+
+/* A plain link on a light band: blue, and the larger ring. */
+.light[data-state="link"] .ring {
+  border-color: rgba(0, 173, 238, 0.95);
+  background: rgba(0, 173, 238, 0.12);
+}
+
+.light[data-state="link"] .dot {
+  background: #00adee;
+}
+
+/* --- Over the film -------------------------------------------------------- */
+
+/* The native controls take over, so the dot gets out of the way entirely. */
+.root[data-state="native"] {
+  opacity: 0;
+}
+
+/* --- Pressed -------------------------------------------------------------- */
+
+.pressed .ring {
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+}
+
+.pressed .dot {
+  width: 11px;
+  height: 11px;
+  margin: -5.5px 0 0 -5.5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot,
+  .ring,
+  .root {
+    transition: none;
+  }
+}
+
+/*
+ * Belt and braces: if this stylesheet is somehow live on a touch device, the
+ * component will not have mounted, but make certain nothing is drawn.
+ */
+@media (hover: none), (pointer: coarse) {
+  .root {
+    display: none;
+  }
+}

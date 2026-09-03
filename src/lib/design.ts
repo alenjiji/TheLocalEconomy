@@ -1,5 +1,5 @@
 /**
- * Geometry lifted from the reference comp (`public/design/web_tle.png`).
+ * Geometry lifted from the reference comp (`design-source/web_tle.png`).
  *
  * The comp is 6000px wide and the exported artwork (e.g. `navbar_bg.svg`) is
  * authored on a 1440pt artboard, so every number below is in *design units* —
@@ -41,7 +41,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "About Us", href: "#about", left: 301.09, active: true },
   { label: "Programmes", href: "#programmes", left: 424.23 },
   { label: "Testimonial", href: "#testimonial", left: 579.3 },
-  { label: "Our sevices", href: "#services", left: 721.54 },
+  { label: "Our Sevices", href: "#services", left: 721.54 },
   { label: "Contact Us", href: "#contact", left: 868.62 },
 ];
 

@@ -1,4 +1,25 @@
 /*
+ * Every animation in this file loops forever, so they all start paused and are
+ * released only while the hero is actually on screen — see the observer around
+ * `.backdrop` in `Hero.tsx`. Off screen they cost nothing.
+ */
+.plane,
+.motion g,
+.motion path,
+.dash,
+.readout {
+  animation-play-state: paused;
+}
+
+[data-inview="true"] .plane,
+[data-inview="true"] .motion g,
+[data-inview="true"] .motion path,
+[data-inview="true"] .dash,
+[data-inview="true"] .readout {
+  animation-play-state: running;
+}
+
+/*
  * Ambient motion for the hero backdrop.
  *
  * Everything animates `opacity`, `transform` or `clip-path` only — no layout,

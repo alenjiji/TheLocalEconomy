@@ -42,6 +42,8 @@
 .track {
   position: absolute;
   z-index: 1;
+  /* Top edge shared by every slide's mark and label. */
+  --head-top: 75;
   left: 50%;
   transform: translateX(-50%);
   top: 0;
@@ -74,21 +76,32 @@
   height: calc(322.01 * var(--u));
 }
 
-/* Icons differ in height but all sit on one baseline in the comp. */
+/*
+ * The three marks are drawn at different sizes and aspects, so each was placed
+ * on its own inset and the labels beside them were centred on a fixed line —
+ * which left a two-line label starting lower than a three-line one and the row
+ * reading as ragged. They now share one square box with `contain`, so every
+ * mark is optically the same size, every label starts at the same x, and both
+ * hang from one top edge.
+ */
 .icon {
   position: absolute;
-  left: calc(var(--icon-x) * var(--u));
-  bottom: calc(183.71 * var(--u));
-  width: calc(var(--icon-w) * var(--u));
-  height: calc(var(--icon-h) * var(--u));
+  left: 0;
+  transition:
+    scale 520ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    rotate 520ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  top: calc(var(--head-top) * var(--u));
+  width: calc(58 * var(--u));
+  height: calc(58 * var(--u));
+  object-fit: contain;
+  object-position: left center;
 }
 
-/* Two or three lines depending on the slide, centred on a fixed line. */
 .label {
   position: absolute;
-  left: calc((var(--icon-x) + var(--icon-w) + 17.4) * var(--u));
-  top: calc(113 * var(--u));
-  transform: translateY(-50%);
+  left: calc(75.4 * var(--u));
+  /* The 3.4 lifts the cap line of the first row onto the icon's top edge. */
+  top: calc((var(--head-top) - 3.4) * var(--u));
   width: calc(140 * var(--u));
   margin: 0;
   font-size: calc(17.9 * var(--u));
@@ -98,13 +111,15 @@
 }
 
 /*
- * Headline and body hang from the body's last line, so a longer body grows
- * upward and leaves the CTA where it is — the behaviour the comp shows.
+ * Hung from a fixed top rather than from the body's last line. The comp
+ * bottom-anchors this block, which meant the middle slide's three-line body
+ * pushed its headline a whole line above the other two and the row read as
+ * ragged. The CTA sits on its own fixed line below, so nothing has to move.
  */
 .copy {
   position: absolute;
   left: 0;
-  bottom: calc(69.31 * var(--u));
+  top: calc(179.5 * var(--u));
 }
 
 .headline {
@@ -123,6 +138,40 @@
   line-height: calc(17.4 * var(--u));
   font-weight: 300;
   color: #ffffff;
+}
+
+/*
+ * Hover. The slide is a `u-rise` element, and `.js .u-rise` in globals.css
+ * outranks a single class — so the transition has to out-specify it and carry
+ * the reveal's three properties alongside the one the hover needs.
+ */
+.track .slide {
+  transition:
+    opacity 720ms ease,
+    translate 720ms cubic-bezier(0.16, 1, 0.3, 1),
+    scale 720ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay:
+    calc(var(--d, 0) * 90ms),
+    calc(var(--d, 0) * 90ms),
+    calc(var(--d, 0) * 90ms),
+    0s;
+}
+
+/*
+ * Movement on hover is gated: a finger produces no hover, and a browser that
+ * synthesises one after a tap leaves the state latched until you touch
+ * something else. `:focus-visible` stays outside so a keyboard keeps it.
+ */
+@media (hover: hover) {
+  .track .slide:hover {
+    transform: translateY(-6px);
+  }
+
+  .slide:hover .icon {
+    scale: 1.08;
+    rotate: -4deg;
+  }
 }
 
 .cyan {
@@ -167,7 +216,9 @@
   background: none;
   color: #00adee;
   cursor: pointer;
-  transition: opacity 160ms ease;
+  transition:
+    opacity 160ms ease,
+    translate 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .arrow svg {
@@ -178,6 +229,24 @@
 .arrow:hover,
 .arrow:focus-visible {
   opacity: 0.7;
+}
+
+.arrowPrev:focus-visible {
+  translate: -4px 0;
+}
+
+.arrowNext:focus-visible {
+  translate: 4px 0;
+}
+
+@media (hover: hover) {
+  .arrowPrev:hover {
+    translate: -4px 0;
+  }
+
+  .arrowNext:hover {
+    translate: 4px 0;
+  }
 }
 
 .arrowPrev {
@@ -265,11 +334,15 @@
     margin-top: clamp(40px, 6vw, 64px);
   }
 
+  /* `content-box`, so the padding grows the hit area to 44px square while the
+     chevron itself stays the size the comp draws it. */
   .arrow {
     position: static;
     transform: none;
+    box-sizing: content-box;
     width: 14px;
     height: 26px;
+    padding: 9px 15px;
     flex: 0 0 auto;
   }
 

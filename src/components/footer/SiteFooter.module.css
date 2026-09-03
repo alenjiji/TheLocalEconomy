@@ -52,7 +52,14 @@
  * 18.611% is 268 of the comp's 1440, down from 326.4; the right edge stays on
  * the comp's 1372.96.
  */
-.ctaButton {
+/*
+ * Scoped through `.stage` on purpose. ConsultationButton sets its own geometry
+ * from `--u` at a single class, so a single class here only wins on source
+ * order — and that order is the bundler's to decide. Adding two unrelated
+ * modules was enough to flip it, at which point `100cqw` fell back to the
+ * viewport and the button rendered 1440px wide.
+ */
+.stage .ctaButton {
   container-type: inline-size;
   --u: calc(100cqw / 326.4);
   left: 76.733%;
@@ -136,6 +143,23 @@
   white-space: nowrap;
   color: #ffffff;
   transition: color 160ms ease;
+}
+
+.column a {
+  display: inline-block;
+  transition:
+    color 200ms ease,
+    translate 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.column a:focus-visible {
+  translate: 4px 0;
+}
+
+@media (hover: hover) {
+  .column a:hover {
+    translate: 4px 0;
+  }
 }
 
 .column a:hover,
@@ -279,7 +303,7 @@
 
   /* The comp offsets are still declared; `relative` would shift the button by
      them, so they are cleared here. */
-  .ctaButton {
+  .stage .ctaButton {
     left: auto;
     top: auto;
     width: min(100%, 300px);
@@ -356,9 +380,20 @@
   .column ul {
     position: static;
     display: grid;
-    gap: 12px;
+    gap: 4px;
     font-size: 15px;
     line-height: 1.2;
+  }
+
+  /* A 19px line box is not a tap target. The padding carries the row to 43px
+     without moving the type off its 12px rhythm. */
+  .column ul a {
+    display: block;
+    padding: 12px 0;
+  }
+
+  .contactList li {
+    min-height: 44px;
   }
 
   .quick li + li,
@@ -384,11 +419,22 @@
   }
 
   .contactLink {
+    display: block;
+    padding: 11px 0;
     font-size: 15px;
+  }
+
+  .contactList li {
+    align-items: center;
   }
 
   .brand {
     display: block;
+  }
+
+  .legal a {
+    display: inline-block;
+    padding: 11px 0;
   }
 
   .base {

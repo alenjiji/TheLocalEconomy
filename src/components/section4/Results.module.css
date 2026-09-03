@@ -7,7 +7,7 @@
 .section {
   position: relative;
   width: 100%;
-  height: calc(2036 * var(--u));
+  height: calc(1835 * var(--u));
   background: #282727;
   overflow: hidden;
 }
@@ -34,9 +34,14 @@
   display: contents;
 }
 
-/* Painted bands, drawn behind everything in comp mode. */
-.section::before {
-  content: "";
+/*
+ * Painted bands, drawn behind everything in comp mode.
+ *
+ * A real element rather than `::before`: the cursor measures the light bands to
+ * know where to invert its colour, and a pseudo element has nothing to measure.
+ * First in the DOM, so it still paints behind its siblings.
+ */
+.stripBg {
   position: absolute;
   inset: 0 0 auto 0;
   height: calc(429.5 * var(--u));
@@ -49,7 +54,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(1689 * var(--u));
+  top: calc(1625 * var(--u));
   bottom: 0;
   background: #f5a623;
 }
@@ -59,7 +64,7 @@
   left: 0;
   right: 0;
   top: calc(429.5 * var(--u));
-  height: calc(1259.5 * var(--u));
+  height: calc(1195.5 * var(--u));
   background: #282727;
 }
 
@@ -67,9 +72,13 @@
 .notch {
   position: absolute;
   left: 50%;
-  top: calc(1689 * var(--u));
+  /* Started a unit high, and a unit taller, so it overlaps the ground above
+     rather than butting against it: the shared edge fell on a fraction of a
+     pixel once `--u` stopped being 1, and a hairline of amber showed through.
+     The tip still lands on 1665. */
+  top: calc(1624 * var(--u));
   width: calc(86.6 * var(--u));
-  height: calc(40 * var(--u));
+  height: calc(41 * var(--u));
   margin-left: calc(-43.3 * var(--u));
   background: #282727;
   clip-path: polygon(0 0, 100% 0, 50% 100%);
@@ -89,6 +98,23 @@
   top: calc(var(--y) * var(--u));
   width: calc(var(--w) * var(--u));
   height: calc(var(--h) * var(--u));
+}
+
+/* A slow, staggered drift once the strip has landed, so the row is never
+   completely still while the figures count. */
+[data-inview="true"] .statIcon {
+  animation: stat-breathe 7200ms ease-in-out infinite;
+  animation-delay: calc(900ms + var(--d, 0) * 420ms);
+}
+
+@keyframes stat-breathe {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 calc(-4 * var(--u));
+  }
 }
 
 /* Values share one baseline with the icons; 61.7px puts the cap at 44.9. */
@@ -144,6 +170,24 @@
   margin: 0;
   border-radius: calc(18 * var(--u));
   background: #00adee;
+}
+
+/* Grows out of the seam it straddles, tail last. */
+.promise {
+  transform-origin: 50% 30%;
+}
+
+[data-inview="true"] .promise {
+  animation: promise-in 780ms cubic-bezier(0.34, 1.56, 0.64, 1) 360ms both;
+}
+
+@keyframes promise-in {
+  from {
+    transform: scale(0.94);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 
 .promiseTail {
@@ -255,12 +299,19 @@
  * anything to watch, so it is a positioned frame over comp rows 3172–3972 and
  * its children are offset from its top rather than the section's.
  */
+/*
+ * The band was a 800-unit frame holding 666 units of steps, and the serpentine
+ * leaves its own dead space below the last row — which read on screen as an
+ * empty stretch under step 04. The frame comes up 44 and the closing band up
+ * 64, so the run of steps sits between the lede and the amber band with
+ * breathing room rather than a hole.
+ */
 .roadmap {
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(900 * var(--u));
-  height: calc(800 * var(--u));
+  top: calc(856 * var(--u));
+  height: calc(736 * var(--u));
   pointer-events: none;
 }
 
@@ -315,13 +366,18 @@
   color: #ffffff;
 }
 
-/* The comp justifies and hyphenates the step copy. */
+/*
+ * Ragged right, not justified. The comp justifies this copy, but at a 170-260
+ * unit measure justification had to stretch the word spaces to two and three
+ * times their width to make the line — the gaps running through "More money in
+ * the bank. Real margins." are that, not a layout fault.
+ */
 .stepBody {
   margin: calc((9 + var(--body-offset, 0)) * var(--u)) 0 0;
   font-size: calc(17.98 * var(--u));
   line-height: calc(21.5 * var(--u));
   font-weight: 300;
-  text-align: var(--align, justify);
+  text-align: left;
   /* `manual`: the break points are the soft hyphens carried in the copy. */
   hyphens: manual;
   color: #ffffff;
@@ -329,20 +385,22 @@
 
 /* --- Closing band ------------------------------------------------------------ */
 
+/* Mark and copy are one lockup, taken down 35% together and re-centred on the
+   artboard; the gap between them comes down by the same factor. */
 .closingMark {
   position: absolute;
-  left: calc(347.16 * var(--u));
-  top: calc(1787.56 * var(--u));
-  width: calc(53.58 * var(--u));
-  height: calc(175.1 * var(--u));
+  left: calc(478.25 * var(--u));
+  top: calc(1677.7 * var(--u));
+  width: calc(34.83 * var(--u));
+  height: calc(113.82 * var(--u));
 }
 
 .closingText {
   position: absolute;
-  left: calc(451.64 * var(--u));
-  top: calc(1787.52 * var(--u));
-  width: calc(639.41 * var(--u));
-  height: calc(182.2 * var(--u));
+  left: calc(546.15 * var(--u));
+  top: calc(1675.4 * var(--u));
+  width: calc(415.62 * var(--u));
+  height: calc(118.43 * var(--u));
 }
 
 /* --- Below the comp ---------------------------------------------------------
@@ -361,7 +419,7 @@
     display: contents;
   }
 
-  .section::before,
+  .stripBg,
   .closingBg,
   .ground {
     display: none;
@@ -570,7 +628,7 @@
     display: block;
     flex: 0 0 auto;
     width: auto;
-    height: clamp(88px, 17vw, 140px);
+    height: clamp(58px, 11vw, 92px);
   }
 
   /* `min-width: 0` so the artwork may shrink below its intrinsic width — a
@@ -580,9 +638,16 @@
     flex: 1 1 auto;
     min-width: 0;
     width: 100%;
-    max-width: 560px;
+    max-width: 380px;
     height: auto;
     margin: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-inview="true"] .statIcon,
+  [data-inview="true"] .promise {
+    animation: none;
   }
 }
 

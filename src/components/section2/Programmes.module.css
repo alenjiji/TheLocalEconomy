@@ -10,17 +10,11 @@
 .section {
   position: relative;
   width: 100%;
-  height: calc(824 * var(--u));
+  height: calc(754 * var(--u));
   background-color: #020202;
   background-image: url("/section_2/grain.png");
   background-repeat: repeat;
   overflow: hidden;
-}
-
-.defs {
-  position: absolute;
-  width: 0;
-  height: 0;
 }
 
 .head {
@@ -31,7 +25,7 @@
 .band {
   position: absolute;
   inset: 0 0 auto 0;
-  height: calc(579.84 * var(--u));
+  height: calc(531 * var(--u));
   background: #b2b1b1;
 }
 
@@ -61,7 +55,7 @@
 /*
  * The comp centres the 1280-unit card row in the 1440 artboard, so the grid is
  * centred rather than offset from the left edge — that keeps it on the same
- * axis as the hero once the viewport passes the 1600px scale cap.
+ * axis as the hero once the viewport passes the 1920px scale cap.
  */
 .cards {
   position: absolute;
@@ -69,21 +63,115 @@
   transform: translateX(-50%);
   top: calc(172.9 * var(--u));
   display: grid;
-  grid-template-columns: repeat(3, calc(410.67 * var(--u)));
-  gap: calc(24 * var(--u));
+  /* 361.4 rather than the comp's 410.67 — the row was overpowering the section
+     it sits in. The cards carry their own unit, so the whole composition inside
+     each one comes down with it. */
+  grid-template-columns: repeat(3, calc(361.4 * var(--u)));
+  gap: calc(21 * var(--u));
 }
 
 /*
  * `--pad-x` is the single left inset every card's content hangs off — the
  * lockup or heading, the body copy and the CTA all start on it, so the three
  * cards read as one row rather than three separately measured ones.
+ *
+ * The card is its own query container and redefines `--u` from its own width,
+ * so all 410.67-based offsets inside it hold at whatever width the grid gives
+ * it. `border-radius` is deliberately not in `--u`: a container query unit
+ * resolves against the nearest ANCESTOR container, so on the card itself it
+ * would fall back to the viewport.
  */
 .card {
   --pad-x: 40;
   position: relative;
-  height: calc(583.9 * var(--u));
-  border-radius: calc(12 * var(--u));
+  container-type: inline-size;
+  --u: calc(100cqw / 410.67);
+  aspect-ratio: 410.67 / 583.9;
+  border-radius: clamp(9px, 0.85vw, 14px);
   overflow: hidden;
+  /* How far a card leans at full weight. `--px`/`--py` come from
+     `PointerParallax`; `--lift` is the hover, folded into the same transform so
+     the two compose instead of overwriting one another. */
+  --shift: 17px;
+  transform: translate3d(
+    calc(var(--px, 0) * var(--shift)),
+    calc(var(--py, 0) * var(--shift) + var(--lift, 0px)),
+    0
+  );
+}
+
+/*
+ * The scroll-in reveal in globals.css sets a `transition` shorthand on every
+ * `.u-rise` element, and `.js .u-rise` outranks a single class — so a
+ * `transition` on `.card` was being dropped and the hover snapped. This rule
+ * out-specifies it and restates the reveal's three properties beside the two
+ * the hover needs; only the reveal carries the stagger delay.
+ */
+.section .cards .card {
+  transition:
+    opacity 720ms ease,
+    translate 720ms cubic-bezier(0.16, 1, 0.3, 1),
+    scale 720ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    /* Short enough that the lean tracks the pointer rather than trailing it,
+       long enough to smooth the per-frame steps — this is what does the easing,
+       so the parallax needs no loop of its own. */
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay:
+    calc(var(--d, 0) * 90ms),
+    calc(var(--d, 0) * 90ms),
+    calc(var(--d, 0) * 90ms),
+    0s,
+    0s;
+}
+
+/*
+ * Hover: the card lifts off the band and its photograph creeps in behind the
+ * type. `transform` is free here — the scroll reveal drives `translate` and
+ * `scale` as separate properties precisely so hovers can still use it.
+ */
+/*
+ * Movement on hover is gated: a finger produces no hover, and a browser that
+ * synthesises one after a tap leaves the state latched until you touch
+ * something else. `:focus-visible` stays outside so a keyboard keeps it.
+ */
+@media (hover: hover) {
+  .card:hover {
+    --lift: -10px;
+    box-shadow: 0 26px 54px -26px rgba(0, 0, 0, 0.9);
+  }
+
+  .card:hover .bizFixPortrait,
+  .card:hover .consultancyArt,
+  .card:hover .checkupPhoto img {
+    scale: 1.035;
+  }
+}
+
+.bizFixPortrait,
+.consultancyArt,
+.checkupPhoto img {
+  transition: scale 620ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .section .cards .card,
+  .bizFixPortrait,
+  .consultancyArt,
+  .checkupPhoto img {
+    transition: none;
+  }
+
+  .section .cards .card:hover {
+    --lift: 0px;
+  }
+
+  .card:hover .bizFixPortrait,
+  .card:hover .consultancyArt,
+  .card:hover .checkupPhoto img {
+    scale: 1;
+  }
 }
 
 /*
@@ -118,10 +206,16 @@
   height: 100%;
 }
 
-.cta:hover,
 .cta:focus-visible {
   filter: brightness(1.08);
   transform: translateY(calc(-1 * var(--u)));
+}
+
+@media (hover: hover) {
+  .cta:hover {
+    filter: brightness(1.08);
+    transform: translateY(calc(-1 * var(--u)));
+  }
 }
 
 /* --- Card 1: Total Biz Fix ---------------------------------------------- */
@@ -186,11 +280,26 @@
   overflow: hidden;
 }
 
+/*
+ * The source is near square (1391x1402) and this window is wide, so `cover`
+ * fitted it by width and showed the whole frame — including the black doorway
+ * that fills its left third and reads as dead space. Measured on the photo,
+ * the subject's contrast centroid sits at 70% of the width, the doorway ends
+ * around x 480, and the top of his hair is at row 378. So the image is placed
+ * rather than fitted: the window shows source x 480-1391, y 288-968. That
+ * drops the doorway, brings him from 70% across to 62%, and leaves 90 source
+ * pixels — an eighth of the frame — above his crown.
+ */
 .checkupPhoto img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 46.6%;
+  position: absolute;
+  left: calc(-216.4 * var(--u));
+  top: calc(-129.8 * var(--u));
+  width: calc(627.1 * var(--u));
+  height: calc(632 * var(--u));
+  max-width: none;
+  /* The hover zoom should grow about the middle of the window, not the middle
+     of the image, which now sits well outside it. */
+  transform-origin: calc(421.7 * var(--u)) calc(283.1 * var(--u));
 }
 
 /* The blue plate is the lockup's leftmost ink and starts 3.49 units into the
@@ -227,6 +336,14 @@
 
 /* --- Card 3: Consultancy ------------------------------------------------- */
 
+/*
+ * The photo ships with its alpha already baked in (see
+ * `scripts/cut-consultancy-photo.mjs`). It used to be knocked out here by an
+ * SVG filter, but a CSS filter runs on the element as rendered — so the browser
+ * downsampled the photo 1:3 before the keyer ever saw it and left a rim of
+ * white behind — and `filter: url(#...)` is not applied at all in some mobile
+ * browsers, which left the white box on screen.
+ */
 .consultancyArt {
   position: absolute;
   left: calc(-83.13 * var(--u));
@@ -234,10 +351,8 @@
   width: calc(542.21 * var(--u));
   height: calc(361.47 * var(--u));
   max-width: none;
-  filter: url("#knockout-white");
 }
 
-/* 1.4 units of left side bearing on the cap C, so the ink lands on the inset. */
 .consultancyHeading {
   position: absolute;
   left: calc((var(--pad-x) - 1.4) * var(--u));
@@ -317,10 +432,5 @@
   .card {
     flex: 1 1 380px;
     max-width: 440px;
-    container-type: inline-size;
-    --u: calc(100cqw / 410.67);
-    height: auto;
-    aspect-ratio: 410.67 / 583.9;
-    border-radius: 12px;
   }
 }

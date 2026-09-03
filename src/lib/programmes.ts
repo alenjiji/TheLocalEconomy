@@ -1,6 +1,6 @@
 /**
  * Copy and geometry for the "Comprehensive Brand Programmes" section, measured
- * off `public/design/web_tle.png`. Offsets are card-relative design units; the
+ * off `design-source/web_tle.png`. Offsets are card-relative design units; the
  * cards themselves are laid out on the shared 1280-wide content grid.
  */
 export type ProgrammeCard = {

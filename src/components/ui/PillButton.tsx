@@ -38,6 +38,9 @@ export default function PillButton({
     <a
       className={`${styles.pill} ${styles[tone]} u-liquid u-liquid-${tone} ${className ?? ""}`}
       href={href}
+      // Amber and cyan buttons would swallow an amber ring, so each declares
+      // its own surface and the pointer inverts over it.
+      data-cursor={tone}
       {...liquidProps}
       style={
         {

@@ -24,6 +24,7 @@ export default function ConsultationButton({
     <a
       className={`${styles.cta} u-liquid u-liquid-amber ${className ?? ""}`}
       href={href}
+      data-cursor="amber"
       {...liquidProps}
       style={liquidStyle}
     >

@@ -29,6 +29,19 @@
   translate: 0 calc(1 * var(--u));
 }
 
+/*
+ * On a phone the pill draws at about 34px tall, which is under the size a
+ * thumb wants. Rather than distort the comp's button, a transparent pad
+ * extends the hit area past the edges on touch devices only.
+ */
+@media (pointer: coarse) {
+  .pill::after {
+    content: "";
+    position: absolute;
+    inset: -7px -6px;
+  }
+}
+
 .label,
 .arrow {
   position: absolute;

@@ -1,3 +1,4 @@
+import InView from "@/components/motion/InView";
 import HeroBackdropMotion from "./HeroBackdropMotion";
 import backdrop from "./HeroBackdrop.module.css";
 import styles from "./Hero.module.css";
@@ -15,7 +16,7 @@ const TITLE_BANDS: [number, number][] = [
 ];
 
 /**
- * Hero section, rebuilt 1:1 from `public/design/web_tle.png`.
+ * Hero section, rebuilt 1:1 from `design-source/web_tle.png`.
  *
  * The headline, sub-heads and flourish ship as outlined SVG from the design
  * export, so they are placed as images with the visible text carried on `alt`
@@ -28,8 +29,18 @@ export default function Hero() {
       <div className={styles.stage}>
         {/* Split in two: the heavy raster plane drifts as one, and the vector
             curves, ticks and readouts animate individually. Together they
-            reproduce the single `bg-elements.svg` the comp exports. */}
-        <div className={styles.backdrop} aria-hidden="true">
+            reproduce the single `bg-elements.svg` the comp exports.
+
+            Wrapped in an observer that keeps reporting: every animation in here
+            loops forever, and there is no reason to spend frames on them once
+            the hero has scrolled away. */}
+        <InView
+          as="div"
+          className={styles.backdrop}
+          amount={0.01}
+          once={false}
+          aria-hidden="true"
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className={`${styles.backdropArt} ${backdrop.plane}`}
@@ -37,7 +48,7 @@ export default function Hero() {
             alt=""
           />
           <HeroBackdropMotion className={`${styles.backdropArt} ${backdrop.motion}`} />
-        </div>
+        </InView>
 
         {/* The frame is `display: contents` at desktop, so the portrait keeps
             its comp coordinates; on a phone it becomes the window that crops

@@ -35,6 +35,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        {/* Before any stylesheet is parsed, so a browser with an automatic
+            dark theme never gets a frame in which to recolour the page. See
+            the note on `:root` in globals.css. */}
+        <meta name="color-scheme" content="only light" />
         {/*
           Scroll-in reveals start hidden and are released by an observer. If
           scripting is unavailable nothing would ever release them, so the

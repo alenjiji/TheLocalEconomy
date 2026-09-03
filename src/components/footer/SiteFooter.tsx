@@ -9,7 +9,7 @@ import { CONTACT_ROWS, DECK_TOP, PROGRAMME_LINKS, QUICK_LINKS } from "@/lib/foot
 const row = (y: number) => y - DECK_TOP;
 
 /**
- * Site footer, rebuilt 1:1 from `public/design/web_tle.png` (comp rows
+ * Site footer, rebuilt 1:1 from `design-source/web_tle.png` (comp rows
  * 5183–5613) with the exports in `public/footer/`.
  *
  * Two bands on one canvas: the cyan call to action and the dark link deck.
@@ -30,7 +30,9 @@ export default function SiteFooter() {
           alt="Ready to Transform Your Business? Let's build the business you envisioned."
           width={895}
           height={92}
-        />
+            loading="lazy"
+            decoding="async"
+          />
         <ConsultationButton className={`${styles.ctaButton} u-rise`} />
         </div>
       </div>
@@ -47,10 +49,12 @@ export default function SiteFooter() {
             alt="The Local Economy"
             width={194}
             height={59}
+            loading="lazy"
+            decoding="async"
           />
         </Link>
         <p className={`${styles.tagline} u-rise`} style={{ "--d": 1 } as React.CSSProperties}>
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh
+          Together, we can tackle complex business challenges and turn local vision into lasting commercial success.
         </p>
         </div>
 
@@ -102,7 +106,9 @@ export default function SiteFooter() {
                       "--y": row(c.iconY),
                     } as React.CSSProperties
                   }
-                />
+            loading="lazy"
+            decoding="async"
+          />
                 <a
                   className={styles.contactLink}
                   href={c.href}
@@ -126,7 +132,9 @@ export default function SiteFooter() {
           alt="© 2025 The Local Economy. All Rights Reserved."
           width={300}
           height={13}
-        />
+            loading="lazy"
+            decoding="async"
+          />
         <p className={styles.legal}>
           <a href="#privacy">Privacy Policy</a>
           <span aria-hidden="true">|</span>

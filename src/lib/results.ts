@@ -1,7 +1,7 @@
 /**
  * "What Changes When You Work With TLE?" — comp rows 2272–4308.
  *
- * Every number is a design unit measured off `public/design/web_tle.png`.
+ * Every number is a design unit measured off `design-source/web_tle.png`.
  *
  * Three of the bodies carry soft hyphens (U+00AD) at the exact points the comp
  * breaks them. Automatic hyphenation cannot work once the text is split into
@@ -65,7 +65,7 @@ export const STATS: Stat[] = [
     textX: 867.8,
     valueX: 865.8,
     captionTop: 2412.2,
-    caption: "Core growth dimensions we work on",
+    caption: "growth dimensions we work on",
     captionWidth: 120,
   },
   {
@@ -101,11 +101,6 @@ export type Step = {
    * the eight steps; this nudges it per step, in design units.
    */
   bodyOffset?: number;
-  /**
-   * The comp justifies five of the eight step paragraphs and leaves the three
-   * narrowest ragged-right; forcing justify on those stretches two-word lines.
-   */
-  align?: "left";
 };
 
 export const STEPS: Step[] = [
@@ -115,10 +110,10 @@ export const STEPS: Step[] = [
     label: "Vision",
     heading: "A Purpose to Leap Ahead",
     body: "Helps you set a clear and attainable vision for your brand that enables sustainable, long-term growth.",
-    x: 169.9,
-    y: 3461.9,
-    width: 176,
-    align: "left",
+    x: 117.7,
+    y: 3228.3,
+    width: 312,
+    bodyOffset: -9,
   },
   {
     id: "marketing",
@@ -126,10 +121,9 @@ export const STEPS: Step[] = [
     label: "Marketing",
     heading: "A Brand Worth Remembering",
     body: "Targeted messages that cut through the noise, build authority, and attract your ideal, high-value clients.",
-    x: 117.7,
-    y: 3228.3,
-    width: 312,
-    bodyOffset: -9,
+    x: 169.9,
+    y: 3461.9,
+    width: 176,
   },
   {
     id: "sales",
@@ -140,7 +134,6 @@ export const STEPS: Step[] = [
     x: 482.6,
     y: 3419.8,
     width: 172,
-    align: "left",
   },
   {
     id: "profit",
@@ -159,13 +152,13 @@ export const STEPS: Step[] = [
     label: "System",
     heading: "Systems That Run the Show",
     body: "Standard operating procedures, delega­tion frameworks, and workflows for consis­tency and freedom.",
-    x: 785.6,
-    y: 3461.9,
+    x: 730.8,
+    y: 3228.3,
     /* A shade wider than the comp measures: splitting the text into
        per-character spans loses kerning between letters, so the same words
        take marginally more room. */
-    width: 186,
-    align: "left",
+    width: 323,
+    bodyOffset: -9,
   },
   {
     id: "leadership",
@@ -173,10 +166,9 @@ export const STEPS: Step[] = [
     label: "Leadership",
     heading: "Decisions Made With Clarity",
     body: "New markets, new verticals, new cities, with a structured roadmap, no chaos and zero guesswork.",
-    x: 730.8,
-    y: 3228.3,
-    width: 323,
-    bodyOffset: -9,
+    x: 785.6,
+    y: 3461.9,
+    width: 186,
   },
   {
     id: "expansion",

@@ -3,13 +3,26 @@
  * units at the current viewport, so every offset can be written as
  * `calc(<design number> * var(--u))` and stays pixel-faithful at any width.
  *
- * The scale is capped at 1600px: past that every section centres its content on
+ * The scale is capped at 1920px: past that every section centres its content on
  * the same axis and the full-bleed backgrounds carry on to both edges. It is
  * floored by the 1280px breakpoint below — scaling the comp down any further
  * drops the card body copy under 12px, so the layout re-flows instead.
  */
+/*
+ * Browsers with an automatic dark theme — Chrome's Auto Dark Theme on Android,
+ * the same feature behind a flag on desktop, Samsung Internet's dark mode —
+ * recolour any page that does not declare a scheme: they invert background
+ * lightness and keep hue, which turns the amber band brick red, the cyan band
+ * navy, and every light band near black, while leaving the photographs alone.
+ * This design has one appearance and handles its own darks, so it opts out.
+ * `layout.tsx` carries the same declaration as a meta tag, which lands before
+ * this file is parsed.
+ */
 :root {
-  --u: calc(min(100vw, 1600px) / 1440);
+  color-scheme: only light;
+  /* Capped at 1920 rather than 1600: past 1600 the layout was letterboxed on
+     an ordinary large monitor instead of using the screen. */
+  --u: calc(min(100vw, 1920px) / 1440);
   --font-sans: var(--font-inter), "Inter", "Helvetica Neue", Arial, sans-serif;
   /* Page gutter, also used by the header row once it compacts. */
   --gutter: clamp(24px, 4vw, 64px);
@@ -58,6 +71,22 @@ a {
   text-decoration: none;
 }
 
+/*
+ * Selection, in the brand amber rather than the browser's blue.
+ *
+ * The ink is the page's own near-black instead of white: amber is a light
+ * colour, so white on it fails contrast, while #282727 on #f5a623 clears 7:1
+ * and stays legible on the dark sections and the light bands alike. The one
+ * amber surface in the design — the closing band — carries only outlined SVG,
+ * so nothing selectable ever lands amber-on-amber.
+ */
+::selection {
+  background: #f5a623;
+  color: #282727;
+  /* Selecting across a text-shadow otherwise keeps the old glow. */
+  text-shadow: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -67,6 +96,16 @@ a {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Present to assistive tech, absent from the page. */
+.u-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 /*

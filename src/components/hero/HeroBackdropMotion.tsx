@@ -10,10 +10,16 @@ import styles from "./HeroBackdrop.module.css";
  * over each other they reproduce the original exactly.
  */
 export default function HeroBackdropMotion({ className }: { className?: string }) {
+  /*
+   * `preserveAspectRatio="slice"` lets this half cover its box the way
+   * `object-fit: cover` covers the raster half, which is what the phone layout
+   * needs. At desktop the box matches the artwork's aspect, so it is a no-op.
+   */
   return (
     <svg
       className={className}
       viewBox="0 0 1624.35 1689.2"
+      preserveAspectRatio="xMidYMid slice"
       aria-hidden="true"
       focusable="false"
     >

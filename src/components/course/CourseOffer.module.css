@@ -1,0 +1,467 @@
+/*
+ * The course offer.
+ *
+ * There is no comp for this section, so unlike its neighbours it is laid out in
+ * flow rather than on measured coordinates — but every size is still in `--u`,
+ * the 1440-artboard unit, so it scales with the page and sits in the same
+ * rhythm as the sections above and below it.
+ */
+.section {
+  position: relative;
+  width: 100%;
+  padding: calc(92 * var(--u)) 0 calc(100 * var(--u));
+  background-color: #020202;
+  background-image: url("/section_2/grain.png");
+  background-repeat: repeat;
+  overflow: hidden;
+}
+
+/* The hairline that opens the growth carousel, repeated here so the two dark
+   bands read as a pair rather than one long stretch. */
+.section::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: max(1px, calc(1 * var(--u)));
+  background: linear-gradient(90deg, transparent 8%, rgba(255, 255, 255, 0.3) 50%, transparent 92%);
+}
+
+/* Narrower than the sections around it: a portrait film beside a card wants a
+   tighter measure than a full-width row of three. */
+.inner {
+  width: min(100% - 2 * var(--gutter), calc(1000 * var(--u)));
+  margin: 0 auto;
+}
+
+/* --- Heading -------------------------------------------------------------- */
+
+.head {
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: calc(27 * var(--u));
+  line-height: 1;
+  font-weight: 600;
+  color: #f5a623;
+}
+
+.flourish {
+  display: block;
+  width: calc(140 * var(--u));
+  height: auto;
+  margin: calc(13 * var(--u)) auto 0;
+  color: #f5a623;
+}
+
+.heading {
+  margin: calc(26 * var(--u)) 0 0;
+  font-size: calc(44 * var(--u));
+  line-height: 1.1;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.cyan {
+  color: #00adee;
+}
+
+/* --- Body ----------------------------------------------------------------- */
+
+.body {
+  display: grid;
+  grid-template-columns: calc(320 * var(--u)) 1fr;
+  gap: calc(56 * var(--u));
+  align-items: stretch;
+  margin-top: calc(56 * var(--u));
+}
+
+/* --- Preview -------------------------------------------------------------- */
+
+/* 9:16 — the film is 1080x1920. */
+.preview {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  border-radius: calc(14 * var(--u));
+  overflow: hidden;
+  background: #111111;
+}
+
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #111111;
+}
+
+/*
+ * Stands in for the poster frame. A tuned gradient rather than a grey box, so
+ * the slot reads as part of the design while the film is outstanding; drop a
+ * poster in and this sits behind it.
+ */
+.previewArt {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 78% 18%, rgba(0, 173, 238, 0.34), transparent 62%),
+    radial-gradient(90% 80% at 18% 88%, rgba(245, 166, 35, 0.24), transparent 60%),
+    linear-gradient(150deg, #1d1d1d, #0a0a0a);
+}
+
+.preview::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/section_2/grain.png");
+  background-repeat: repeat;
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity 300ms ease;
+}
+
+.playing .previewArt,
+.playing::after,
+.playing .previewLabel {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.playing .play {
+  opacity: 0;
+  pointer-events: none;
+  scale: 0.8;
+}
+
+.previewArt,
+.previewLabel {
+  transition: opacity 300ms ease;
+}
+
+.play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: calc(96 * var(--u));
+  height: calc(96 * var(--u));
+  margin: calc(-48 * var(--u)) 0 0 calc(-48 * var(--u));
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #00adee;
+  color: #ffffff;
+  cursor: pointer;
+  transition:
+    transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 300ms ease,
+    scale 300ms ease;
+}
+
+.play svg {
+  width: 100%;
+  height: 100%;
+}
+
+/*
+ * The halo is a ring that scales and fades rather than a growing `box-shadow`.
+ * A box-shadow keyframe repaints the button on every frame of a loop that never
+ * ends; a transform and an opacity on a pseudo-element composite instead.
+ */
+.play::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(0, 173, 238, 0.5);
+  animation: play-halo 2800ms ease-out infinite;
+  pointer-events: none;
+}
+
+.play:focus-visible {
+  transform: scale(1.08);
+}
+
+@media (hover: hover) {
+  .play:hover {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes play-halo {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  70%,
+  100% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+}
+
+.previewLabel {
+  position: absolute;
+  left: calc(24 * var(--u));
+  bottom: calc(20 * var(--u));
+  z-index: 1;
+  margin: 0;
+  font-size: calc(16 * var(--u));
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+/* --- Offer card ----------------------------------------------------------- */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: calc(36 * var(--u));
+  border: max(1px, calc(1 * var(--u))) solid rgba(255, 255, 255, 0.12);
+  border-radius: calc(14 * var(--u));
+  background: #191919;
+}
+
+.title {
+  margin: 0;
+  font-size: calc(31 * var(--u));
+  line-height: 1.14;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.titleSub {
+  display: block;
+  color: #f5a623;
+}
+
+.provider {
+  margin: calc(10 * var(--u)) 0 0;
+  font-size: calc(18 * var(--u));
+  line-height: 1;
+  font-weight: 500;
+  color: #00adee;
+}
+
+.blurb {
+  margin: calc(18 * var(--u)) 0 0;
+  font-size: calc(16 * var(--u));
+  line-height: calc(23 * var(--u));
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.74);
+}
+
+.meta {
+  margin: calc(24 * var(--u)) 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: calc(13 * var(--u));
+}
+
+.meta li {
+  display: flex;
+  align-items: center;
+  gap: calc(12 * var(--u));
+  font-size: calc(17 * var(--u));
+  line-height: 1;
+  font-weight: 300;
+  color: #ffffff;
+}
+
+.metaIcon {
+  flex: 0 0 auto;
+  width: calc(22 * var(--u));
+  height: calc(22 * var(--u));
+  color: #00adee;
+}
+
+/* Pushed to the foot of the card, so the price and button line up with the
+   bottom of the preview beside it however long the copy runs. */
+.price {
+  display: flex;
+  align-items: baseline;
+  gap: calc(12 * var(--u));
+  margin: auto 0 0;
+  padding-top: calc(28 * var(--u));
+}
+
+.priceNow {
+  font-size: calc(38 * var(--u));
+  line-height: 1;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.currency {
+  margin-right: calc(3 * var(--u));
+  font-weight: 500;
+}
+
+.priceWas {
+  font-size: calc(19 * var(--u));
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: line-through;
+}
+
+.buy {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(10 * var(--u));
+  width: 100%;
+  height: calc(56 * var(--u));
+  margin-top: calc(18 * var(--u));
+  padding: 0;
+  border: max(1px, calc(1 * var(--u))) solid #ffc166;
+  border-radius: calc(7 * var(--u));
+  background: #f5a623;
+  color: #282727;
+  font-family: inherit;
+  font-size: calc(21 * var(--u));
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  --liquid-reach: calc(760 * var(--u));
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.buy svg {
+  width: calc(22 * var(--u));
+  height: calc(22 * var(--u));
+  transition: translate 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.buy:focus-visible svg {
+  translate: calc(5 * var(--u)) 0;
+}
+
+@media (hover: hover) {
+  .buy:hover svg {
+    translate: calc(5 * var(--u)) 0;
+  }
+}
+
+.buy:active {
+  transform: translateY(1px);
+}
+
+/* --- Below the comp ------------------------------------------------------- */
+
+@media (max-width: 1023px) {
+  /* Stacked, and the film is capped so a 9:16 frame cannot run the height of
+     a phone screen on its own. */
+  .body {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: clamp(24px, 4vw, 36px);
+    margin-top: clamp(32px, 5vw, 48px);
+  }
+
+  .preview {
+    width: min(100%, 280px);
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  .section {
+    padding: clamp(52px, 8vw, 92px) 0 clamp(56px, 8vw, 100px);
+  }
+
+  .eyebrow {
+    font-size: clamp(19px, 2.6vw, 27px);
+  }
+
+  .flourish {
+    width: clamp(105px, 12vw, 140px);
+    margin-top: clamp(10px, 1.6vw, 13px);
+  }
+
+  .heading {
+    margin-top: clamp(16px, 3vw, 26px);
+    font-size: clamp(26px, 4.4vw, 44px);
+  }
+
+  .preview,
+  .card {
+    border-radius: 14px;
+  }
+
+  .play {
+    width: 64px;
+    height: 64px;
+    margin: -32px 0 0 -32px;
+  }
+
+  .previewLabel {
+    left: 16px;
+    bottom: 14px;
+    font-size: 12px;
+  }
+
+  .card {
+    padding: clamp(22px, 4vw, 34px);
+  }
+
+  .title {
+    font-size: clamp(22px, 3.4vw, 31px);
+  }
+
+  .provider {
+    font-size: clamp(15px, 1.9vw, 18px);
+  }
+
+  .blurb {
+    font-size: clamp(14px, 1.7vw, 16px);
+    line-height: 1.45;
+  }
+
+  .meta li {
+    font-size: clamp(14px, 1.8vw, 17px);
+  }
+
+  .metaIcon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .priceNow {
+    font-size: clamp(28px, 4.4vw, 38px);
+  }
+
+  .priceWas {
+    font-size: clamp(15px, 2vw, 19px);
+  }
+
+  .buy {
+    height: 54px;
+    border-radius: 7px;
+    font-size: clamp(17px, 2.2vw, 21px);
+  }
+
+  .buy svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .play,
+  .play::before {
+    animation: none;
+    transition: none;
+  }
+
+  .buy,
+  .buy svg {
+    transition: none;
+  }
+}
