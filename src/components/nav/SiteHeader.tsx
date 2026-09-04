@@ -113,7 +113,9 @@ export default function SiteHeader() {
                     style={
                       {
                         "--left": item.left,
-                        "--baseline": item.active ? 82.3 : 89.4,
+                        /* One baseline for every link. The active one is marked
+                           by its fill and its rule, not by being raised. */
+                        "--baseline": 89.4,
                       } as React.CSSProperties
                     }
                     href={item.href}

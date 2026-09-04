@@ -1,0 +1,459 @@
+/*
+ * "Our Biggest Success Stories".
+ *
+ * The films are portrait, so the reel is portrait cards rather than one wide
+ * frame. The card is deliberately the same object as the course section's
+ * preview — same grained ground, same brand wash, same cyan play button — so
+ * the two video moments on the page read as one component, not two.
+ */
+.section {
+  position: relative;
+  width: 100%;
+  padding: calc(56 * var(--u)) 0 calc(74 * var(--u));
+  background: #edebeb;
+}
+
+.inner {
+  width: min(100% - 2 * var(--gutter), calc(1440 * var(--u)));
+  margin: 0 auto;
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: calc(32 * var(--u));
+  line-height: 1;
+  font-weight: 600;
+  color: #282727;
+}
+
+.flourish {
+  display: block;
+  width: calc(182.36 * var(--u));
+  height: auto;
+  margin: calc(14 * var(--u)) auto 0;
+  color: #282727;
+}
+
+/*
+ * Two exports on one line, driven from a single cap height.
+ *
+ * They were exported at different sizes — measured off the files, "Our Biggest"
+ * caps to 73.06 of its 77.96 box and "Success Stories" to 63.6 of its 63.5, so
+ * at natural scale one is 1.149x the other. Sizing each from `--cap` makes the
+ * caps match, and because both files put their ink top at y=0, matching caps
+ * lands the baselines together as well.
+ *
+ * `align-items: baseline` was the bug: an image's baseline is its bottom edge,
+ * so it lined the descender of "Biggest" up with the baseline of "Stories" and
+ * pushed the first half out of level.
+ */
+.heading {
+  margin: calc(28 * var(--u)) 0 0;
+}
+
+.headingArt {
+  --cap: calc(68 * var(--u));
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: calc(0.368 * var(--cap));
+}
+
+/* 439.45 / 73.06 */
+.headingOur {
+  width: calc(6.0149 * var(--cap));
+  height: auto;
+}
+
+/* 635.73 / 63.6 */
+.headingStories {
+  width: calc(9.9958 * var(--cap));
+  height: auto;
+}
+
+.subtitle {
+  display: block;
+  width: calc(1084.08 * var(--u));
+  height: auto;
+  margin: calc(18 * var(--u)) auto 0;
+}
+
+/* --- Reel ------------------------------------------------------------------ */
+
+.reel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(34 * var(--u));
+  margin-top: calc(46 * var(--u));
+}
+
+.cards {
+  /* Takes the room the chevrons leave, and may shrink below its content —
+     without `min-width: 0` a flex item refuses to, and the cards were being
+     squeezed to a fraction of their size on a phone. */
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: calc(64 * var(--u));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  flex: 0 0 calc(364 * var(--u));
+  /* Each card lands a beat after the one before it. */
+  animation: card-in 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    translate: 0 calc(18 * var(--u));
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* 3:4.4 — the comp's card. The films are 9:16, so they are covered into it. */
+.frame {
+  position: relative;
+  aspect-ratio: 364 / 553;
+  border-radius: calc(26 * var(--u));
+  background: #282727;
+  overflow: hidden;
+}
+
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #282727;
+}
+
+/* Stands in until a film is played, and behind it once one is. */
+.frameArt {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(88% 60% at 50% 22%, rgba(0, 173, 238, 0.16), transparent 70%),
+    radial-gradient(80% 55% at 50% 100%, rgba(245, 166, 35, 0.1), transparent 70%),
+    #282727;
+  transition: opacity 300ms ease;
+}
+
+.frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/section_2/grain.png");
+  background-repeat: repeat;
+  opacity: 0.42;
+  pointer-events: none;
+  transition: opacity 300ms ease;
+}
+
+.playing .frameArt,
+.playing .frame::after,
+.playing .play {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(127 * var(--u));
+  height: calc(127 * var(--u));
+  margin: calc(-63.5 * var(--u)) 0 0 calc(-63.5 * var(--u));
+  padding: calc(31 * var(--u));
+  border: 0;
+  border-radius: 50%;
+  background: #00adee;
+  /* The ring the comp draws around the button, as a shadow so it does not
+     take part in the box's own sizing. */
+  box-shadow: 0 0 0 calc(7 * var(--u)) rgba(0, 92, 128, 0.5);
+  color: #ffffff;
+  cursor: pointer;
+  transition:
+    transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 300ms ease;
+}
+
+.play svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* The same halo the course preview's button carries. */
+.play::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(0, 173, 238, 0.45);
+  animation: play-halo 2800ms ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes play-halo {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  70%,
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@media (hover: hover) {
+  .play:hover {
+    transform: scale(1.07);
+  }
+}
+
+.play:focus-visible {
+  transform: scale(1.07);
+}
+
+/* --- Caption --------------------------------------------------------------- */
+
+.caption {
+  display: grid;
+  gap: calc(4 * var(--u));
+  margin-top: calc(20 * var(--u));
+}
+
+.person {
+  font-size: calc(23 * var(--u));
+  line-height: 1.2;
+  font-weight: 700;
+  color: #282727;
+}
+
+.company {
+  font-size: calc(17 * var(--u));
+  line-height: 1.2;
+  font-weight: 500;
+  color: #0093c9;
+}
+
+.motto {
+  font-size: calc(15 * var(--u));
+  line-height: 1.2;
+  font-weight: 300;
+  font-style: italic;
+  color: #6a6a6a;
+}
+
+/* --- Chevrons -------------------------------------------------------------- */
+
+.arrow {
+  flex: 0 0 auto;
+  width: calc(24 * var(--u));
+  height: calc(46 * var(--u));
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #00adee;
+  cursor: pointer;
+  transition:
+    opacity 160ms ease,
+    translate 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.arrow svg {
+  width: 100%;
+  height: 100%;
+}
+
+.arrow:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.arrow:focus-visible {
+  opacity: 0.7;
+}
+
+@media (hover: hover) {
+  .arrow:not(:disabled):hover {
+    opacity: 0.7;
+  }
+
+  .arrowPrev:not(:disabled):hover {
+    translate: -4px 0;
+  }
+
+  .arrowNext:not(:disabled):hover {
+    translate: 4px 0;
+  }
+}
+
+/* --- Dots ------------------------------------------------------------------ */
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: calc(20 * var(--u));
+  margin: calc(34 * var(--u)) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dot {
+  display: block;
+  width: calc(11 * var(--u));
+  height: calc(11 * var(--u));
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #c4c4c4;
+  cursor: pointer;
+  transition:
+    background-color 220ms ease,
+    scale 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.dotActive {
+  background: #00adee;
+  scale: 1.15;
+}
+
+@media (pointer: coarse) {
+  .dot {
+    position: relative;
+  }
+
+  .dot::after {
+    content: "";
+    position: absolute;
+    inset: -14px;
+  }
+}
+
+/* --- Below the comp -------------------------------------------------------- */
+
+@media (max-width: 1023px) {
+  .section {
+    padding: clamp(40px, 7vw, 56px) 0 clamp(48px, 8vw, 74px);
+  }
+
+  .eyebrow {
+    font-size: clamp(19px, 3vw, 32px);
+  }
+
+  .flourish {
+    width: clamp(120px, 16vw, 182px);
+  }
+
+  /* The same relationship, from a cap height that fits the window. */
+  .headingArt {
+    --cap: clamp(21px, 4.7vw, 68px);
+    flex-wrap: wrap;
+  }
+
+  .subtitle {
+    width: min(100%, 1084px);
+  }
+
+  .reel {
+    gap: clamp(6px, 1.6vw, 34px);
+    margin-top: clamp(26px, 5vw, 46px);
+  }
+
+  .cards {
+    gap: clamp(16px, 3vw, 64px);
+  }
+
+  .arrow {
+    width: clamp(14px, 2.4vw, 24px);
+    height: clamp(26px, 4.6vw, 46px);
+  }
+
+  /* The chevron is drawn small on purpose; the pad is what a thumb hits. */
+  .arrow {
+    position: relative;
+  }
+
+  .arrow::after {
+    content: "";
+    position: absolute;
+    inset: -12px -10px;
+  }
+
+  .frame {
+    border-radius: clamp(14px, 2.4vw, 26px);
+  }
+
+  .play {
+    width: clamp(56px, 11vw, 127px);
+    height: clamp(56px, 11vw, 127px);
+    margin: clamp(-63.5px, -5.5vw, -28px) 0 0 clamp(-63.5px, -5.5vw, -28px);
+    padding: clamp(14px, 2.7vw, 31px);
+    box-shadow: 0 0 0 clamp(3px, 0.6vw, 7px) rgba(0, 92, 128, 0.5);
+  }
+
+  .caption {
+    margin-top: clamp(12px, 2vw, 20px);
+  }
+
+  .person {
+    font-size: clamp(15px, 2.1vw, 23px);
+  }
+
+  .company {
+    font-size: clamp(12px, 1.6vw, 17px);
+  }
+
+  .motto {
+    font-size: clamp(11px, 1.4vw, 15px);
+  }
+
+  .dots {
+    gap: clamp(12px, 2.4vw, 20px);
+    margin-top: clamp(22px, 4vw, 34px);
+  }
+
+  .dot {
+    width: clamp(8px, 1.4vw, 11px);
+    height: clamp(8px, 1.4vw, 11px);
+  }
+}
+
+/* One card to a page on a phone — the component pages accordingly, so nothing
+   is hidden that cannot be reached. */
+@media (max-width: 640px) {
+  .card {
+    flex: 1 1 auto;
+    max-width: 300px;
+  }
+
+  .reel {
+    gap: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .play,
+  .play::before,
+  .arrow,
+  .dot,
+  .frameArt {
+    animation: none;
+    transition: none;
+  }
+}

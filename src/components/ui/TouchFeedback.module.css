@@ -1,13 +1,14 @@
 .ripple {
+  --ink: 245, 166, 35;
   position: absolute;
   z-index: 2;
   margin: 0;
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(245, 166, 35, 0.42) 0%,
-    rgba(245, 166, 35, 0.16) 55%,
-    rgba(245, 166, 35, 0) 70%
+    rgba(var(--ink), 0.45) 0%,
+    rgba(var(--ink), 0.18) 55%,
+    rgba(var(--ink), 0) 70%
   );
   /* The transform carries both the centring and the growth, so the element's
      own box never changes and the ripple stays on the compositor. */
@@ -25,4 +26,15 @@
     transform: translate(-50%, -50%) scale(1);
     opacity: 0;
   }
+}
+
+/* Amber ink vanishes on an amber button and on the light bands; white vanishes
+   on nothing except them. */
+.onAmber,
+.onLight {
+  --ink: 40, 39, 39;
+}
+
+.onCyan {
+  --ink: 255, 255, 255;
 }

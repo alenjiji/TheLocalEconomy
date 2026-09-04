@@ -15,6 +15,10 @@ import styles from "./TouchFeedback.module.css";
  *
  * One delegated listener for the whole page, and one element per press that is
  * removed when it finishes. Nothing is attached per component.
+ *
+ * The ink adapts, for the same reason the cursor's does: an amber ripple on an
+ * amber button is invisible. The surface a control declares through
+ * `data-cursor` — or the light band it sits in — picks the ink.
  */
 export default function TouchFeedback() {
   useEffect(() => {
@@ -36,7 +40,16 @@ export default function TouchFeedback() {
         Math.max(e.clientY - box.top, box.bottom - e.clientY);
 
       const ripple = document.createElement("span");
-      ripple.className = styles.ripple;
+      const tone = el.getAttribute("data-cursor");
+      ripple.className = `${styles.ripple} ${
+        tone === "amber"
+          ? styles.onAmber
+          : tone === "cyan"
+            ? styles.onCyan
+            : el.closest('[data-surface="light"]')
+              ? styles.onLight
+              : ""
+      }`;
       ripple.style.left = `${e.clientX - box.left}px`;
       ripple.style.top = `${e.clientY - box.top}px`;
       ripple.style.width = ripple.style.height = `${reach * 2}px`;

@@ -54,15 +54,20 @@ export default function Hero() {
             its comp coordinates; on a phone it becomes the window that crops
             him to a bust cut by the hero's edge. */}
         <div className={styles.portraitFrame}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            className={styles.portrait}
-            src="/hero/DSC_3834.webp"
-            alt="Prasanth Sukumaran"
-            width={2946}
-            height={4128}
-            fetchPriority="high"
-          />
+          {/* Two cuts of the same shot. The phone layout frames him from the
+              crown to mid-thigh and needs a different crop, and `<picture>`
+              means only the one that applies is ever fetched. */}
+          <picture>
+            <source media="(max-width: 899px)" srcSet="/hero/portrait-mobile.webp" />
+            <img
+              className={styles.portrait}
+              src="/hero/DSC_3834.webp"
+              alt="Prasanth Sukumaran"
+              width={2946}
+              height={4128}
+              fetchPriority="high"
+            />
+          </picture>
         </div>
 
 

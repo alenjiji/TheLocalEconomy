@@ -4,6 +4,7 @@ import Programmes from "@/components/section2/Programmes";
 import GrowthCarousel from "@/components/section3/GrowthCarousel";
 import CourseOffer from "@/components/course/CourseOffer";
 import Results from "@/components/section4/Results";
+import Testimonials from "@/components/testimonials/Testimonials";
 import SiteFooter from "@/components/footer/SiteFooter";
 import Cursor from "@/components/ui/Cursor";
 import TouchFeedback from "@/components/ui/TouchFeedback";
@@ -18,6 +19,7 @@ export default function Home() {
         <GrowthCarousel />
         <CourseOffer />
         <Results />
+        <Testimonials />
       </main>
       <SiteFooter />
       {/* Both no-op on the pointer type they are not for: the cursor never

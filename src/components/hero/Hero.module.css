@@ -428,47 +428,124 @@
   }
 }
 
-/* --- Phone: the portrait becomes a bust -------------------------------------
- * Below 900px the copy fills the width, so a portrait washed in behind it just
- * reads as noise — and cropping him at the viewport edge left a sliver rather
- * than a person. Instead he sits bottom-right at full strength, cut off by the
- * hero's lower edge exactly the way the comp cuts him on desktop, with the
- * copy given enough room to clear his head.
+/* --- Phone: the comp's own mobile board -------------------------------------
+ * Below 900px the hero stops being a re-flow of the desktop composition and
+ * becomes its own layout, measured off the 960 x 1701 mobile board the way the
+ * desktop sections are measured off the 1440 one. `--mh` is one of those units.
+ *
+ * The portrait is a second cut of the same shot, cropped to the subject, so its
+ * placement is solved rather than guessed: at 800 units wide his head centre
+ * lands on the board's 532 and his body runs off the lower edge.
  */
 @media (max-width: 899px) {
+  .hero {
+    --mh: calc(100vw / 960);
+  }
+
   .stage {
-    /* Reserve the portrait's zone so the copy always clears his head. */
-    --frame-w: min(88vw, 430px);
-    padding-bottom: calc(var(--frame-w) * 0.92 + 32px);
+    width: 100%;
+    height: calc(1701 * var(--mh));
+    padding: 0;
   }
 
-  .portraitFrame {
-    display: block;
-    position: absolute;
-    right: max(-5vw, -28px);
-    bottom: 0;
-    width: var(--frame-w);
-    /* 0.92 of the width frames him from the crown to about his waist. At the
-       64vw this used to be he read as a sliver in the corner rather than as
-       the subject of the panel. */
-    height: calc(var(--frame-w) * 0.92);
-    overflow: hidden;
-    pointer-events: none;
+  .backdrop {
+    -webkit-mask-image: linear-gradient(
+      165deg,
+      transparent 2%,
+      rgba(0, 0, 0, 0.5) 34%,
+      #000 72%
+    );
+    mask-image: linear-gradient(
+      165deg,
+      transparent 2%,
+      rgba(0, 0, 0, 0.5) 34%,
+      #000 72%
+    );
   }
 
-  /*
-   * The cutout carries ~12.7% empty space above his head. Left in, it pushed
-   * him down the frame and the crop landed across his chest. Percentage
-   * margins resolve against the width, so -17.85% is exactly that band and
-   * puts his crown at the top of the window.
-   */
+  .backdropArt {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Transparent to layout again: the portrait is placed on the board directly
+     rather than framed by a cropping window, and the hero's own overflow does
+     the cutting. */
+  .portraitFrame,
+  .portraitFrame picture {
+    display: contents;
+  }
+
   .portrait {
     --portrait-opacity: 1;
-    position: static;
-    width: 100%;
+    position: absolute;
+    left: calc(100 * var(--mh));
+    top: calc(505 * var(--mh));
+    width: calc(800 * var(--mh));
     height: auto;
     max-width: none;
-    margin-top: -17.85%;
     opacity: var(--portrait-opacity);
   }
+
+  .copy {
+    position: absolute;
+    inset: 0;
+    width: auto;
+    margin: 0;
+  }
+
+  .title,
+  .name,
+  .company,
+  .flourish {
+    position: absolute;
+    height: auto;
+    margin: 0;
+  }
+
+  .title {
+    left: calc(96 * var(--mh));
+    top: calc(196 * var(--mh));
+    width: calc(768 * var(--mh));
+    aspect-ratio: 723.77 / 294.06;
+  }
+
+  /* The sign-off sits over him, ranged on the headline's right edge. */
+  .name {
+    left: calc(450 * var(--mh));
+    top: calc(1392 * var(--mh));
+    width: calc(410 * var(--mh));
+  }
+
+  .company {
+    left: calc(487 * var(--mh));
+    top: calc(1440 * var(--mh));
+    width: calc(336 * var(--mh));
+  }
+
+  .flourish {
+    left: calc(522 * var(--mh));
+    top: calc(1492 * var(--mh));
+    width: calc(265 * var(--mh));
+  }
+
+  .dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(1541 * var(--mh));
+    justify-content: center;
+    width: auto;
+    margin: 0;
+    gap: calc(30 * var(--mh));
+  }
+
+  .dot {
+    width: calc(19 * var(--mh));
+    height: calc(19 * var(--mh));
+  }
 }
+

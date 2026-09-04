@@ -202,6 +202,7 @@
 }
 
 .copy {
+  position: relative;
   padding: 6px 12px;
   border: 1px solid #d0d0d0;
   border-radius: 999px;
@@ -277,9 +278,20 @@
 }
 
 .note a {
+  position: relative;
+  display: inline-block;
   color: #00adee;
   text-decoration: underline;
   text-underline-offset: 2px;
+}
+
+@media (pointer: coarse) {
+  .copy::after,
+  .note a::after {
+    content: "";
+    position: absolute;
+    inset: -10px -6px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

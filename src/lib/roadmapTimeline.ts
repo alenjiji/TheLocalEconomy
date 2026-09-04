@@ -10,17 +10,21 @@ import { typeOut, type TypedChar } from "./motion";
  *
  * Steps run strictly 01 → 08. Each one types its number, then its label, then
  * its sub-head, then its body; the next step starts while the current body is
- * still going, which keeps the whole run under seven seconds without making
- * any single line feel rushed.
+ * still going.
+ *
+ * These were roughly twice as slow, which put the last marker six and a half
+ * seconds after the section came into view — long enough that on an ordinary
+ * scroll-through the markers simply looked absent. The whole run now lands
+ * inside about three.
  */
-const NUMBER_PER_CHAR = 34;
-const LABEL_PER_CHAR = 20;
-const HEAD_PER_CHAR = 12;
-const BODY_PER_CHAR = 5;
-const AFTER_LABEL = 80;
-const AFTER_HEAD = 90;
+const NUMBER_PER_CHAR = 17;
+const LABEL_PER_CHAR = 10;
+const HEAD_PER_CHAR = 6;
+const BODY_PER_CHAR = 2.5;
+const AFTER_LABEL = 40;
+const AFTER_HEAD = 45;
 /** Fraction of a body that must be typed before the next step may begin. */
-const OVERLAP = 0.25;
+const OVERLAP = 0.2;
 
 export type StepTimeline = {
   /** When this step's node marker pops on the track. */

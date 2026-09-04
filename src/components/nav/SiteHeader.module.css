@@ -48,7 +48,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: clamp(14px, 2.4vw, 34px);
+  gap: clamp(10px, 2.4vw, 34px);
   height: 100%;
   padding: 0 var(--gutter, 24px);
 }
@@ -71,8 +71,10 @@
   line-height: 0;
 }
 
+/* The mobile board draws the mark at 220 of its 960 units; the bar has to hold
+   the button and the burger beside it, so it gives up the width first. */
 .logo {
-  width: clamp(112px, 12vw, 150px);
+  width: clamp(84px, 23vw, 150px);
   height: auto;
 }
 
@@ -132,8 +134,23 @@
   }
 }
 
+/*
+ * Shown at every width. The mobile board puts the button in the bar beside the
+ * burger, so the row is logo / button / burger rather than logo / burger, and
+ * the button gives up width first as the row tightens.
+ */
 .cta {
-  display: none;
+  display: flex;
+  container-type: inline-size;
+  --u: calc(100cqw / 326.4);
+  --cta-position: relative;
+  position: relative;
+  flex: 0 1 auto;
+  min-width: 0;
+  width: clamp(148px, 48vw, 200px);
+  height: auto;
+  margin-left: auto;
+  aspect-ratio: 326.4 / 53.76;
 }
 
 /* --- Menu button ---------------------------------------------------------- */
@@ -145,7 +162,7 @@
   gap: 6px;
   width: 40px;
   height: 40px;
-  margin-left: auto;
+  margin-left: 0;
   padding: 0;
   border: 0;
   background: none;
@@ -261,8 +278,7 @@
 /* --- Tablet and up: the real menu ----------------------------------------- */
 
 @media (min-width: 900px) {
-  .links,
-  .cta {
+  .links {
     display: flex;
   }
 
@@ -297,18 +313,19 @@
  */
 @media (min-width: 1280px) {
   .header {
-    /* 1 → 0.8163, which takes the bar from the comp's 144.56 to 118. */
-    --bar-scale: calc(1 - 0.1837 * var(--p));
+    /* The row scales to 0.82 while the painted bar closes further, to 0.664 —
+       144.56 down to 96. The two differ on purpose: the comp leaves the
+       content low in the bar, and matching the rates would have carried that
+       dead band down with it. */
+    --bar-scale: calc(1 - 0.18 * var(--p));
   }
 
   .bar {
     height: calc(144.56 * var(--u));
   }
 
-  /* 118 / 144.56 — the same proportion the contents scale by, so the painted
-     edge and the type land together. */
   .bar::before {
-    transform: scaleY(calc(1 - 0.1837 * var(--p)));
+    transform: scaleY(calc(1 - 0.336 * var(--p)));
   }
 
   .shadow {
@@ -320,7 +337,20 @@
     width: calc(1440 * var(--u));
     margin: 0 auto;
     padding: 0;
-    transform: scale(var(--bar-scale));
+    /*
+     * The comp places the row 56.76 from the top of a 144.56 bar and 33.93
+     * from the bottom — 22.83 units more space above than below, which is the
+     * band that showed as an empty strip once the bar compacted.
+     *
+     * The translate re-centres the row in whatever height the bar currently
+     * has. It sits outside the scale so it is not scaled itself, and the
+     * amount happens to be exactly linear in `--p`. Solved from the rendered
+     * extents rather than the comp's, because the CTA draws down to 116.6
+     * where the comp measures 110.52 — which leaves equal padding at both ends
+     * in every state between.
+     */
+    transform: translateY(calc((-14.377 - 8.688 * var(--p)) * var(--u)))
+      scale(var(--bar-scale));
     transform-origin: 50% 0;
     /* Promoted so the per-frame rescale composites instead of re-rasterising
        the whole row. */

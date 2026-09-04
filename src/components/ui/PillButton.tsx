@@ -1,6 +1,6 @@
 "use client";
 
-import type { CSSProperties } from "react";
+import { useCallback, useEffect, useRef, type CSSProperties } from "react";
 
 import styles from "./PillButton.module.css";
 import { useLiquid } from "./useLiquid";
@@ -13,26 +13,45 @@ export type PillButtonProps = {
   href: string;
   label: string;
   tone: "amber" | "cyan";
-  /** Pill width and corner radius, in design units. */
+  /** Pill width, in design units. Everything else derives from it. */
   width: number;
-  radius?: number;
-  /** Left edge of the label ink and of the arrow, in design units. */
-  labelX: number;
-  arrowX: number;
   className?: string;
 };
 
-export default function PillButton({
-  href,
-  label,
-  tone,
-  width,
-  radius = 5.23,
-  labelX,
-  arrowX,
-  className,
-}: PillButtonProps) {
+export default function PillButton({ href, label, tone, width, className }: PillButtonProps) {
   const { liquidStyle, liquidProps } = useLiquid<HTMLAnchorElement>();
+  const rowRef = useRef<HTMLSpanElement>(null);
+
+  /*
+   * Fit the label to the pill by measuring it, not by predicting it.
+   *
+   * This used to estimate the type size from the character count, which is
+   * guesswork about a font's advance widths — and it was wrong by enough that
+   * the longest label in the build ran out of both ends of its pill. Measuring
+   * the row that actually rendered costs one read per button and cannot be
+   * wrong about the font.
+   */
+  const fit = useCallback(() => {
+    const row = rowRef.current;
+    const pill = row?.parentElement;
+    if (!row || !pill) return;
+    row.style.removeProperty("--fit");
+    // The reference insets the label 5.4% at each end.
+    const room = pill.clientWidth * 0.892;
+    const needed = row.scrollWidth;
+    if (needed > room && needed > 0) row.style.setProperty("--fit", (room / needed).toFixed(4));
+  }, []);
+
+  useEffect(() => {
+    fit();
+    const pill = rowRef.current?.parentElement;
+    if (!pill || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(fit);
+    ro.observe(pill);
+    // Webfonts land after first paint and change every measurement.
+    void document.fonts?.ready.then(fit);
+    return () => ro.disconnect();
+  }, [fit, label]);
 
   return (
     <a
@@ -42,25 +61,19 @@ export default function PillButton({
       // its own surface and the pointer inverts over it.
       data-cursor={tone}
       {...liquidProps}
-      style={
-        {
-          "--w": width,
-          "--r": radius,
-          "--label-x": labelX,
-          "--arrow-x": arrowX,
-          ...liquidStyle,
-        } as CSSProperties
-      }
+      style={{ "--w": width, ...liquidStyle } as CSSProperties}
     >
-      <span className={styles.label}>{label}</span>
-      <svg
-        className={`${styles.arrow} u-liquid-arrow`}
-        viewBox="218.36 12.36 14.72 13.11"
-        aria-hidden="true"
-        focusable="false"
-      >
-        <path d={ARROW} />
-      </svg>
+      <span className={styles.row} ref={rowRef}>
+        <span className={styles.label}>{label}</span>
+        <svg
+          className={`${styles.arrow} u-liquid-arrow`}
+          viewBox="218.36 12.36 14.72 13.11"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path d={ARROW} />
+        </svg>
+      </span>
     </a>
   );
 }

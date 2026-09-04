@@ -3,12 +3,21 @@
  * the surface can be animated. The hover fill itself lives in `globals.css`
  * as `u-liquid`, so both button sizes share one implementation.
  */
+/*
+ * Proportions come from `public/testimonials/button_reference.svg`, so the card
+ * CTAs and the amber consultation button are one family rather than two: that
+ * export is 326.2 x 53.59 with a 6.86 radius, a 0.71 edge and 27.12 type, which
+ * is an aspect of 6.087 and ratios of 0.128, 0.0133 and 0.506 against the
+ * height. The pill was drawn at 6.494 — a little squat for its width — and
+ * everything below is derived from `--w` through those ratios instead.
+ */
 .pill {
   position: absolute;
+  --pill-h: calc(var(--w) / 6.087);
   width: calc(var(--w) * var(--u));
-  height: calc(39.51 * var(--u));
-  border: calc(0.53 * var(--u)) solid var(--pill-edge);
-  border-radius: calc(var(--r) * var(--u));
+  height: calc(var(--pill-h) * var(--u));
+  border: calc(var(--pill-h) * 0.0133 * var(--u)) solid var(--pill-edge);
+  border-radius: calc(var(--pill-h) * 0.128 * var(--u));
   background: var(--pill-face);
   color: #ffffff;
   /* Radius of the fill circle: enough to cover the pill from any corner. */
@@ -42,15 +51,33 @@
   }
 }
 
-.label,
-.arrow {
+/*
+ * The label and arrow are one centred row rather than two measured offsets. The
+ * comp centred the pair by giving every card its own `labelX`/`arrowX`, which
+ * had to be re-tuned whenever the type moved; centring them holds at any width
+ * and at any label length.
+ *
+ * 0.6384 of the height is the reference's baseline; 0.8635 of the font size is
+ * Inter's ascent plus half-leading at line-height 1.
+ */
+.row {
   position: absolute;
+  left: 0;
+  right: 0;
+  top: calc((var(--pill-h) * 0.6384 - var(--pill-h) * 0.506 * 0.8635) * var(--u));
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: calc(var(--pill-h) * 0.2 * var(--u));
+  /* Set by the component only when the label will not otherwise fit. */
+  scale: var(--fit, 1);
 }
 
 .label {
-  left: calc((var(--label-x) - 1.5) * var(--u));
-  top: calc(7.78 * var(--u));
-  font-size: calc(19.95 * var(--u));
+  position: static;
+  /* The reference's ratio. Anything that will not fit at this size is scaled
+     down as a whole row by the component, which measures rather than guesses. */
+  font-size: calc(var(--pill-h) * 0.506 * var(--u));
   line-height: 1;
   font-weight: 500;
   white-space: nowrap;
@@ -58,10 +85,12 @@
 }
 
 .arrow {
-  left: calc(var(--arrow-x) * var(--u));
-  top: calc(12.36 * var(--u));
-  width: calc(14.72 * var(--u));
-  height: calc(13.11 * var(--u));
+  position: static;
+  flex: 0 0 auto;
+  width: calc(var(--pill-h) * 0.3725 * var(--u));
+  height: calc(var(--pill-h) * 0.3318 * var(--u));
+  /* Nudged onto the label's optical centre; the glyph's own box sits high. */
+  translate: 0 calc(var(--pill-h) * 0.02 * var(--u));
   fill: currentColor;
   color: inherit;
 }

@@ -1,108 +1,90 @@
-import type { CSSProperties } from "react";
+"use client";
 
-import { ROADMAP_TIMELINE } from "@/lib/roadmapTimeline";
+import { useEffect, useRef, useState } from "react";
+
 import styles from "./Roadmap.module.css";
+import { STEPS } from "@/lib/results";
 
 /**
- * `el_5.svg` inlined.
+ * The flow line and its markers.
  *
- * The export is only 4KB and already separates the serpentine track from its
- * eight node markers, so inlining it costs almost nothing and lets the line
- * draw itself while each marker pops as its step starts typing.
+ * The line is `public/flow_section/snake.svg` verbatim. Each marker is placed
+ * by asking the path itself where a given fraction of its length falls — so a
+ * marker can never sit off the line, and moving a step is a matter of nudging
+ * one number in `lib/results.ts` rather than re-measuring coordinates.
  *
- * The path runs right-to-left, so the reveal animates `stroke-dashoffset` from
- * -1 to 0 rather than 1 to 0 — that grows it from the path's end, which is the
- * left edge, matching the order the steps are numbered in.
+ * The stroke is drawn on with `pathLength="1"`, which normalises the dash
+ * arithmetic: the reveal runs 1 → 0 whatever the path's real length is, and the
+ * markers pop as the line reaches them because each one's delay is its own
+ * fraction of the same clock.
  */
-export default function RoadmapTrack({ className }: { className?: string }) {
+const PATH =
+  "M0,556.16h152.85c77.59,0,140.73-62.44,141.59-140.02l.09-7.91c.68-61.03,50.35-110.14,111.38-110.14h43.31c57.83,0,104.7-46.88,104.7-104.7v-37.96c0-83.73,68.16-151.46,151.89-150.93h0c82.98.53,149.97,67.95,149.97,150.93v228.28c0,79.98,65.12,144.67,145.1,144.13h0c79.23-.53,143.18-64.9,143.18-144.13v-50.24c0-51.67,41.89-93.56,93.56-93.56h203.83";
+
+/** The marker, from `public/flow_section/point_cursor.svg`. */
+function Marker({ x, y, side, delay }: { x: number; y: number; side: string; delay: number }) {
+  // The stem points from the marker toward its copy.
+  const turn = side === "above" ? 180 : side === "right" ? -90 : 0;
+  /*
+   * Two groups, and the split matters.
+   *
+   * An SVG `transform` attribute IS the CSS transform property, so it obeys
+   * `transform-origin` — and `.node` sets `fill-box` centring for its pop. That
+   * origin sits below the circle, because the group's box includes the stem, so
+   * every marker whose stem was not pointing straight down came out displaced
+   * from the line: 25 units for a 180° turn, 12.5 in each axis for 90°. Which
+   * is precisely why 01, 02, 05 and 06 sat off the stroke and 03, 04, 07 and 08
+   * did not.
+   *
+   * The outer group carries the placement against the viewBox origin; the inner
+   * one carries the animation against its own box.
+   */
   return (
-    <svg
-      className={className}
-      viewBox="0 0 1503.1 344.82"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <defs>
-        <linearGradient id="roadmap-linear-gradient" x1="0" y1="171.87" x2="1503.1" y2="171.87" gradientTransform="translate(0)" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#00adee" />
-          <stop offset="1" stopColor="#f5a623" />
-        </linearGradient>
-      </defs>
-      <g>
-        <path d="M1503.1,39.01h-37.5c-53.65,0-97.15,41.69-97.15,93.12v79.47c0,51.43-43.5,93.12-97.15,93.12h-114.35c-53.65,0-97.15-41.69-97.15-93.12v-79.47c0-51.43-43.5-93.12-97.15-93.12h-114.35c-53.65,0-97.15,41.69-97.15,93.12v79.47c0,51.43-43.5,93.12-97.15,93.12h-114.35c-53.65,0-97.15-41.69-97.15-93.12v-79.47c0-51.43-43.5-93.12-97.15-93.12h-114.35c-53.65,0-97.15,41.69-97.15,93.12v79.47c0,51.43-43.5,93.12-97.15,93.12H0" fill="none" stroke="url(#roadmap-linear-gradient)" strokeMiterlimit="10" strokeWidth="15.57" className={styles.line} pathLength="1" />
-        <g className={styles.node} style={{ "--node-at": `${Math.round(ROADMAP_TIMELINE.steps[5].node)}ms` } as CSSProperties}>
-          <g>
-            <rect x="906.71" y="2.02" width="1.86" height="29.49" fill="#8fa977" />
-            <polygon points="915.24 8.18 913.88 9.44 907.64 2.73 901.4 9.44 900.04 8.18 907.64 0 915.24 8.18" fill="#8fa977" />
-          </g>
-          <circle cx="907.64" cy="39.65" r="15.27" fill="#8fa977" />
-          <circle cx="907.64" cy="39.65" r="7.5" fill="#282727" />
+    <g className={styles.nodeAnchor} transform={`translate(${x} ${y}) rotate(${turn})`}>
+      <g className={styles.node} style={{ "--at": `${delay}` } as React.CSSProperties}>
+        <g className={styles.nodeStem}>
+          <rect x="-0.93" y="8.15" width="1.86" height="29.49" fill="#00adee" />
+          <polygon points="-7.6,31.48 -6.24,30.21 0,36.92 6.24,30.21 7.6,31.48 0,39.65" fill="#00adee" />
         </g>
-        <g className={styles.node} style={{ "--node-at": `${Math.round(ROADMAP_TIMELINE.steps[1].node)}ms` } as CSSProperties}>
-          <g>
-            <rect x="292.1" y="2.02" width="1.86" height="29.49" fill="#27acce" />
-            <polygon points="300.63 8.18 299.27 9.44 293.03 2.73 286.79 9.44 285.42 8.18 293.03 0 300.63 8.18" fill="#27acce" />
-          </g>
-          <circle cx="293.03" cy="39.65" r="15.27" fill="#27acce" />
-          <circle cx="293.03" cy="39.65" r="7.5" fill="#231f20" />
-        </g>
-        <g className={styles.node} style={{ "--node-at": `${Math.round(ROADMAP_TIMELINE.steps[7].node)}ms` } as CSSProperties}>
-          <g>
-            <rect x="1220.96" y="313.31" width="1.86" height="29.49" fill="#c3a74c" />
-            <polygon points="1214.29 336.64 1215.65 335.37 1221.89 342.09 1228.13 335.37 1229.49 336.64 1221.89 344.82 1214.29 336.64" fill="#c3a74c" />
-          </g>
-          <circle cx="1221.89" cy="305.17" r="15.27" fill="#c3a74c" />
-          <circle cx="1221.89" cy="305.17" r="7.5" fill="#282727" />
-        </g>
-        <g className={styles.node} style={{ "--node-at": `${Math.round(ROADMAP_TIMELINE.steps[3].node)}ms` } as CSSProperties}>
-          <g>
-            <rect x="598.73" y="313.31" width="1.86" height="29.49" fill="#5baaa2" />
-            <polygon points="592.06 336.64 593.42 335.37 599.66 342.09 605.9 335.37 607.26 336.64 599.66 344.82 592.06 336.64" fill="#5baaa2" />
-          </g>
-          <circle cx="599.66" cy="305.17" r="15.27" fill="#5baaa2" />
-          <circle cx="599.66" cy="305.17" r="7.5" fill="#282727" />
-        </g>
-        <g className={styles.node} style={{ "--node-at": `${Math.round(ROADMAP_TIMELINE.steps[2].node)}ms` } as CSSProperties}>
-          <g>
-            <g>
-              <rect x="450.41" y="170.18" width="29.49" height="1.86" fill="#48abb2" />
-              <polygon points="473.74 178.71 472.47 177.35 479.19 171.11 472.47 164.87 473.74 163.5 481.91 171.11 473.74 178.71" fill="#48abb2" />
-            </g>
-            <circle cx="442.27" cy="171.11" r="15.27" fill="#48abb2" />
-          </g>
-          <circle cx="442.27" cy="171.11" r="7.5" fill="#282727" />
-        </g>
-        <g className={styles.node} style={{ "--node-at": `${Math.round(ROADMAP_TIMELINE.steps[4].node)}ms` } as CSSProperties}>
-          <g>
-            <g>
-              <rect x="758.8" y="170.18" width="29.49" height="1.86" fill="#7aa988" />
-              <polygon points="782.13 178.71 780.86 177.35 787.57 171.11 780.86 164.87 782.13 163.5 790.3 171.11 782.13 178.71" fill="#7aa988" />
-            </g>
-            <circle cx="750.66" cy="171.11" r="15.27" fill="#7aa988" />
-          </g>
-          <circle cx="750.66" cy="171.11" r="7.5" fill="#282727" />
-        </g>
-        <g className={styles.node} style={{ "--node-at": `${Math.round(ROADMAP_TIMELINE.steps[6].node)}ms` } as CSSProperties}>
-          <g>
-            <g>
-              <rect x="1067.19" y="170.18" width="29.49" height="1.86" fill="#aca860" />
-              <polygon points="1090.52 178.71 1089.25 177.35 1095.96 171.11 1089.25 164.87 1090.52 163.5 1098.69 171.11 1090.52 178.71" fill="#aca860" />
-            </g>
-            <circle cx="1059.04" cy="171.11" r="15.27" fill="#aca860" />
-          </g>
-          <circle cx="1059.04" cy="171.11" r="7.5" fill="#282727" />
-        </g>
-        <g className={styles.node} style={{ "--node-at": `${Math.round(ROADMAP_TIMELINE.steps[0].node)}ms` } as CSSProperties}>
-          <g>
-            <g>
-              <rect x="141.02" y="170.18" width="29.49" height="1.86" fill="#15acdc" />
-              <polygon points="164.35 178.71 163.08 177.35 169.79 171.11 163.08 164.87 164.35 163.5 172.52 171.11 164.35 178.71" fill="#15acdc" />
-            </g>
-            <circle cx="132.88" cy="171.11" r="15.27" fill="#15acdc" />
-          </g>
-          <circle cx="132.88" cy="171.11" r="7.5" fill="#282727" />
-        </g>
+        <circle r="15.27" fill="#00adee" />
+        <circle r="7.5" fill="#282727" />
       </g>
+    </g>
+  );
+}
+
+export default function RoadmapTrack({ className }: { className?: string }) {
+  const pathRef = useRef<SVGPathElement>(null);
+  const [nodes, setNodes] = useState<{ x: number; y: number; side: string; at: number }[]>([]);
+
+  // The browser resolves the geometry; nothing here has to know the curve.
+  useEffect(() => {
+    const el = pathRef.current;
+    if (!el) return;
+    const len = el.getTotalLength();
+    setNodes(
+      STEPS.map((s) => {
+        const p = el.getPointAtLength(s.at * len);
+        return { x: p.x, y: p.y, side: s.side, at: s.at };
+      }),
+    );
+  }, []);
+
+  return (
+    <svg className={className} viewBox="0 0 1441.44 560.66" fill="none" aria-hidden="true">
+      <path
+        className={styles.line}
+        ref={pathRef}
+        d={PATH}
+        pathLength="1"
+        stroke="#00adee"
+        strokeWidth="9"
+        strokeLinecap="round"
+        strokeMiterlimit="10"
+      />
+      {nodes.map((n, i) => (
+        <Marker key={i} x={n.x} y={n.y} side={n.side} delay={n.at} />
+      ))}
     </svg>
   );
 }

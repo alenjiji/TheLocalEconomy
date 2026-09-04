@@ -7,7 +7,22 @@
 .section {
   position: relative;
   width: 100%;
-  height: calc(1835 * var(--u));
+  /*
+   * The flow runs the full width of the screen rather than sitting inside the
+   * 1440 board like the rest of the page — it is a diagram, and cramming it
+   * into the board left it at barely half the window with margins either side.
+   *
+   * Its own proportions are about 1.9:1, so full width fits the height of an
+   * ordinary screen on its own; the second term only bites on a short window,
+   * where it gives up width rather than run off the bottom. Everything below —
+   * the closing band, the section's height — is chained off the result, so a
+   * smaller flow closes the gap under it instead of leaving one.
+   */
+  --f: min(calc(100vw / 1440), calc((100vh - 40px) / 760));
+  --flow-top: calc(830 * var(--u));
+  --flow-h: calc(760 * var(--f));
+  --closing-top: calc(var(--flow-top) + var(--flow-h) + 46 * var(--u));
+  height: calc(var(--closing-top) + 210 * var(--u));
   background: #282727;
   overflow: hidden;
 }
@@ -54,7 +69,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(1625 * var(--u));
+  top: var(--closing-top);
   bottom: 0;
   background: #f5a623;
 }
@@ -64,11 +79,15 @@
   left: 0;
   right: 0;
   top: calc(429.5 * var(--u));
-  height: calc(1195.5 * var(--u));
+  height: calc(var(--closing-top) - 429.5 * var(--u));
   background: #282727;
 }
 
-/* Dark tab that drops out of the roadmap into the amber band. */
+/*
+ * The tab that drops out of the dark ground into the amber band. Its tip is
+ * radiused to match the bubble's — the same shape appears on the dark band's
+ * lower edge in `public/flow_section/bg_flow.svg`, and it is not a point.
+ */
 .notch {
   position: absolute;
   left: 50%;
@@ -76,12 +95,14 @@
      rather than butting against it: the shared edge fell on a fraction of a
      pixel once `--u` stopped being 1, and a hairline of amber showed through.
      The tip still lands on 1665. */
-  top: calc(1624 * var(--u));
-  width: calc(86.6 * var(--u));
+  top: calc(var(--closing-top) - 1 * var(--u));
+  width: calc(89.81 * var(--u));
   height: calc(41 * var(--u));
-  margin-left: calc(-43.3 * var(--u));
+  margin-left: calc(-44.9 * var(--u));
   background: #282727;
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  /* The export's tail, normalised to the box: 89.81 x 39.73 at 675.83, 2066.38
+     in `bg_flow.svg`. */
+  clip-path: path("M0,0 C5.43,1.34 10.28,4.6 13.55,9.3 L30.91,34.21 C40.17,47.5 59.83,47.5 69.09,34.21 L86.45,9.3 C89.72,4.6 94.57,1.34 100,0 Z");
 }
 
 /* --- Stat strip ----------------------------------------------------------- */
@@ -160,16 +181,30 @@
 
 /* --- Promise card ---------------------------------------------------------- */
 
-/* Centred on the 1440 artboard: (1440 - 660) / 2. */
+/*
+ * Centred on the 1440 artboard: (1440 - 660) / 2. The box is the bubble's body;
+ * the shape behind it carries the body AND the tail as one path, so the corner
+ * radii and the radiused tip come from the export rather than being redrawn.
+ * 174.7 is 221.15 of the export's 261.7 at this width.
+ */
 .promise {
   position: absolute;
   left: calc(390 * var(--u));
   top: calc(290 * var(--u));
   width: calc(660 * var(--u));
-  height: calc(166 * var(--u));
+  height: calc(174.7 * var(--u));
   margin: 0;
-  border-radius: calc(18 * var(--u));
-  background: #00adee;
+}
+
+.promiseShape {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  width: 100%;
+  /* 261.7 / 221.15 — the tail hangs below the body box. */
+  height: calc(118.33% );
+  overflow: visible;
 }
 
 /* Grows out of the seam it straddles, tail last. */
@@ -188,17 +223,6 @@
   to {
     transform: scale(1);
   }
-}
-
-.promiseTail {
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  width: calc(70 * var(--u));
-  height: calc(32 * var(--u));
-  margin-left: calc(-35 * var(--u));
-  background: #00adee;
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
 }
 
 .promiseQuote {
@@ -310,19 +334,40 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(856 * var(--u));
-  height: calc(736 * var(--u));
+  top: var(--flow-top);
+  height: var(--flow-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: none;
 }
 
-/* Wider than the canvas in the comp, so it bleeds off both edges. */
+/*
+ * The flow's own canvas: 1440 x 760 at `--f`, centred in the band. Everything
+ * inside is measured in these units, so the whole diagram scales as one.
+ */
+.flow {
+  position: relative;
+  width: calc(1440 * var(--f));
+  height: var(--flow-h);
+  /* The curve sits this far down inside the canvas, and the copy shifts with
+     it — two blocks reach above their marker and would otherwise run into the
+     lede. */
+  --track-top: 40;
+}
+
+/*
+ * The exported curve at 1:1 on the board — 1441.44 wide against the artboard's
+ * 1440, so it runs edge to edge. Every step is placed in these same units.
+ */
 .track {
   position: absolute;
-  left: calc(-32 * var(--u));
-  top: calc(201 * var(--u));
-  width: calc(1503.1 * var(--u));
-  height: calc(344.82 * var(--u));
+  left: calc(-0.72 * var(--f));
+  top: calc(var(--track-top) * var(--f));
+  width: calc(1441.44 * var(--f));
+  height: calc(560.66 * var(--f));
   max-width: none;
+  overflow: visible;
 }
 
 .steps {
@@ -331,13 +376,49 @@
   list-style: none;
 }
 
-/* `--y` is the cap top of the step number; the flex line box starts 3 units
-   above it. */
+/*
+ * Each step hangs off its marker rather than off a measured coordinate: `--x`
+ * and `--y` are the marker's own point on the curve, and `data-side` says which
+ * way the marker's stem points, so the copy sits on the other end of it. Move a
+ * step along the curve and its copy follows.
+ */
+/*
+ * A block hangs off its own marker. `left` is clamped to the canvas rather than
+ * simply centred on the node, so a marker near either edge pulls its copy
+ * inboard instead of pushing it off the screen — which is what cut "01. Vision"
+ * in half. `--dx`/`--dy` are the per-step nudges that keep a block out of the
+ * curve's path; they are verified against the curve, not guessed.
+ */
 .step {
   position: absolute;
-  left: calc(var(--x) * var(--u));
-  top: calc((var(--y) - 903) * var(--u));
-  width: calc(var(--w) * var(--u));
+  /* The clamp keeps a block on the canvas; the 34 keeps it off the very edge,
+     which is where "01. Vision" was sitting once the flow went full bleed. */
+  left: clamp(
+    calc(34 * var(--f)),
+    calc((var(--x) - var(--w) / 2 + var(--dx, 0)) * var(--f)),
+    calc((1440 - 34 - var(--w)) * var(--f))
+  );
+  top: calc((var(--y) + var(--track-top) + var(--dy, 0)) * var(--f));
+  width: calc(var(--w) * var(--f));
+}
+
+/* Clears the marker's circle and its stem. */
+.step[data-side="above"] {
+  translate: 0 -100%;
+  margin-top: calc(-46 * var(--f));
+}
+
+.step[data-side="below"] {
+  margin-top: calc(46 * var(--f));
+}
+
+.step[data-side="right"] {
+  left: clamp(
+    calc(34 * var(--f)),
+    calc((var(--x) + 46 + var(--dx, 0)) * var(--f)),
+    calc((1440 - 34 - var(--w)) * var(--f))
+  );
+  translate: 0 -50%;
 }
 
 .stepLabel {
@@ -345,23 +426,23 @@
      word space is restored as a gap. */
   display: flex;
   align-items: baseline;
-  gap: calc(5.6 * var(--u));
+  gap: calc(5.6 * var(--f));
   margin: 0;
-  font-size: calc(23.76 * var(--u));
+  font-size: calc(23.76 * var(--f));
   line-height: 1;
   font-weight: 600;
   color: #f5a623;
 }
 
+/* The comp sets the number at the label's size, not above it. */
 .stepNumber {
-  font-size: calc(31.81 * var(--u));
   font-weight: 500;
 }
 
 .stepHeading {
-  margin: calc(8 * var(--u)) 0 0;
-  font-size: calc(17.98 * var(--u));
-  line-height: calc(23.5 * var(--u));
+  margin: calc(8 * var(--f)) 0 0;
+  font-size: calc(17.98 * var(--f));
+  line-height: calc(23.5 * var(--f));
   font-weight: 600;
   color: #ffffff;
 }
@@ -373,9 +454,9 @@
  * the bank. Real margins." are that, not a layout fault.
  */
 .stepBody {
-  margin: calc((9 + var(--body-offset, 0)) * var(--u)) 0 0;
-  font-size: calc(17.98 * var(--u));
-  line-height: calc(21.5 * var(--u));
+  margin: calc(9 * var(--f)) 0 0;
+  font-size: calc(17.98 * var(--f));
+  line-height: calc(21.5 * var(--f));
   font-weight: 300;
   text-align: left;
   /* `manual`: the break points are the soft hyphens carried in the copy. */
@@ -390,7 +471,7 @@
 .closingMark {
   position: absolute;
   left: calc(478.25 * var(--u));
-  top: calc(1677.7 * var(--u));
+  top: calc(var(--closing-top) + 52.7 * var(--u));
   width: calc(34.83 * var(--u));
   height: calc(113.82 * var(--u));
 }
@@ -398,7 +479,7 @@
 .closingText {
   position: absolute;
   left: calc(546.15 * var(--u));
-  top: calc(1675.4 * var(--u));
+  top: calc(var(--closing-top) + 50.4 * var(--u));
   width: calc(415.62 * var(--u));
   height: calc(118.43 * var(--u));
 }
@@ -479,7 +560,12 @@
     display: none;
   }
 
-  /* Straddles the seam the way it does in the comp. */
+  /*
+   * Straddles the seam the way it does in the comp. The height is content
+   * driven here, so the one-piece shape would have to stretch to fit and would
+   * distort its own radii — a rounded box carries the body instead, with the
+   * export's radiused tip as a fixed-size tail that never has to scale.
+   */
   .promise {
     position: relative;
     left: auto;
@@ -489,6 +575,23 @@
     margin: calc(-1 * clamp(24px, 4vw, 48px)) auto 0;
     padding-bottom: clamp(20px, 3vw, 30px);
     border-radius: 16px;
+    background: #00adee;
+  }
+
+  .promiseShape {
+    display: none;
+  }
+
+  .promise::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    width: 60px;
+    height: 27px;
+    margin-left: -30px;
+    background: #00adee;
+    clip-path: path("M0,0c3.26,.8,6.17,2.76,8.13,5.58l10.42,14.95c5.56,7.98,17.36,7.98,22.91,0l10.42-14.95c1.96-2.82,4.87-4.78,8.13-5.58Z");
   }
 
   .promiseQuote {
@@ -503,12 +606,6 @@
   .promiseBy {
     margin-top: clamp(12px, 2vw, 18px);
     font-size: clamp(11px, 1.2vw, 14px);
-  }
-
-  .promiseTail {
-    width: 60px;
-    height: 28px;
-    margin-left: -30px;
   }
 
   .roadmapBand {
@@ -554,7 +651,16 @@
   .roadmap {
     position: static;
     height: auto;
+    display: block;
     pointer-events: auto;
+  }
+
+  /* The canvas only exists to scale the curve; below the breakpoint there is
+     no curve, so it steps out of the way. */
+  .flow {
+    position: static;
+    width: auto;
+    height: auto;
   }
 
   .track {
@@ -569,9 +675,16 @@
     margin: clamp(40px, 6vw, 68px) auto 0;
   }
 
-  .step {
+  /* The desktop rules hang each block off its marker; there is no marker here,
+     so the offsets that clear one have to be unwound too. */
+  .step,
+  .step[data-side="above"],
+  .step[data-side="below"],
+  .step[data-side="right"] {
     position: static;
     width: auto;
+    translate: none;
+    margin-top: 0;
   }
 
   .stepLabel {
@@ -579,8 +692,9 @@
     font-size: clamp(18px, 2.2vw, 23px);
   }
 
+  /* Same size as its label, as the comp draws it. */
   .stepNumber {
-    font-size: clamp(24px, 3vw, 31px);
+    font-size: inherit;
   }
 
   .stepHeading {

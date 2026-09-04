@@ -38,13 +38,20 @@
 }
 
 /* --- Track ------------------------------------------------------------------
- * The path runs right to left, so the reveal grows from -1 to 0 — that fills
- * from the path's end, which is the left edge, in step order.
+ * `pathLength="1"` normalises the dash arithmetic: the reveal runs 1 -> 0
+ * whatever the curve's real length is, and every marker's delay is simply its
+ * own fraction of the same clock, so each one lands exactly as the line
+ * reaches it.
+ *
+ * The easing is deliberately not linear. A constant-speed line reads as a
+ * machine drawing; `cubic-bezier(.22,.61,.36,1)` leaves quickly and settles
+ * into the last stretch, which is what makes the run feel drawn rather than
+ * scanned.
  */
 .line {
   stroke-dasharray: 1 1;
-  stroke-dashoffset: -1;
-  animation: line-draw var(--track-duration) linear both;
+  stroke-dashoffset: 1;
+  animation: line-draw var(--track-duration) cubic-bezier(0.22, 0.61, 0.36, 1) both;
   animation-play-state: paused;
 }
 
@@ -58,13 +65,25 @@
   }
 }
 
-/* Each marker grows out of the track as its own step starts typing. */
+/* --- Markers ----------------------------------------------------------------
+ * Each pops as the line arrives. `--at` is the marker's fraction of the path,
+ * so its delay is that fraction of the same duration — no second timeline to
+ * keep in step with the first.
+ */
+/* Placement only, against the viewBox origin — no `fill-box` re-centring. */
+.nodeAnchor {
+  transform-box: view-box;
+  transform-origin: 0 0;
+}
+
 .node {
   transform-box: fill-box;
-  transform-origin: 50% 50%;
+  /* The circle's centre within the group's box: it spans y -15 to 40, so the
+     centre of the circle is 27% down it, not 50%. */
+  transform-origin: 50% 27%;
   opacity: 0;
-  animation: node-pop 460ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
-  animation-delay: calc(var(--node-at) - 90ms);
+  animation: node-in 520ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation-delay: calc(var(--at) * var(--track-duration));
   animation-play-state: paused;
 }
 
@@ -72,24 +91,57 @@
   animation-play-state: running;
 }
 
-@keyframes node-pop {
+@keyframes node-in {
   from {
     opacity: 0;
-    transform: scale(0.15);
+    scale: 0.2;
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    scale: 1;
+  }
+}
+
+/* The stem draws out of the circle a beat after the marker has landed. */
+.nodeStem {
+  transform-box: fill-box;
+  transform-origin: top center;
+  animation: stem-draw 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--at) * var(--track-duration) + 240ms);
+  animation-play-state: paused;
+}
+
+[data-inview="true"] .nodeStem {
+  animation-play-state: running;
+}
+
+@keyframes stem-draw {
+  from {
+    opacity: 0;
+    scale: 1 0.1;
+  }
+  to {
+    opacity: 1;
+    scale: 1 1;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .char,
   .line,
-  .node {
+  .node,
+  .nodeStem {
+    animation: none;
+    opacity: 1;
+  }
+
+  .line {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .char {
     animation: none !important;
     opacity: 1;
-    stroke-dashoffset: 0;
-    transform: none;
   }
 }

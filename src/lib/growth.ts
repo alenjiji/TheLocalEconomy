@@ -26,7 +26,7 @@ export type GrowthSlide = {
   headline: InkSpan[];
   body: string;
   bodyWidth: number;
-  cta: { href: string; label: string; tone: "amber" | "cyan"; labelX: number; arrowX: number };
+  cta: { href: string; label: string; tone: "amber" | "cyan" };
 };
 
 /** Every slide's icon label wraps at the same measure in the comp. */
@@ -54,8 +54,6 @@ export const GROWTH_SLIDES: GrowthSlide[] = [
       href: "#business-transformation",
       label: "Join for Business Success",
       tone: "cyan",
-      labelX: 17.51,
-      arrowX: 277.59,
     },
   },
   {
@@ -75,8 +73,6 @@ export const GROWTH_SLIDES: GrowthSlide[] = [
       href: "#growth-framework",
       label: "Start the Journey",
       tone: "amber",
-      labelX: 57.52,
-      arrowX: 236.83,
     },
   },
   {
@@ -99,8 +95,6 @@ export const GROWTH_SLIDES: GrowthSlide[] = [
       href: "#sme-coaching",
       label: "See What We Do",
       tone: "cyan",
-      labelX: 63.77,
-      arrowX: 231.82,
     },
   },
 ];

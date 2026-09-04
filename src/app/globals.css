@@ -98,6 +98,20 @@ a {
   }
 }
 
+/*
+ * The dark ground.
+ *
+ * Three sections run into one another as a single field — the programme cards,
+ * the growth carousel and the course offer — so the colour and the grain are
+ * declared once, here. They used to disagree: #020202 under a tiled 180px
+ * grain against #0c0c0c under a full-bleed 824KB overlay at another scale, and
+ * the seams between them were plainly visible on both desktop and phone.
+ */
+:root {
+  --ground: #020202;
+  --ground-grain: url("/section_2/grain.png");
+}
+
 /* Present to assistive tech, absent from the page. */
 .u-sr-only {
   position: absolute;

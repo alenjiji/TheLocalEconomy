@@ -17,6 +17,19 @@
   translate: 0 calc(1 * var(--u));
 }
 
+/*
+ * The board draws this button short — a little over 30px tall on a phone — and
+ * a thumb wants more than that. A transparent pad extends the hit area on touch
+ * without altering what is drawn.
+ */
+@media (pointer: coarse) {
+  .cta::after {
+    content: "";
+    position: absolute;
+    inset: -8px -6px;
+  }
+}
+
 .label {
   position: absolute;
   color: inherit;

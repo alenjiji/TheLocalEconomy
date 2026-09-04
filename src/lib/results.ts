@@ -92,15 +92,19 @@ export type Step = {
   label: string;
   heading: string;
   body: string;
-  /** Left edge, label cap-top and measure, all in design units. */
-  x: number;
-  y: number;
-  width: number;
   /**
-   * The comp's gap between the sub-head and the body is not consistent across
-   * the eight steps; this nudges it per step, in design units.
+   * Where on the curve this step's marker sits, as a fraction of the path's
+   * length. The coordinates are read off the exported `snake.svg` at build
+   * time rather than measured by hand, so a marker cannot drift off the line.
    */
-  bodyOffset?: number;
+  at: number;
+  /** Which way the marker's stem points, and so where the copy sits. */
+  side: "above" | "below" | "right";
+  /** Measure the copy wraps at, in design units. */
+  width: number;
+  /** Nudges that keep the block clear of the curve, in design units. */
+  dx?: number;
+  dy?: number;
 };
 
 export const STEPS: Step[] = [
@@ -110,10 +114,9 @@ export const STEPS: Step[] = [
     label: "Vision",
     heading: "A Purpose to Leap Ahead",
     body: "Helps you set a clear and attainable vision for your brand that enables sustainable, long-term growth.",
-    x: 117.7,
-    y: 3228.3,
-    width: 312,
-    bodyOffset: -9,
+    at: 0.0395,
+    side: "above",
+    width: 200,
   },
   {
     id: "marketing",
@@ -121,19 +124,21 @@ export const STEPS: Step[] = [
     label: "Marketing",
     heading: "A Brand Worth Remembering",
     body: "Targeted messages that cut through the noise, build authority, and attract your ideal, high-value clients.",
-    x: 169.9,
-    y: 3461.9,
-    width: 176,
+    at: 0.2,
+    side: "above",
+    width: 262,
+    dy: -12,
   },
   {
     id: "sales",
     number: "03.",
     label: "Sales",
     heading: "Sales that Scale Without You",
-    body: "Positioning that makes you the obvi­ous choice in your category, locally and beyond.",
-    x: 482.6,
-    y: 3419.8,
-    width: 172,
+    body: "Positioning that makes you the obvious choice in your category, locally and beyond.",
+    at: 0.273,
+    side: "below",
+    width: 300,
+    dy: 12,
   },
   {
     id: "profit",
@@ -141,24 +146,23 @@ export const STEPS: Step[] = [
     label: "Profit",
     heading: "Profit, not just revenue",
     body: "More money in the bank. Real margins. A business that actually rewards its owner.",
-    x: 448.2,
-    y: 3735.1,
-    width: 262,
-    bodyOffset: -9,
+    at: 0.4355,
+    side: "below",
+    /* Sits in the pocket between the curve's two flanks: narrow enough to fit
+       between them, and pushed past the neck where they close in. */
+    width: 200,
+    dx: 8,
+    dy: 30,
   },
   {
     id: "system",
     number: "05.",
     label: "System",
     heading: "Systems That Run the Show",
-    body: "Standard operating procedures, delega­tion frameworks, and workflows for consis­tency and freedom.",
-    x: 730.8,
-    y: 3228.3,
-    /* A shade wider than the comp measures: splitting the text into
-       per-character spans loses kerning between letters, so the same words
-       take marginally more room. */
-    width: 323,
-    bodyOffset: -9,
+    body: "Standard operating procedures, delegation frameworks, and workflows for consistency and freedom.",
+    at: 0.5275,
+    side: "right",
+    width: 214,
   },
   {
     id: "leadership",
@@ -166,9 +170,14 @@ export const STEPS: Step[] = [
     label: "Leadership",
     heading: "Decisions Made With Clarity",
     body: "New markets, new verticals, new cities, with a structured roadmap, no chaos and zero guesswork.",
-    x: 785.6,
-    y: 3461.9,
-    width: 186,
+    at: 0.6005,
+    side: "right",
+    /* The pocket right of the descent and left of the climb to 08. */
+    /* Pushed down rather than 05 being pushed up: the two share this side of
+       the descent, and lifting 05 took its heading off the top of the canvas. */
+    width: 194,
+    dx: 14,
+    dy: 45,
   },
   {
     id: "expansion",
@@ -176,21 +185,20 @@ export const STEPS: Step[] = [
     label: "Expansion",
     heading: "Expansion is in Order",
     body: "Know exactly where you are, where you're going, and the precise steps to get there.",
-    x: 1083.6,
-    y: 3461.9,
-    width: 201,
-    bodyOffset: -8,
+    at: 0.728,
+    side: "below",
+    width: 348,
   },
   {
     id: "result",
     number: "08.",
     label: "Result",
     heading: "Total Business Clarity",
-    body: "With the core pillars aligned, gain the confidence and clarity to run a self-sustaining, highly profitable en­terprise.",
-    x: 1049.3,
-    y: 3735.1,
-    width: 291,
-    bodyOffset: 1,
+    body: "With the core pillars aligned, gain the confidence and clarity to run a self-sustaining, highly profitable enterprise.",
+    at: 0.9255,
+    side: "below",
+    width: 220,
+    dx: 40,
   },
 ];
 

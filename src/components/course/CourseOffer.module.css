@@ -10,8 +10,8 @@
   position: relative;
   width: 100%;
   padding: calc(92 * var(--u)) 0 calc(100 * var(--u));
-  background-color: #020202;
-  background-image: url("/section_2/grain.png");
+  background-color: var(--ground);
+  background-image: var(--ground-grain);
   background-repeat: repeat;
   overflow: hidden;
 }

@@ -48,11 +48,6 @@ function Chevron({ direction }: { direction: "prev" | "next" }) {
 export default function GrowthCarousel() {
   return (
     <InView as="section" className={styles.section} amount={0.2} aria-label="Growth programmes">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img className={styles.grain} src="/bg_grains_overlay.png" alt="" aria-hidden="true"
-            loading="lazy"
-            decoding="async"
-          />
       <div className={styles.divider} aria-hidden="true" />
 
       <div className={styles.track}>
@@ -113,9 +108,6 @@ export default function GrowthCarousel() {
               label={slide.cta.label}
               tone={slide.cta.tone}
               width={311.1}
-              radius={5.76}
-              labelX={slide.cta.labelX}
-              arrowX={slide.cta.arrowX}
             />
           </article>
         ))}

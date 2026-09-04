@@ -70,8 +70,6 @@ export default function Programmes() {
             label={bizFix.cta.label}
             tone={bizFix.cta.tone}
             width={256.58}
-            labelX={bizFix.cta.labelX}
-            arrowX={bizFix.cta.arrowX}
           />
         </article>
 
@@ -102,8 +100,6 @@ export default function Programmes() {
             label={checkup.cta.label}
             tone={checkup.cta.tone}
             width={256.58}
-            labelX={checkup.cta.labelX}
-            arrowX={checkup.cta.arrowX}
           />
         </article>
 
@@ -131,8 +127,6 @@ export default function Programmes() {
             label={consultancy.cta.label}
             tone={consultancy.cta.tone}
             width={256.58}
-            labelX={consultancy.cta.labelX}
-            arrowX={consultancy.cta.arrowX}
           />
         </article>
       </PointerParallax>

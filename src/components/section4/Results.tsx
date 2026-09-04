@@ -4,6 +4,7 @@ import QuoteMark from "./QuoteMark";
 import RoadmapTrack from "./RoadmapTrack";
 import TypedText from "./TypedText";
 import styles from "./Results.module.css";
+import { ROADMAP_NODES } from "@/lib/roadmapNodes";
 import { ROADMAP_TIMELINE } from "@/lib/roadmapTimeline";
 import { STATS, STAT_RULES, STEPS, RESULTS_TOP } from "@/lib/results";
 
@@ -100,7 +101,22 @@ export default function Results() {
         <figcaption className={styles.promiseBy}>
           The local economy <strong>Promise to Each Client</strong>
         </figcaption>
-        <span className={styles.promiseTail} aria-hidden="true" />
+        {/* Body and tail are one shape, taken from `public/bubble/bubble.svg` —
+            the tail's tip is radiused there, not pointed. */}
+        <svg
+          className={styles.promiseShape}
+          viewBox="0 0 835.53 261.7"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M385.02,230.1l15.59,22.38c8.32,11.94,25.98,11.94,34.29,0l15.59-22.38c3.91-5.61,10.31-8.95,17.15-8.95h346.72c11.54,0,20.9-9.36,20.9-20.9V21.16c0-11.54-9.36-20.9-20.9-20.9H21.16C9.62.26.26,9.62.26,21.16v179.09c0,11.54,9.36,20.9,20.9,20.9h346.72c6.84,0,13.24,3.34,17.15,8.95Z"
+            fill="#00adee"
+            stroke="#43d3ff"
+            strokeMiterlimit="10"
+            strokeWidth="0.53"
+          />
+        </svg>
       </figure>
 
       {/* --- Heading -------------------------------------------------------- */}
@@ -160,6 +176,7 @@ export default function Results() {
           } as React.CSSProperties
         }
       >
+        <div className={styles.flow}>
         <RoadmapTrack className={styles.track} />
 
         <ol className={styles.steps}>
@@ -169,12 +186,16 @@ export default function Results() {
               <li
                 key={s.id}
                 className={styles.step}
+                data-side={s.side}
                 style={
                   {
-                    "--x": s.x,
-                    "--y": row(s.y),
+                    /* The marker's own place on the curve, in the track's
+                       viewBox units; the copy hangs off it. */
+                    "--x": ROADMAP_NODES[i].x,
+                    "--y": ROADMAP_NODES[i].y,
                     "--w": s.width,
-                    "--body-offset": s.bodyOffset ?? 0,
+                    "--dx": s.dx ?? 0,
+                    "--dy": s.dy ?? 0,
                   } as React.CSSProperties
                 }
               >
@@ -196,13 +217,27 @@ export default function Results() {
             );
           })}
         </ol>
+        </div>
       </InView>
 
       </div>
 
       {/* --- Closing band ---------------------------------------------------- */}
       <div className={styles.closing}>
-      <div className={styles.notch} aria-hidden="true" />
+      {/* The tab that drops out of the dark ground into the amber band. Its
+          tip is radiused, not pointed — the same shape sits on the dark band's
+          lower edge in `public/flow_section/bg_flow.svg`. */}
+      <svg
+        className={styles.notch}
+        viewBox="0 0 89.81 39.73"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M0,0c4.88,1.2,9.23,4.13,12.17,8.35l15.59,22.38c8.32,11.94,25.98,11.94,34.29,0l15.59-22.38c2.94-4.22,7.29-7.15,12.17-8.35Z"
+          fill="#282727"
+        />
+      </svg>
       <QuoteMark className={styles.closingMark} />
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
