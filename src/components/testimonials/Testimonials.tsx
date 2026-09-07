@@ -3,8 +3,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import InView from "@/components/motion/InView";
+import SlideDeck from "@/components/motion/SlideDeck";
 import styles from "./Testimonials.module.css";
-import { TESTIMONIALS, TESTIMONIALS_ACTIVE, TESTIMONIALS_PER_VIEW } from "@/lib/testimonials";
+import {
+  TESTIMONIALS,
+  TESTIMONIALS_ACTIVE,
+  TESTIMONIALS_PER_VIEW,
+  type Testimonial,
+} from "@/lib/testimonials";
 
 /** The dip-and-rise rule the comp repeats under section headings. */
 function Flourish({ className }: { className?: string }) {
@@ -32,6 +38,102 @@ function Chevron({ back }: { back?: boolean }) {
         strokeLinejoin="round"
       />
     </svg>
+  );
+}
+
+/**
+ * One story.
+ *
+ * The card owns its video outright rather than registering it in a map the
+ * parent keeps. That map was the fragile part: entries were written and nulled
+ * on every mount, unmount and re-render, and a stale one meant `play()` had
+ * nothing to call. A ref that lives and dies with the element cannot go stale.
+ *
+ * It also pauses on the way out. An unmounted element that is still decoding
+ * can hold the decoder on a phone, which is enough to make the next film
+ * refuse to start — the shape of the bug reported on mobile.
+ */
+function StoryCard({
+  story,
+  index,
+  playing,
+  onPlay,
+  onStop,
+}: {
+  story: Testimonial;
+  index: number;
+  playing: boolean;
+  onPlay: () => void;
+  onStop: () => void;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const el = videoRef.current;
+    /*
+     * Pause on the way out, and nothing more.
+     *
+     * Tearing the source off the element here as well seemed tidier — it
+     * releases the buffer outright — but React's development double-invoke
+     * runs this cleanup on the *first* mount too, against the same DOM node
+     * that is about to be reused. The attribute went, React saw no prop change
+     * so never put it back, and every card rendered with no film at all.
+     * Pausing is idempotent; the node itself is discarded on a real unmount,
+     * which is what frees the decoder.
+     */
+    return () => el?.pause();
+  }, []);
+
+  const start = useCallback(() => {
+    const el = videoRef.current;
+    if (!el || !story.src) return;
+    onPlay();
+    // `preload="none"` means there may be nothing to play yet; asking for the
+    // load inside the gesture is what keeps mobile from refusing it.
+    if (el.readyState === 0) el.load();
+    void el.play().catch(() => onStop());
+  }, [onPlay, onStop, story.src]);
+
+  return (
+    <li
+      className={`${styles.card} ${playing ? styles.playing : ""}`}
+      style={{ "--i": index } as React.CSSProperties}
+    >
+      <div className={styles.frame}>
+        <video
+          className={styles.video}
+          ref={videoRef}
+          src={story.src || undefined}
+          poster={story.poster || undefined}
+          preload="none"
+          playsInline
+          controls={playing}
+          data-cursor="native"
+          onPause={onStop}
+          onEnded={onStop}
+        />
+        <div className={styles.frameArt} aria-hidden="true" />
+        <button
+          className={styles.play}
+          type="button"
+          data-cursor="cyan"
+          aria-label={`Play ${story.name}, ${story.role} of ${story.company}`}
+          onClick={start}
+        >
+          <svg viewBox="0 0 48 48" aria-hidden="true">
+            <path d="M19 14.5v19l15-9.5z" fill="currentColor" />
+          </svg>
+        </button>
+      </div>
+
+      <figcaption className={styles.caption}>
+        <span className={styles.person}>{story.name}</span>
+        <span className={styles.company}>
+          {story.role} &middot; {story.company}
+        </span>
+        {story.motto ? <span className={styles.motto}>{story.motto}</span> : null}
+      </figcaption>
+    </li>
   );
 }
 
@@ -68,27 +170,30 @@ export default function Testimonials() {
   // A narrowing window can leave the reel past its last page.
   const safePage = Math.min(page, pages - 1);
   const [playing, setPlaying] = useState<string | null>(null);
-  const videos = useRef(new Map<string, HTMLVideoElement | null>());
+  // Which way the reel was sent. The deck cannot infer this across two pages —
+  // stepping back and wrapping forward are the same move — so the control that
+  // was pressed says so.
+  const [direction, setDirection] = useState<"next" | "prev">("next");
 
   const go = useCallback(
-    (next: number) => {
+    (next: number, way: "next" | "prev") => {
       setPlaying(null);
+      setDirection(way);
       setPage(((next % pages) + pages) % pages);
     },
     [pages],
   );
 
-  const play = useCallback((id: string) => {
-    const el = videos.current.get(id);
-    if (!el) return;
-    setPlaying(id);
-    void el.play().catch(() => setPlaying(null));
-  }, []);
-
   const shown = TESTIMONIALS.slice(safePage * perView, safePage * perView + perView);
 
   return (
-    <InView as="section" className={styles.section} amount={0.12} aria-labelledby="testimonials-heading">
+    <InView
+      as="section"
+      id="testimonial"
+      className={styles.section}
+      amount={0.12}
+      aria-labelledby="testimonials-heading"
+    >
       <div className={styles.inner}>
         <p className={`${styles.eyebrow} u-rise`}>Testimonials From The Heart</p>
         <Flourish className={`${styles.flourish} u-rise`} />
@@ -127,64 +232,34 @@ export default function Testimonials() {
             className={`${styles.arrow} ${styles.arrowPrev}`}
             type="button"
             aria-label="Previous stories"
-            onClick={() => go(safePage - 1)}
+            onClick={() => go(safePage - 1, "prev")}
             disabled={pages < 2}
           >
             <Chevron back />
           </button>
 
-          <ul className={styles.cards}>
-            {shown.map((t, i) => (
-              <li
-                key={t.id}
-                className={`${styles.card} ${playing === t.id ? styles.playing : ""}`}
-                style={{ "--i": i } as React.CSSProperties}
-              >
-                <div className={styles.frame}>
-                  <video
-                    className={styles.video}
-                    ref={(el) => {
-                      videos.current.set(t.id, el);
-                    }}
-                    src={t.src || undefined}
-                    poster={t.poster || undefined}
-                    preload="none"
-                    playsInline
-                    controls={playing === t.id}
-                    data-cursor="native"
-                    onPause={() => setPlaying((p) => (p === t.id ? null : p))}
-                    onEnded={() => setPlaying((p) => (p === t.id ? null : p))}
-                  />
-                  <div className={styles.frameArt} aria-hidden="true" />
-                  <button
-                    className={styles.play}
-                    type="button"
-                    data-cursor="cyan"
-                    aria-label={`Play ${t.name}, ${t.role} of ${t.company}`}
-                    onClick={() => play(t.id)}
-                  >
-                    <svg viewBox="0 0 48 48" aria-hidden="true">
-                      <path d="M19 14.5v19l15-9.5z" fill="currentColor" />
-                    </svg>
-                  </button>
-                </div>
-
-                <figcaption className={styles.caption}>
-                  <span className={styles.person}>{t.name}</span>
-                  <span className={styles.company}>
-                    {t.role} &middot; {t.company}
-                  </span>
-                  {t.motto ? <span className={styles.motto}>{t.motto}</span> : null}
-                </figcaption>
-              </li>
-            ))}
-          </ul>
+          {/* Keyed on the page, so each turn remounts the cards — which is
+              also what tears the previous film down. */}
+          <SlideDeck className={styles.deck} index={safePage} count={pages} direction={direction}>
+            <ul className={styles.cards}>
+              {shown.map((t, i) => (
+                <StoryCard
+                  key={t.id}
+                  story={t}
+                  index={i}
+                  playing={playing === t.id}
+                  onPlay={() => setPlaying(t.id)}
+                  onStop={() => setPlaying((p) => (p === t.id ? null : p))}
+                />
+              ))}
+            </ul>
+          </SlideDeck>
 
           <button
             className={`${styles.arrow} ${styles.arrowNext}`}
             type="button"
             aria-label="Next stories"
-            onClick={() => go(safePage + 1)}
+            onClick={() => go(safePage + 1, "next")}
             disabled={pages < 2}
           >
             <Chevron />
@@ -200,7 +275,7 @@ export default function Testimonials() {
                   type="button"
                   aria-label={`Show ${perView > 1 ? "stories" : "story"} ${i * perView + 1}\u2013${Math.min((i + 1) * perView, TESTIMONIALS.length)}`}
                   aria-current={i === safePage ? "true" : undefined}
-                  onClick={() => go(i)}
+                  onClick={() => go(i, i < safePage ? "prev" : "next")}
                 />
               </li>
             ))}

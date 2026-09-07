@@ -89,12 +89,19 @@
   margin-top: calc(46 * var(--u));
 }
 
-.cards {
-  /* Takes the room the chevrons leave, and may shrink below its content —
-     without `min-width: 0` a flex item refuses to, and the cards were being
-     squeezed to a fraction of their size on a phone. */
+/* The slide viewport is the flex item now, so it carries the sizing: it takes
+   the room the chevrons leave and may shrink below its content — without
+   `min-width: 0` a flex item refuses to, and the cards were being squeezed to
+   a fraction of their size on a phone. */
+.deck {
   flex: 1 1 auto;
   min-width: 0;
+  /* Room for the cards' own entrance, which would otherwise be clipped by the
+     viewport that clips the slide. */
+  padding: calc(6 * var(--u)) 0;
+}
+
+.cards {
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -122,10 +129,17 @@
   }
 }
 
-/* 3:4.4 — the comp's card. The films are 9:16, so they are covered into it. */
+/*
+ * The film's own aspect, 9:16.
+ *
+ * The comp draws a squarer card, and covering a 9:16 film into it threw away
+ * 47 units off the top and the same off the bottom — 14.5% of the frame, and
+ * the top is where the speaker's head is. Matching the film means the crop is
+ * nothing at all, and the corner radius is then the only thing taking content.
+ */
 .frame {
   position: relative;
-  aspect-ratio: 364 / 553;
+  aspect-ratio: 9 / 16;
   border-radius: calc(26 * var(--u));
   background: #282727;
   overflow: hidden;

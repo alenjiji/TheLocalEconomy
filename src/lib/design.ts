@@ -28,22 +28,47 @@ export const COLORS = {
 export type NavItem = {
   label: string;
   href: string;
-  /** Left edge of the rendered text box, in design units. */
-  left: number;
-  active?: boolean;
 };
 
-/**
- * Horizontal positions are the measured ink edges minus each string's left
- * side bearing in Inter, so the glyphs land exactly where the comp puts them.
+/*
+ * Each item used to carry its own measured `left`, taken off the comp. That
+ * only works for the five items the comp draws: a sixth has nowhere to go, and
+ * every position would have to be re-measured by hand to make room. The row
+ * lays itself out now, anchored where the comp starts it — see `.links` in
+ * `SiteHeader.module.css`.
  */
 export const NAV_ITEMS: NavItem[] = [
-  { label: "About Us", href: "#about", left: 301.09, active: true },
-  { label: "Programmes", href: "#programmes", left: 424.23 },
-  { label: "Testimonial", href: "#testimonial", left: 579.3 },
-  { label: "Our Sevices", href: "#services", left: 721.54 },
-  { label: "Contact Us", href: "#contact", left: 868.62 },
+  { label: "Home", href: "/" },
+  { label: "About Us", href: "/about" },
+  { label: "Programmes", href: "/#programmes" },
+  { label: "Testimonial", href: "/#testimonial" },
+  { label: "Our Sevices", href: "/services" },
+  { label: "Contact Us", href: "/#contact" },
 ];
+
+/**
+ * Which link reads as current.
+ *
+ * Three cases, because the nav mixes three kinds of destination:
+ *
+ * - A section anchor is current when that section is the one being read, which
+ *   only the header can know — it passes the id in as `section`.
+ * - "Home" is current on the landing page while no section has been reached,
+ *   so the mark starts there and hands over as you scroll rather than sitting
+ *   on Home the whole way down.
+ * - A page path is current on its own path.
+ */
+export function isNavItemActive(item: NavItem, pathname: string, section?: string | null) {
+  const onLanding = pathname === "/";
+  if (item.href.startsWith("/#")) return onLanding && section === item.href.slice(2);
+  if (item.href === "/") return onLanding && !section;
+  return pathname === item.href || pathname === `${item.href}/`;
+}
+
+/** The section ids the nav tracks, in the order they appear on the page. */
+export const NAV_SECTION_IDS = NAV_ITEMS.filter((i) => i.href.startsWith("/#")).map((i) =>
+  i.href.slice(2),
+);
 
 /** Number of slides the hero carousel advertises in the comp. */
 export const HERO_SLIDE_COUNT = 4;

@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import ConsultationButton from "@/components/ui/ConsultationButton";
 import styles from "./SiteHeader.module.css";
-import { NAV_ITEMS } from "@/lib/design";
+import { isNavItemActive, NAV_ITEMS, NAV_SECTION_IDS } from "@/lib/design";
 
 /**
  * The site header.
@@ -29,13 +30,19 @@ import { NAV_ITEMS } from "@/lib/design";
 const COMPACT_OVER = 160;
 
 export default function SiteHeader() {
+  const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  /** Which tracked section is currently being read; null above the first. */
+  const [section, setSection] = useState<string | null>(null);
 
   useEffect(() => {
     let frame = 0;
     let last = -1;
+    const onLanding = pathname === "/";
+    if (!onLanding) setSection(null);
+
     const read = () => {
       frame = 0;
       const p = Math.min(1, Math.max(0, window.scrollY / COMPACT_OVER));
@@ -45,6 +52,40 @@ export default function SiteHeader() {
         headerRef.current?.style.setProperty("--p", p.toFixed(4));
       }
       setScrolled(p > 0.02);
+
+      /*
+       * The section being read is the last one whose top has crossed the line
+       * just under the bar — not whichever happens to be most visible. That
+       * keeps the mark where it is through the sections the nav has no entry
+       * for, instead of dropping to nothing between them, and it hands over at
+       * the moment a heading reaches the top rather than halfway through.
+       */
+      if (!onLanding) return;
+      const line = (headerRef.current?.getBoundingClientRect().height ?? 0) + 24;
+      let current: string | null = null;
+      for (const id of NAV_SECTION_IDS) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= line) current = id;
+      }
+
+      /*
+       * The last section on the page can never satisfy that test: the contact
+       * block sits near the foot of the document, so there is nothing below it
+       * to scroll past and its top stops 600-odd pixels short of the line.
+       * Once the page has bottomed out, the current section is simply the last
+       * tracked one still on screen.
+       */
+      const doc = document.documentElement;
+      if (window.innerHeight + window.scrollY >= doc.scrollHeight - 2) {
+        for (const id of NAV_SECTION_IDS) {
+          const el = document.getElementById(id);
+          if (!el) continue;
+          const r = el.getBoundingClientRect();
+          if (r.top < window.innerHeight && r.bottom > line) current = id;
+        }
+      }
+
+      setSection(current);
     };
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(read);
@@ -57,7 +98,7 @@ export default function SiteHeader() {
       window.removeEventListener("resize", onScroll);
       if (frame) cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [pathname]);
 
   // While the panel is open the page behind it should not scroll, and Escape
   // should always get you out.
@@ -106,29 +147,24 @@ export default function SiteHeader() {
 
           <nav aria-label="Primary">
             <ul className={styles.links}>
-              {NAV_ITEMS.map((item) => (
+              {NAV_ITEMS.map((item) => {
+                const active = isNavItemActive(item, pathname, section);
+                return (
                 <li key={item.href}>
-                  <a
-                    className={`${styles.link} ${item.active ? styles.linkActive : ""}`}
-                    style={
-                      {
-                        "--left": item.left,
-                        /* One baseline for every link. The active one is marked
-                           by its fill and its rule, not by being raised. */
-                        "--baseline": 89.4,
-                      } as React.CSSProperties
-                    }
+                  <Link
+                    className={`${styles.link} ${active ? styles.linkActive : ""}`}
                     href={item.href}
-                    aria-current={item.active ? "page" : undefined}
+                    aria-current={active ? "page" : undefined}
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           </nav>
 
-          <ConsultationButton className={styles.cta} href="#consultation" />
+          <ConsultationButton className={styles.cta} href="/#consultation" />
 
           <button
             className={styles.menuButton}
@@ -157,14 +193,18 @@ export default function SiteHeader() {
           <ul>
             {NAV_ITEMS.map((item, i) => (
               <li key={item.href} style={{ "--i": i } as React.CSSProperties}>
-                <a href={item.href} onClick={close} aria-current={item.active ? "page" : undefined}>
+                <Link
+                  href={item.href}
+                  onClick={close}
+                  aria-current={isNavItemActive(item, pathname, section) ? "page" : undefined}
+                >
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
         </nav>
-        <ConsultationButton className={styles.panelCta} href="#consultation" />
+        <ConsultationButton className={styles.panelCta} href="/#consultation" />
       </div>
 
       <button

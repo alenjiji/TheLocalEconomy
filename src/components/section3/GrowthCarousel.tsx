@@ -2,8 +2,6 @@ import InView from "@/components/motion/InView";
 import PillButton from "@/components/ui/PillButton";
 import styles from "./GrowthCarousel.module.css";
 import {
-  GROWTH_ACTIVE_SLIDE,
-  GROWTH_SLIDE_COUNT,
   GROWTH_SLIDES,
   type InkSpan,
 } from "@/lib/growth";
@@ -26,15 +24,6 @@ function Ink({ spans }: { spans: InkSpan[] }) {
 }
 
 /** The comp's chevrons are a plain two-segment stroke, not an exported asset. */
-function Chevron({ direction }: { direction: "prev" | "next" }) {
-  const d = direction === "prev" ? "M18.44 1 1 18.36 18.44 35.72" : "M1 1 18.44 18.36 1 35.72";
-  return (
-    <svg viewBox="0 0 19.44 36.72" aria-hidden="true" focusable="false">
-      <path d={d} fill="none" stroke="currentColor" strokeWidth="2" />
-    </svg>
-  );
-}
-
 /**
  * Growth carousel, rebuilt 1:1 from `design-source/web_tle.png` with the
  * exports in `public/section2_extend/`.
@@ -111,38 +100,6 @@ export default function GrowthCarousel() {
             />
           </article>
         ))}
-      </div>
-
-      {/* Controls are rendered but inert: the comp advertises seven slides and
-          only three have copy so far. Wire them up when the rest land. They
-          share a wrapper so that, once the gutters disappear below 1280px, the
-          arrows and dots group together under the slides. */}
-      <div className={styles.controls}>
-        <button
-          className={`${styles.arrow} ${styles.arrowPrev}`}
-          type="button"
-          aria-label="Previous slides"
-        >
-          <Chevron direction="prev" />
-        </button>
-
-        <div className={styles.dots} role="group" aria-label="Slides">
-          {Array.from({ length: GROWTH_SLIDE_COUNT }, (_, i) => (
-            <span
-              key={i}
-              className={`${styles.dot} ${i === GROWTH_ACTIVE_SLIDE ? styles.dotActive : ""}`}
-              aria-current={i === GROWTH_ACTIVE_SLIDE ? "true" : undefined}
-            />
-          ))}
-        </div>
-
-        <button
-          className={`${styles.arrow} ${styles.arrowNext}`}
-          type="button"
-          aria-label="Next slides"
-        >
-          <Chevron direction="next" />
-        </button>
       </div>
 
     </InView>

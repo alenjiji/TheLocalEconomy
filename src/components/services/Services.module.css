@@ -1,0 +1,508 @@
+/*
+ * Services.
+ *
+ * Same parts as the rest of the build: the grained ground and its amber eyebrow
+ * over a flourish, the one-piece cyan bubble, a light strip for the sector list,
+ * and the flow section's habit of counting things out with an amber ordinal.
+ * Sizes are in `--u`, the 1440-board unit.
+ */
+
+.inner {
+  width: min(100% - 2 * var(--gutter), calc(1160 * var(--u)));
+  margin: 0 auto;
+}
+
+/* --- Shared heading furniture --------------------------------------------- */
+
+.eyebrow {
+  margin: 0;
+  font-size: calc(27 * var(--u));
+  line-height: 1;
+  font-weight: 600;
+  text-align: center;
+  color: #f5a623;
+}
+
+.flourish {
+  display: block;
+  width: calc(140 * var(--u));
+  height: auto;
+  margin: calc(13 * var(--u)) auto 0;
+  color: #f5a623;
+}
+
+.heading {
+  margin: calc(26 * var(--u)) 0 0;
+  font-size: calc(44 * var(--u));
+  line-height: 1.16;
+  font-weight: 700;
+  text-align: center;
+  color: #ffffff;
+}
+
+.headingLine {
+  display: block;
+}
+
+.cyan {
+  color: #00adee;
+}
+
+.amber {
+  color: #f5a623;
+}
+
+.lede {
+  width: min(100%, calc(880 * var(--u)));
+  margin: calc(28 * var(--u)) auto 0;
+  font-size: calc(20 * var(--u));
+  line-height: calc(30 * var(--u));
+  font-weight: 300;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+/* --- Section 1 ------------------------------------------------------------- */
+
+.opening {
+  position: relative;
+  width: 100%;
+  /* Clears the fixed header, which overlays rather than pushes. */
+  padding: calc(214 * var(--u)) 0 0;
+  background-color: var(--ground);
+  background-image: var(--ground-grain);
+  background-repeat: repeat;
+  overflow: hidden;
+}
+
+/*
+ * Seven into rows of four. A grid would leave the last three ranged against
+ * one edge — there is no way to centre a short final row in one — so this is a
+ * wrapping flex row, which centres whatever is left over on its own.
+ */
+.levers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: calc(20 * var(--u));
+  margin: calc(52 * var(--u)) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lever {
+  flex: 0 1 calc(25% - 0.75 * 20 * var(--u));
+  display: flex;
+  align-items: baseline;
+  gap: calc(12 * var(--u));
+  padding: calc(22 * var(--u)) calc(22 * var(--u)) calc(24 * var(--u));
+  border: max(1px, calc(1 * var(--u))) solid rgba(255, 255, 255, 0.12);
+  border-radius: calc(12 * var(--u));
+  background: #191919;
+  transition:
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 380ms ease;
+}
+
+@media (hover: hover) {
+  .lever:hover {
+    transform: translateY(-5px);
+    border-color: rgba(0, 173, 238, 0.5);
+  }
+}
+
+.leverNumber {
+  flex: 0 0 auto;
+  font-size: calc(19 * var(--u));
+  line-height: 1;
+  font-weight: 500;
+  color: #f5a623;
+}
+
+.leverLabel {
+  font-size: calc(20 * var(--u));
+  line-height: calc(26 * var(--u));
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/*
+ * The bubble straddles the seam, the way the promise bubble does on the landing
+ * page: the negative bottom margin pulls the band below it up so the seam
+ * crosses the body at about its middle, and the tail carries further in.
+ * `z-index` because that band paints a background over anything not positioned
+ * above it.
+ */
+.bubble {
+  position: relative;
+  z-index: 1;
+  width: min(100%, calc(660 * var(--u)));
+  /* The box is the body; the shape behind carries body and tail as one, so
+     174.7 is 221.15 of the export's 261.7 at this width. */
+  height: calc(174.7 * var(--u));
+  margin: calc(72 * var(--u)) auto calc(-87 * var(--u));
+}
+
+.bubbleShape {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  width: 100%;
+  height: 118.33%;
+}
+
+.bubbleQuote {
+  margin: 0;
+  padding: calc(28 * var(--u)) calc(56 * var(--u)) 0;
+}
+
+.bubbleQuote p {
+  margin: 0;
+  font-size: calc(25 * var(--u));
+  line-height: calc(32 * var(--u));
+  font-weight: 500;
+  text-align: center;
+  color: #ffffff;
+}
+
+.bubbleBy {
+  margin: calc(14 * var(--u)) 0 0;
+  font-size: calc(16 * var(--u));
+  line-height: calc(22 * var(--u));
+  font-weight: 300;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+/* --- The sector strip ------------------------------------------------------ */
+
+.sectors {
+  /* No top margin: the bubble's negative one decides where this band begins.
+     The padding clears the half of the bubble, and the tail, hanging over it. */
+  padding: calc(170 * var(--u)) 0 calc(66 * var(--u));
+  background: #edebeb;
+}
+
+.sectorsHeading {
+  margin: 0;
+  font-size: calc(36 * var(--u));
+  line-height: 1.2;
+  font-weight: 700;
+  text-align: center;
+  color: #282727;
+}
+
+.sectorsAccent {
+  color: #0093c9;
+}
+
+.sectorList {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(18 * var(--u));
+  margin: calc(40 * var(--u)) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sector {
+  padding: calc(20 * var(--u)) calc(24 * var(--u));
+  border: max(1px, calc(1 * var(--u))) solid rgba(40, 39, 39, 0.16);
+  border-radius: calc(10 * var(--u));
+  background: #ffffff;
+  font-size: calc(19 * var(--u));
+  line-height: 1.3;
+  font-weight: 500;
+  text-align: center;
+  color: #282727;
+}
+
+/* --- Section 2 ------------------------------------------------------------- */
+
+.journey {
+  position: relative;
+  width: 100%;
+  padding: calc(92 * var(--u)) 0 calc(104 * var(--u));
+  background: #282727;
+}
+
+/*
+ * The reference button, at the size the consultation button uses: 326.4 x 53.76
+ * with a 6.86 radius and a 0.71 edge. It is an anchor rather than the shared
+ * component because the label differs.
+ */
+.cta {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(11 * var(--u));
+  width: max-content;
+  max-width: 100%;
+  height: calc(56 * var(--u));
+  margin: calc(36 * var(--u)) auto 0;
+  padding: 0 calc(30 * var(--u));
+  border: max(1px, calc(0.71 * var(--u))) solid #ffc166;
+  border-radius: calc(6.86 * var(--u));
+  background: #f5a623;
+  color: #282727;
+  font-size: calc(22 * var(--u));
+  font-weight: 600;
+  overflow: hidden;
+  --liquid-reach: calc(760 * var(--u));
+}
+
+.cta svg {
+  width: calc(22 * var(--u));
+  height: calc(22 * var(--u));
+  transition: translate 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) {
+  .cta:hover svg {
+    translate: calc(5 * var(--u)) 0;
+  }
+}
+
+.cta:focus-visible svg {
+  translate: calc(5 * var(--u)) 0;
+}
+
+.approachHeading {
+  margin: calc(78 * var(--u)) 0 0;
+  font-size: calc(28 * var(--u));
+  line-height: 1;
+  font-weight: 700;
+  text-align: center;
+  color: #ffffff;
+}
+
+.approach {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: calc(24 * var(--u));
+  margin: calc(40 * var(--u)) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  padding: calc(30 * var(--u)) calc(26 * var(--u)) calc(32 * var(--u));
+  border-top: max(2px, calc(2 * var(--u))) solid #00adee;
+  border-radius: calc(4 * var(--u));
+  background: #191919;
+}
+
+.stepNumber {
+  display: block;
+  font-size: calc(34 * var(--u));
+  line-height: 1;
+  font-weight: 500;
+  color: #f5a623;
+}
+
+.stepHeading {
+  margin: calc(14 * var(--u)) 0 0;
+  font-size: calc(20 * var(--u));
+  line-height: calc(27 * var(--u));
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.stepBody {
+  margin: calc(12 * var(--u)) 0 0;
+  font-size: calc(16 * var(--u));
+  line-height: calc(25 * var(--u));
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* --- Below the comp -------------------------------------------------------- */
+
+@media (max-width: 1023px) {
+  /*
+   * The measure caps above are in board units, which is right while the board
+   * scales with the page — but below the breakpoint `--u` shrinks faster than
+   * the window does, so those caps become the limit rather than the window.
+   * Below here they are plain lengths.
+   */
+  .inner {
+    width: min(100% - 2 * var(--gutter), 720px);
+  }
+
+  .lede {
+    width: min(100%, 620px);
+  }
+
+  .bubble {
+    width: min(100%, 560px);
+  }
+
+  .opening {
+    padding-top: clamp(104px, 22vw, 214px);
+  }
+
+  .eyebrow {
+    font-size: clamp(19px, 2.6vw, 27px);
+  }
+
+  .flourish {
+    width: clamp(105px, 12vw, 140px);
+  }
+
+  .heading {
+    margin-top: clamp(16px, 3vw, 26px);
+    font-size: clamp(26px, 4.4vw, 44px);
+  }
+
+  .lede {
+    margin-top: clamp(18px, 3vw, 28px);
+    font-size: clamp(15px, 1.9vw, 20px);
+    line-height: 1.55;
+  }
+
+  .levers {
+    gap: clamp(12px, 2.4vw, 20px);
+    margin-top: clamp(32px, 5vw, 52px);
+  }
+
+  .lever {
+    flex: 0 1 calc(50% - clamp(6px, 1.2vw, 10px));
+  }
+
+  .lever {
+    padding: clamp(16px, 3vw, 22px);
+    border-radius: 12px;
+  }
+
+  .leverNumber {
+    font-size: clamp(14px, 1.9vw, 19px);
+  }
+
+  .leverLabel {
+    font-size: clamp(15px, 2vw, 20px);
+    line-height: 1.3;
+  }
+
+  .bubble {
+    height: auto;
+    margin-top: clamp(44px, 7vw, 72px);
+    margin-bottom: clamp(-92px, -12vw, -56px);
+    padding-bottom: clamp(22px, 3.4vw, 30px);
+    border-radius: 16px;
+    background: #00adee;
+  }
+
+  /* The shape would have to stretch to a content-driven height and would
+     distort its own radii, so a rounded box carries the body and the export's
+     radiused tip becomes a fixed-size tail. */
+  .bubbleShape {
+    display: none;
+  }
+
+  .bubble::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    width: 60px;
+    height: 27px;
+    margin-left: -30px;
+    background: #00adee;
+    clip-path: path("M0,0c3.26,.8,6.17,2.76,8.13,5.58l10.42,14.95c5.56,7.98,17.36,7.98,22.91,0l10.42-14.95c1.96-2.82,4.87-4.78,8.13-5.58Z");
+  }
+
+  .bubbleQuote {
+    padding: clamp(22px, 3.6vw, 28px) clamp(22px, 4vw, 56px) 0;
+  }
+
+  .bubbleQuote p {
+    font-size: clamp(17px, 2.3vw, 25px);
+    line-height: 1.3;
+  }
+
+  .bubbleBy {
+    font-size: clamp(13px, 1.6vw, 16px);
+    line-height: 1.4;
+  }
+
+  .sectors {
+    padding: clamp(112px, 21vw, 170px) 0 clamp(40px, 6vw, 66px);
+  }
+
+  .sectorsHeading {
+    font-size: clamp(22px, 3.4vw, 36px);
+  }
+
+  .sectorList {
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(10px, 2vw, 18px);
+    margin-top: clamp(26px, 4vw, 40px);
+  }
+
+  .sector {
+    padding: clamp(14px, 2.4vw, 20px);
+    border-radius: 10px;
+    font-size: clamp(14px, 1.9vw, 19px);
+  }
+
+  .journey {
+    padding: clamp(52px, 8vw, 92px) 0 clamp(56px, 8vw, 104px);
+  }
+
+  .cta {
+    height: 52px;
+    margin-top: clamp(26px, 4vw, 36px);
+    padding: 0 22px;
+    border-radius: 7px;
+    font-size: clamp(16px, 2.1vw, 22px);
+  }
+
+  .cta svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .approachHeading {
+    margin-top: clamp(46px, 8vw, 78px);
+    font-size: clamp(19px, 2.7vw, 28px);
+  }
+
+  .approach {
+    grid-template-columns: 1fr;
+    gap: clamp(14px, 2.6vw, 24px);
+    margin-top: clamp(26px, 4vw, 40px);
+  }
+
+  .step {
+    padding: clamp(20px, 3.4vw, 30px);
+  }
+
+  .stepNumber {
+    font-size: clamp(24px, 3.6vw, 34px);
+  }
+
+  .stepHeading {
+    font-size: clamp(16px, 2.1vw, 20px);
+    line-height: 1.3;
+  }
+
+  .stepBody {
+    font-size: clamp(14px, 1.8vw, 16px);
+    line-height: 1.55;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1023px) {
+  .approach {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lever,
+  .cta svg {
+    transition: none;
+  }
+}

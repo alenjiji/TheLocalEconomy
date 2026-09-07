@@ -13,6 +13,10 @@ export type ProgrammeCard = {
   cta: { href: string; label: string; tone: "amber" | "cyan" };
 };
 
+/*
+ * Every card's CTA lands on the services page: it carries the detail these
+ * three summarise, and there are no per-programme pages to point at yet.
+ */
 export const PROGRAMME_CARDS: ProgrammeCard[] = [
   {
     id: "total-biz-fix",
@@ -20,7 +24,7 @@ export const PROGRAMME_CARDS: ProgrammeCard[] = [
     body: "Your profit, accounts and sales, all cleared up in 30 days. An annual month-by-month programme.",
     bodyWidth: 190,
     cta: {
-      href: "#total-biz-fix",
+      href: "/services",
       label: "Join the Programme",
       tone: "amber",
     },
@@ -31,7 +35,7 @@ export const PROGRAMME_CARDS: ProgrammeCard[] = [
     body: "An online personal diagnostic programme built for Kerala's business owners.",
     bodyWidth: 170,
     cta: {
-      href: "#business-checkup",
+      href: "/services",
       label: "Find your Cure",
       tone: "cyan",
     },
@@ -42,7 +46,7 @@ export const PROGRAMME_CARDS: ProgrammeCard[] = [
     body: "Consult in person with Prasanth Sukumaran for solutions at all stages of your business growth.",
     bodyWidth: 312,
     cta: {
-      href: "#consultancy",
+      href: "/services",
       label: "Go for More",
       tone: "amber",
     },

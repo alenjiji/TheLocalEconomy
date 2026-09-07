@@ -368,26 +368,46 @@
     height: calc(51.47 * var(--u));
   }
 
+  /*
+   * A flow row rather than six measured offsets. The comp positions five links
+   * individually; a sixth cannot be added that way without re-measuring all of
+   * them, and any label edit breaks the spacing again. Anchored at 298 — clear
+   * of the logo, which ends at 237.56 — with the gap set so the row still stops
+   * short of the CTA at 1046.56. Measured, not estimated: at 298/35 the row ran
+   * 4.7 units into the button.
+   *
+   * 89.4 is where the comp puts the glyph baseline; 0.8635em is Inter's ascent
+   * plus half-leading at line-height 1.
+   */
   .links {
     position: absolute;
-    inset: 0;
-    display: block;
+    left: calc(282 * var(--u));
+    top: calc(89.4 * var(--u) - 0.8635em);
+    display: flex;
+    align-items: baseline;
+    gap: calc(32 * var(--u));
     margin: 0;
   }
 
   .link {
-    position: absolute;
-    left: calc(var(--left) * var(--u));
-    /* `--baseline` is where the glyph baseline sits in the comp; 0.8635em is
-       Inter's ascent plus half-leading at line-height 1. */
-    top: calc(var(--baseline) * var(--u) - 0.8635em);
+    position: relative;
     font-size: calc(19.57 * var(--u));
   }
 
-  .linkActive::after {
-    left: calc(0.39 * var(--u));
+  /*
+   * The comp measured this rule against "About Us" and hard-coded the result,
+   * which was fine while five links sat on five measured offsets. With the row
+   * laying itself out and six labels of different lengths, a fixed 84.48 hangs
+   * off the short ones — so the width comes from the link and only the offset
+   * and the hairline weight stay the comp's.
+   *
+   * On `.link`, not `.linkActive`: the hover rule draws the same underline, and
+   * overriding one and not the other gave them two different widths.
+   */
+  .link::after {
+    left: 0;
     top: calc(23.6 * var(--u));
-    width: calc(84.48 * var(--u));
+    width: 100%;
     height: max(1px, calc(0.5 * var(--u)));
   }
 

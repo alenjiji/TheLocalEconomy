@@ -32,6 +32,10 @@ export type GrowthSlide = {
 /** Every slide's icon label wraps at the same measure in the comp. */
 export const LABEL_WIDTH = 140;
 
+/*
+ * Every slide's CTA lands on the services page, for the same reason the
+ * programme cards do — it is where the offer is described in full.
+ */
 export const GROWTH_SLIDES: GrowthSlide[] = [
   {
     id: "transformation",
@@ -51,7 +55,7 @@ export const GROWTH_SLIDES: GrowthSlide[] = [
     body: "Where India's best businesses learn to think, operate, and grow like world-class enterprises.",
     bodyWidth: 316,
     cta: {
-      href: "#business-transformation",
+      href: "/services",
       label: "Join for Business Success",
       tone: "cyan",
     },
@@ -70,7 +74,7 @@ export const GROWTH_SLIDES: GrowthSlide[] = [
     body: "Sales, profit, systems, leadership; we build the complete machinery that takes your business from local to legendary.",
     bodyWidth: 341,
     cta: {
-      href: "#growth-framework",
+      href: "/services",
       label: "Start the Journey",
       tone: "amber",
     },
@@ -92,7 +96,7 @@ export const GROWTH_SLIDES: GrowthSlide[] = [
     body: "We turn busy business owners into confident business leaders with systems, strategy, and lasting growth.",
     bodyWidth: 368,
     cta: {
-      href: "#sme-coaching",
+      href: "/services",
       label: "See What We Do",
       tone: "cyan",
     },

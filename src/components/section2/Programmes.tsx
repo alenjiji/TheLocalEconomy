@@ -31,7 +31,13 @@ export default function Programmes() {
   const [bizFix, checkup, consultancy] = PROGRAMME_CARDS;
 
   return (
-    <InView as="section" className={styles.section} amount={0.12} aria-labelledby="programmes-heading">
+    <InView
+      as="section"
+      id="programmes"
+      className={styles.section}
+      amount={0.12}
+      aria-labelledby="programmes-heading"
+    >
       {/* `display: contents` in comp mode, so the band and heading keep
           positioning against the section; a real block once the layout
           re-flows, so the band can wrap the heading instead. */}

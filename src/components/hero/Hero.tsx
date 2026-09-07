@@ -2,7 +2,6 @@ import InView from "@/components/motion/InView";
 import HeroBackdropMotion from "./HeroBackdropMotion";
 import backdrop from "./HeroBackdrop.module.css";
 import styles from "./Hero.module.css";
-import { HERO_ACTIVE_SLIDE, HERO_SLIDE_COUNT } from "@/lib/design";
 
 /**
  * Top and bottom insets, as percentages of the headline artwork, that isolate
@@ -128,16 +127,6 @@ export default function Hero() {
           />
         </div>
 
-        {/* Static for now — wire to the carousel once the remaining slides land. */}
-        <ul className={styles.dots} aria-label="Hero slides">
-          {Array.from({ length: HERO_SLIDE_COUNT }, (_, i) => (
-            <li
-              key={i}
-              className={`${styles.dot} ${i === HERO_ACTIVE_SLIDE ? styles.dotActive : ""}`}
-              aria-current={i === HERO_ACTIVE_SLIDE ? "true" : undefined}
-            />
-          ))}
-        </ul>
       </div>
     </section>
   );

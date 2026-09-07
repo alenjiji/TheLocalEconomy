@@ -5,6 +5,12 @@ import ConsultationButton from "@/components/ui/ConsultationButton";
 import styles from "./SiteFooter.module.css";
 import { CONTACT_ROWS, DECK_TOP, PROGRAMME_LINKS, QUICK_LINKS } from "@/lib/footer";
 
+/**
+ * Anything that stays on the site routes through `next/link`; a `tel:`,
+ * `mailto:` or another origin leaves it, and has to be a plain anchor.
+ */
+const isInternal = (href: string) => href.startsWith("/");
+
 /** Absolute comp row -> offset from the top of the dark deck, in design units. */
 const row = (y: number) => y - DECK_TOP;
 
@@ -20,7 +26,7 @@ export default function SiteFooter() {
   return (
     <InView as="footer" className={styles.footer} amount={0.15}>
       {/* --- Call to action ------------------------------------------------ */}
-      <div className={styles.cta}>
+      <div className={styles.cta} id="consultation">
         {/* The band paints full-bleed; its contents sit on the centred stage. */}
         <div className={styles.stage}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -33,7 +39,13 @@ export default function SiteFooter() {
             loading="lazy"
             decoding="async"
           />
-        <ConsultationButton className={`${styles.ctaButton} u-rise`} />
+        {/* The one consultation button that must not point at `#consultation`:
+            it lives inside that band, so scrolling to it would do nothing.
+            This is the end of the journey, so it takes the action. */}
+        <ConsultationButton
+          className={`${styles.ctaButton} u-rise`}
+          href="mailto:hello@thelocaleconomy.in?subject=Consultation%20request"
+        />
         </div>
       </div>
 
@@ -67,8 +79,8 @@ export default function SiteFooter() {
           </h2>
           <ul>
             {QUICK_LINKS.map((l) => (
-              <li key={l.href}>
-                <a href={l.href}>{l.label}</a>
+              <li key={l.label}>
+                <Link href={l.href}>{l.label}</Link>
               </li>
             ))}
           </ul>
@@ -80,14 +92,18 @@ export default function SiteFooter() {
           </h2>
           <ul>
             {PROGRAMME_LINKS.map((l) => (
-              <li key={l.href}>
-                <a href={l.href}>{l.label}</a>
+              <li key={l.label}>
+                <Link href={l.href}>{l.label}</Link>
               </li>
             ))}
           </ul>
         </nav>
 
-        <div className={`${styles.column} ${styles.contact} u-rise`} style={{ "--d": 4 } as React.CSSProperties}>
+        <div
+          className={`${styles.column} ${styles.contact} u-rise`}
+          id="contact"
+          style={{ "--d": 4 } as React.CSSProperties}
+        >
           <h2 className={styles.columnHeading}>Contact Us</h2>
           <ul className={styles.contactList}>
             {CONTACT_ROWS.map((c) => (
@@ -109,13 +125,25 @@ export default function SiteFooter() {
             loading="lazy"
             decoding="async"
           />
-                <a
-                  className={styles.contactLink}
-                  href={c.href}
-                  style={{ "--y": row(c.textY) } as React.CSSProperties}
-                >
-                  {c.label}
-                </a>
+                {isInternal(c.href) ? (
+                  <Link
+                    className={styles.contactLink}
+                    href={c.href}
+                    style={{ "--y": row(c.textY) } as React.CSSProperties}
+                  >
+                    {c.label}
+                  </Link>
+                ) : (
+                  <a
+                    className={styles.contactLink}
+                    href={c.href}
+                    target={c.external ? "_blank" : undefined}
+                    rel={c.external ? "noopener noreferrer" : undefined}
+                    style={{ "--y": row(c.textY) } as React.CSSProperties}
+                  >
+                    {c.label}
+                  </a>
+                )}
               </li>
             ))}
           </ul>
@@ -136,9 +164,9 @@ export default function SiteFooter() {
             decoding="async"
           />
         <p className={styles.legal}>
-          <a href="#privacy">Privacy Policy</a>
+          <Link href="/privacy">Privacy Policy</Link>
           <span aria-hidden="true">|</span>
-          <a href="#terms">Terms &amp; Conditions</a>
+          <Link href="/terms">Terms &amp; Conditions</Link>
         </p>
         </div>
       </div>

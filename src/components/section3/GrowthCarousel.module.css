@@ -1,11 +1,15 @@
 /*
  * Growth carousel — offsets in design units off the comp (rows 1780–2272),
  * scaled by `--u` exactly as the sections above it.
+ *
+ * 400 rather than the comp's 492: the arrows and dots that filled the last 170
+ * units advertised slides this build does not have, so they are gone and the
+ * band closes up behind them.
  */
 .section {
   position: relative;
   width: 100%;
-  height: calc(492 * var(--u));
+  height: calc(400 * var(--u));
   background-color: var(--ground);
   background-image: var(--ground-grain);
   background-repeat: repeat;
@@ -178,96 +182,6 @@
   top: calc(282.5 * var(--u));
 }
 
-/* --- Controls ------------------------------------------------------------ */
-
-/* Spans the section so the arrows and dots keep their comp positions; becomes
-   a single flex row once the layout re-flows. */
-.controls {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.controls > * {
-  pointer-events: auto;
-}
-
-.arrow {
-  position: absolute;
-  top: calc(188.28 * var(--u));
-  transform: translateY(-50%);
-  width: calc(19.44 * var(--u));
-  height: calc(36.72 * var(--u));
-  padding: 0;
-  border: 0;
-  background: none;
-  color: #00adee;
-  cursor: pointer;
-  transition:
-    opacity 160ms ease,
-    translate 260ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.arrow svg {
-  width: 100%;
-  height: 100%;
-}
-
-.arrow:hover,
-.arrow:focus-visible {
-  opacity: 0.7;
-}
-
-.arrowPrev:focus-visible {
-  translate: -4px 0;
-}
-
-.arrowNext:focus-visible {
-  translate: 4px 0;
-}
-
-@media (hover: hover) {
-  .arrowPrev:hover {
-    translate: -4px 0;
-  }
-
-  .arrowNext:hover {
-    translate: 4px 0;
-  }
-}
-
-.arrowPrev {
-  left: calc(36.4 * var(--u));
-}
-
-.arrowNext {
-  right: calc(36.08 * var(--u));
-}
-
-.dots {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: calc(360.56 * var(--u));
-  display: flex;
-  justify-content: center;
-  gap: calc(18.22 * var(--u));
-  margin: 0;
-  padding: 0;
-}
-
-.dot {
-  width: calc(9.7 * var(--u));
-  height: calc(9.7 * var(--u));
-  border-radius: 50%;
-  background: #d3d3d3;
-}
-
-.dotActive {
-  background: #00adee;
-}
-
 /* --- Below the comp -----------------------------------------------------
  * Under 1280px the row re-flows to as many slides as fit, each capped at
  * 400px. Every slide becomes a container and derives `--u` from its own
@@ -310,43 +224,4 @@
     --u: calc(100cqw / 379.67);
   }
 
-  /* Controls sit together under the slides once the arrows have no gutter. */
-  /* `relative`, not `static`: the grain is absolutely positioned, so in-flow
-     content would otherwise paint underneath it. */
-  .controls {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-    margin-top: clamp(40px, 6vw, 64px);
-  }
-
-  /* `content-box`, so the padding grows the hit area to 44px square while the
-     chevron itself stays the size the comp draws it. */
-  .arrow {
-    position: static;
-    transform: none;
-    box-sizing: content-box;
-    width: 14px;
-    height: 26px;
-    padding: 9px 15px;
-    flex: 0 0 auto;
-  }
-
-  .arrowPrev,
-  .arrowNext {
-    left: auto;
-    right: auto;
-  }
-
-  .dots {
-    position: static;
-    gap: 14px;
-  }
-
-  .dot {
-    width: 9px;
-    height: 9px;
-  }
 }

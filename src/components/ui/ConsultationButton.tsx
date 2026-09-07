@@ -12,7 +12,8 @@ const ARROW =
  * footer's call to action — the comp draws them identically.
  */
 export default function ConsultationButton({
-  href = "#consultation",
+  /* The footer's call-to-action band. Absolute, so it resolves from any page. */
+  href = "/#consultation",
   className,
 }: {
   href?: string;

@@ -1,0 +1,123 @@
+/*
+ * The legal pages.
+ *
+ * Deliberately plainer than the rest of the build: one column, one measure, and
+ * type sized for reading rather than for display. The ground, the eyebrow and
+ * the flourish are the same as everywhere else so it still belongs to the site.
+ */
+.section {
+  position: relative;
+  width: 100%;
+  /* Clears the fixed header, which overlays rather than pushes. */
+  padding: calc(214 * var(--u)) 0 calc(120 * var(--u));
+  background-color: var(--ground);
+  background-image: var(--ground-grain);
+  background-repeat: repeat;
+  /* A short document should not leave the footer riding up the screen. */
+  min-height: 78vh;
+}
+
+.inner {
+  width: min(100% - 2 * var(--gutter), calc(760 * var(--u)));
+  margin: 0 auto;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: calc(27 * var(--u));
+  line-height: 1;
+  font-weight: 600;
+  text-align: center;
+  color: #f5a623;
+}
+
+.flourish {
+  display: block;
+  width: calc(140 * var(--u));
+  height: auto;
+  margin: calc(13 * var(--u)) auto 0;
+  color: #f5a623;
+}
+
+.heading {
+  margin: calc(26 * var(--u)) 0 0;
+  font-size: calc(44 * var(--u));
+  line-height: 1.16;
+  font-weight: 700;
+  text-align: center;
+  color: #ffffff;
+}
+
+.body {
+  margin-top: calc(44 * var(--u));
+}
+
+.body p {
+  margin: 0;
+  font-size: calc(19 * var(--u));
+  line-height: calc(31 * var(--u));
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.body p + p {
+  margin-top: calc(20 * var(--u));
+}
+
+.body a {
+  color: #00adee;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Marks the page out as provisional without shouting. */
+.notice {
+  margin-top: calc(34 * var(--u));
+  padding: calc(26 * var(--u)) calc(28 * var(--u));
+  border: max(1px, calc(1 * var(--u))) solid rgba(0, 173, 238, 0.42);
+  border-left-width: max(3px, calc(3 * var(--u)));
+  border-radius: calc(12 * var(--u));
+  background: rgba(0, 173, 238, 0.07);
+}
+
+.notice p {
+  color: rgba(255, 255, 255, 0.86);
+}
+
+@media (max-width: 1023px) {
+  .section {
+    padding: clamp(104px, 22vw, 214px) 0 clamp(64px, 12vw, 120px);
+  }
+
+  .inner {
+    width: min(100% - 2 * var(--gutter), 640px);
+  }
+
+  .eyebrow {
+    font-size: clamp(19px, 2.6vw, 27px);
+  }
+
+  .flourish {
+    width: clamp(105px, 12vw, 140px);
+  }
+
+  .heading {
+    margin-top: clamp(16px, 3vw, 26px);
+    font-size: clamp(26px, 4.4vw, 44px);
+  }
+
+  .body {
+    margin-top: clamp(28px, 5vw, 44px);
+  }
+
+  .body p {
+    font-size: clamp(15px, 1.9vw, 19px);
+    line-height: 1.62;
+  }
+
+  .notice {
+    margin-top: clamp(24px, 4vw, 34px);
+    padding: clamp(18px, 3.4vw, 26px);
+    border-radius: 12px;
+  }
+}
