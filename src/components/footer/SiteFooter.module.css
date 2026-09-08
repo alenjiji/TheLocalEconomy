@@ -461,8 +461,16 @@
     height: auto;
   }
 
+  /*
+   * `align-items` matters here: the links carry 11px of vertical padding for
+   * the tap target and the "|" between them does not, so a stretched separator
+   * hangs its glyph at the top of a 35px box, well above the words either side.
+   * The gap has to be a plain length too — 8 board units is 2px on a phone.
+   */
   .legal {
     right: auto;
+    align-items: center;
+    gap: 10px;
     font-size: 13px;
   }
 }
