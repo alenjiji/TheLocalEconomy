@@ -57,8 +57,8 @@ export default function CourseOffer() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Nothing of the film is fetched until this runs — the element carries
-  // `preload="none"` and no poster attribute, so the 21MB never touches a
-  // first page load.
+  // `preload="none"`, so only the poster lands on a first page load, not the
+  // 21MB behind it.
   const play = useCallback(() => {
     const el = videoRef.current;
     if (!el) return;
@@ -80,7 +80,7 @@ export default function CourseOffer() {
         <div className={styles.body}>
           {/* --- Preview ---------------------------------------------------- */}
           <div
-            className={`${styles.preview} ${playing ? styles.playing : ""} u-rise`}
+            className={`${styles.preview} ${COURSE.video.poster ? styles.previewPoster : ""} ${playing ? styles.playing : ""} u-rise`}
             style={{ "--d": 3 } as React.CSSProperties}
           >
             <video
@@ -101,7 +101,10 @@ export default function CourseOffer() {
 
             {/* Sits over the film until it is running, then gets out of the way
                 so the native controls are reachable. */}
-            <div className={styles.previewArt} aria-hidden="true" />
+            <div
+              className={`${styles.previewArt} ${COURSE.video.poster ? styles.previewArtScrim : ""}`}
+              aria-hidden="true"
+            />
             <button
               className={styles.play}
               type="button"

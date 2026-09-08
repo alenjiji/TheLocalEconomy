@@ -15,12 +15,20 @@
   animation: slide-in 460ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+/*
+ * How far the pane travels, as a share of the viewport it slides into.
+ *
+ * 7% is right where a page holds several items and the eye has other things to
+ * follow. It is not right where a page is one full-width card: 7% of a phone's
+ * 323px is 22px, which reads as a fade with a twitch rather than a slide. A
+ * caller sets `--slide-distance` on the viewport to ask for more.
+ */
 .pane[data-dir="next"] {
-  --from: 7%;
+  --from: var(--slide-distance, 7%);
 }
 
 .pane[data-dir="prev"] {
-  --from: -7%;
+  --from: calc(-1 * var(--slide-distance, 7%));
 }
 
 @keyframes slide-in {

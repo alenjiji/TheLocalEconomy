@@ -24,10 +24,15 @@ export const COURSE = {
    * The preview film. 1080x1920, so the frame it sits in is portrait.
    *
    * It is 21MB, so nothing is fetched until someone presses play — see the
-   * `preload="none"` in `CourseOffer`. Drop a poster frame at `poster` and it
-   * replaces the placeholder art behind the play button.
+   * `preload="none"` in `CourseOffer`. The poster is what stands in until then;
+   * with one set, the gradient placeholder becomes a scrim rather than a lid.
    */
-  video: { src: "/course/video-01.webm", poster: "", width: 1080, height: 1920 },
+  video: {
+    src: "/course/video-01.webm",
+    poster: "/course/Course_thumb.jpg",
+    width: 1080,
+    height: 1920,
+  },
 } as const;
 
 /**

@@ -122,6 +122,18 @@
   transition: opacity 300ms ease;
 }
 
+/* Same as the testimonial frame: over a real poster the placeholder becomes a
+   flat wash rather than a lid, and the grain steps back off the photograph.
+   Lighter here — this poster is already a dark portrait with its own caption
+   bar along the bottom, and it only needs the play button lifted off it. */
+.previewArtScrim {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.previewPoster::after {
+  opacity: 0.18;
+}
+
 .playing .previewArt,
 .playing::after,
 .playing .previewLabel {

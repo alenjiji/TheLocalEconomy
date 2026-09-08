@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>The Local Economy</title>
+  <!--
+    The mark from the header lockup: the cyan tile with its serif E.
+
+    Two departures from the lockup, both forced by the size this is seen at.
+    The E is centred — in the lockup it sits hard right in the tile, against the
+    wordmark that follows it, and that offset reads as a misalignment once the
+    wordmark is gone. And it is set at 84% of the tile rather than the
+    lockup's 73%, because the arms of a Didone E are hairlines: at 16px the
+    smaller setting broke into disconnected specks.
+  -->
+  <rect width="64" height="64" fill="#00adee"/>
+  <g id="mark" transform="translate(-9.069 -4.674) scale(1.4340)" fill="#fff">
+    <path d="M33.95,10.83c.75.88,1.34,1.78,1.76,2.71.42.93.72,1.69.9,2.29h.68V6.83h-17.3v.74h6.67c1.72,0,3.18.33,4.37.97,1.19.65,2.17,1.41,2.92,2.29Z"/>
+    <path d="M33.95,40.32c.75-.88,1.34-1.78,1.76-2.71.42-.93.72-1.69.9-2.29h.68v9h-17.3v-.74h6.67c1.72,0,3.18-.33,4.37-.97,1.19-.65,2.17-1.41,2.92-2.29Z"/>
+    <path d="M24.89,25.21c.82.42,1.52.99,2.08,1.71.56.72,1.01,1.55,1.34,2.5.33.95.62,1.93.87,2.95h.68V15.99h-.68c-.25,1.19-.56,2.27-.95,3.24-.39.97-.88,1.79-1.47,2.48-.6.68-1.34,1.21-2.24,1.58-.9.37-1.99.55-3.29.55h-1.24v.74h1.82c1.23,0,2.26.21,3.08.63Z"/>
+  </g>
+</svg>

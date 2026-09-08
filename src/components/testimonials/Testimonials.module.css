@@ -116,12 +116,15 @@
   /* Each card lands a beat after the one before it. */
   animation: card-in 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: calc(var(--i, 0) * 90ms);
+  --card-rise: calc(18 * var(--u));
 }
 
 @keyframes card-in {
   from {
     opacity: 0;
-    translate: 0 calc(18 * var(--u));
+    /* Through a variable so the phone can keep a real distance: 18 board units
+       is 5px at 412 wide, which is not a move anybody sees. */
+    translate: 0 var(--card-rise, 18px);
   }
   to {
     opacity: 1;
@@ -176,6 +179,31 @@
   transition: opacity 300ms ease;
 }
 
+/*
+ * With a poster frame behind it, the stand-in stops standing in.
+ *
+ * It is painted over the <video>, so left as an opaque gradient it would simply
+ * hide the poster. It becomes a wash instead — flat and shallow, because the
+ * three posters are not alike: two are white title cards and one is a dark
+ * portrait, and anything shaped (a vignette, a bottom lift) that flatters one
+ * fights the other. A flat 9% settles the white cards off the light band they
+ * sit on and gives the cyan play button something to stand against, without
+ * touching the dark one. The grain drops back for the same reason: at full
+ * strength it reads as dirt on a photograph rather than texture.
+ */
+.frameArtScrim {
+  background: rgba(0, 0, 0, 0.09);
+}
+
+.framePoster::after {
+  opacity: 0.18;
+}
+
+/* Without a poster there is nothing to avoid, so the button returns to centre. */
+.frame:not(.framePoster) .play {
+  --play-y: 50%;
+}
+
 .playing .frameArt,
 .playing .frame::after,
 .playing .play {
@@ -183,10 +211,23 @@
   pointer-events: none;
 }
 
+/*
+ * Sits low, not dead centre.
+ *
+ * The three posters are title cards: the name and the company mark occupy the
+ * upper two thirds and the bottom is empty. Measured off the files, the ink
+ * stops at 62% of the height on one and 68.5% on the other, so a button centred
+ * at 50% lands squarely on the logo — which is the one thing the card is there
+ * to show. `--play-y` drops it into the clear band below that instead; the
+ * frame is 9:16 and the button is about 15% of its height, so 82% clears both
+ * with room to spare. Raise it back to 50% if the posters ever change to
+ * full-bleed photographs, where a centred button is the right call.
+ */
 .play {
+  --play-y: 82%;
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: var(--play-y);
   width: calc(127 * var(--u));
   height: calc(127 * var(--u));
   margin: calc(-63.5 * var(--u)) 0 0 calc(-63.5 * var(--u));
@@ -392,6 +433,19 @@
     gap: clamp(16px, 3vw, 64px);
   }
 
+  /*
+   * One card to a page below 640, so the turn is the whole picture moving and
+   * it should read that way. Above that the page still holds two and the comp's
+   * gentler 7% is right, so the distance is only raised where it has to be.
+   */
+  .deck {
+    --slide-distance: 22%;
+  }
+
+  .card {
+    --card-rise: 16px;
+  }
+
   .arrow {
     width: clamp(14px, 2.4vw, 24px);
     height: clamp(26px, 4.6vw, 46px);
@@ -457,6 +511,10 @@
 
   .reel {
     gap: 10px;
+  }
+
+  .deck {
+    --slide-distance: 92%;
   }
 }
 

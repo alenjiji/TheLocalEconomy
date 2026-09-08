@@ -37,7 +37,10 @@ export type Testimonial = {
    * is recent and partial, so this is what actually plays on an older iPhone.
    */
   srcMp4?: string;
-  /** Optional poster frame; the placeholder art shows without one. */
+  /**
+   * Poster frame, shown until the film is played. Without one the gradient
+   * placeholder stands in; with one it steps back to a scrim over the picture.
+   */
   poster: string;
 };
 
@@ -50,7 +53,7 @@ export const TESTIMONIALS: Testimonial[] = [
     motto: "Definitely for nature",
     src: "/testimonials/video/local_economy_portrait.webm",
     srcMp4: "/testimonials/video/local_economy_portrait.mp4",
-    poster: "",
+    poster: "/testimonials/video/auto_grade_thumb.jpg",
   },
   {
     id: "nirappil",
@@ -59,7 +62,7 @@ export const TESTIMONIALS: Testimonial[] = [
     company: "Nirappil Group",
     src: "/testimonials/video/2nd_content9_x16.webm",
     srcMp4: "/testimonials/video/2nd_content9_x16.mp4",
-    poster: "",
+    poster: "/testimonials/video/nirappil_thumb.jpg",
   },
 ];
 

@@ -103,7 +103,7 @@ function StoryCard({
       className={`${styles.card} ${playing ? styles.playing : ""}`}
       style={{ "--i": index } as React.CSSProperties}
     >
-      <div className={styles.frame}>
+      <div className={`${styles.frame} ${story.poster ? styles.framePoster : ""}`}>
         {/*
          * Sources rather than one `src`, so the browser can pass on a container
          * it cannot decode instead of failing the whole element. WebM first for
@@ -124,7 +124,12 @@ function StoryCard({
           {story.src ? <source src={story.src} type="video/webm" /> : null}
           {story.srcMp4 ? <source src={story.srcMp4} type="video/mp4" /> : null}
         </video>
-        <div className={styles.frameArt} aria-hidden="true" />
+        {/* The stand-in, or — over a real poster — the scrim that keeps the
+            play button legible against the photograph. */}
+        <div
+          className={`${styles.frameArt} ${story.poster ? styles.frameArtScrim : ""}`}
+          aria-hidden="true"
+        />
         <button
           className={styles.play}
           type="button"

@@ -21,6 +21,27 @@ export const metadata: Metadata = {
   title: "The Local Economy",
   description:
     "Total transformation of your business with our one-month programme.",
+  /*
+   * The tab icon is the mark from the header lockup — the cyan tile and its
+   * serif E — adapted for the size it is seen at. See public/favicon.svg.
+   *
+   * Declared here rather than through the app/icon.* file convention because
+   * this build is a static export and these are plain files in /public: what
+   * is written here is exactly what ships, with no generated hash in the URL.
+   *
+   * The SVG is what almost every browser will take, and it stays sharp at any
+   * density. The PNG is there for the ones that will not read an SVG icon, and
+   * favicon.ico answers the request browsers make on their own for /favicon.ico
+   * before they have parsed any of this.
+   */
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-96.png", type: "image/png", sizes: "96x96" },
+      { url: "/favicon.ico", sizes: "16x16 32x32 48x48" },
+    ],
+    apple: { url: "/apple-touch-icon.png", sizes: "180x180" },
+  },
 };
 
 export default function RootLayout({
