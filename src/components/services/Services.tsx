@@ -5,9 +5,9 @@ import styles from "./Services.module.css";
 import { APPROACH, LEVERS, SECTORS } from "@/lib/services";
 
 /** The dip-and-rise rule the build repeats under every section eyebrow. */
-function Flourish({ className }: { className?: string }) {
+function Flourish({ className, style }: { className?: string; style?: React.CSSProperties }) {
   return (
-    <svg className={className} viewBox="0 0 182.36 10.08" aria-hidden="true">
+    <svg className={className} style={style} viewBox="0 0 182.36 10.08" aria-hidden="true">
       <path
         d="M182.36.5h-78.46c-1.14,0-2.23.45-3.03,1.26l-6.57,6.57c-1.68,1.68-4.39,1.68-6.07,0l-6.57-6.57c-.8-.8-1.9-1.26-3.03-1.26H0"
         fill="none"
@@ -148,15 +148,50 @@ function GrowthJourney() {
         <h3 className={`${styles.approachHeading} u-rise`} style={{ "--d": 4 } as React.CSSProperties}>
           Know Our Approach
         </h3>
+        <Flourish
+          className={`${styles.flourish} ${styles.approachFlourish} u-rise`}
+          style={{ "--d": 4 } as React.CSSProperties}
+        />
 
+        {/*
+         * Four drawings on one line, linked by the exported cyan connector, with
+         * the ordinal and copy ranged left under each. The list is a four-row
+         * grid and every step is a subgrid of it, so drawing, ordinal, heading
+         * and body line up across the columns however the headings wrap.
+         */}
         <ol className={styles.approach}>
           {APPROACH.map((step, i) => (
             <li
               key={step.id}
               className={`${styles.step} u-rise`}
-              style={{ "--d": i + 5 } as React.CSSProperties}
+              style={{ "--d": i + 5, "--vbw": step.iconWidth } as React.CSSProperties}
             >
-              <span className={styles.stepNumber}>{i + 1}.</span>
+              <span className={styles.stepIcon}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  className={styles.stepArt}
+                  src={step.icon}
+                  alt=""
+                  width={step.iconWidth}
+                  height={step.iconHeight}
+                  loading="lazy"
+                  decoding="async"
+                />
+                {i < APPROACH.length - 1 ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    className={styles.stepLink}
+                    src="/our_services/web/connect.svg"
+                    alt=""
+                    width={173.25}
+                    height={41.39}
+                    aria-hidden="true"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : null}
+              </span>
+              <span className={styles.stepNumber}>{two(i)}.</span>
               <h4 className={styles.stepHeading}>{step.heading}</h4>
               <p className={styles.stepBody}>{step.body}</p>
             </li>

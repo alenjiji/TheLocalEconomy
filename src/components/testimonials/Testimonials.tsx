@@ -51,7 +51,11 @@ function Chevron({ back }: { back?: boolean }) {
  *
  * It also pauses on the way out. An unmounted element that is still decoding
  * can hold the decoder on a phone, which is enough to make the next film
- * refuse to start — the shape of the bug reported on mobile.
+ * refuse to start.
+ *
+ * What was actually stopping the second film on a phone, though, was the file:
+ * it was VP9 Profile 3 — 10-bit, 4:2:2 — which no phone decodes. See the note
+ * on `src` in lib/testimonials.
  */
 function StoryCard({
   story,
@@ -86,13 +90,13 @@ function StoryCard({
 
   const start = useCallback(() => {
     const el = videoRef.current;
-    if (!el || !story.src) return;
+    if (!el || !(story.src || story.srcMp4)) return;
     onPlay();
     // `preload="none"` means there may be nothing to play yet; asking for the
     // load inside the gesture is what keeps mobile from refusing it.
     if (el.readyState === 0) el.load();
     void el.play().catch(() => onStop());
-  }, [onPlay, onStop, story.src]);
+  }, [onPlay, onStop, story.src, story.srcMp4]);
 
   return (
     <li
@@ -100,10 +104,14 @@ function StoryCard({
       style={{ "--i": index } as React.CSSProperties}
     >
       <div className={styles.frame}>
+        {/*
+         * Sources rather than one `src`, so the browser can pass on a container
+         * it cannot decode instead of failing the whole element. WebM first for
+         * the size; the H.264 MP4 is what Safari actually takes.
+         */}
         <video
           className={styles.video}
           ref={videoRef}
-          src={story.src || undefined}
           poster={story.poster || undefined}
           preload="none"
           playsInline
@@ -111,7 +119,11 @@ function StoryCard({
           data-cursor="native"
           onPause={onStop}
           onEnded={onStop}
-        />
+          onError={onStop}
+        >
+          {story.src ? <source src={story.src} type="video/webm" /> : null}
+          {story.srcMp4 ? <source src={story.srcMp4} type="video/mp4" /> : null}
+        </video>
         <div className={styles.frameArt} aria-hidden="true" />
         <button
           className={styles.play}

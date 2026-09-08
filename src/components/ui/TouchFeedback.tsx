@@ -54,11 +54,23 @@ export default function TouchFeedback() {
       ripple.style.top = `${e.clientY - box.top}px`;
       ripple.style.width = ripple.style.height = `${reach * 2}px`;
 
-      // The host has to clip and position the ripple; both are restored after.
+      // The host has to clip and position the ripple; all of it is restored after.
       const host = el;
       const prevPosition = host.style.position;
       const prevOverflow = host.style.overflow;
-      if (getComputedStyle(host).position === "static") host.style.position = "relative";
+      const prevInset = host.style.inset;
+      if (getComputedStyle(host).position === "static") {
+        host.style.position = "relative";
+        /*
+         * A static box ignores `top`/`left`, so a stylesheet can leave them
+         * declared for another breakpoint and they lie dormant. Promoting the
+         * box wakes them: the footer's contact links carry the desktop comp's
+         * offsets and jumped 23px on every tap, then snapped back when this was
+         * undone. Pinning the offsets makes the promotion purely a positioning
+         * context, which is all the ripple needs it for.
+         */
+        host.style.inset = "auto";
+      }
       if (getComputedStyle(host).overflow === "visible") host.style.overflow = "hidden";
 
       host.appendChild(ripple);
@@ -67,6 +79,7 @@ export default function TouchFeedback() {
         if (!host.querySelector("." + styles.ripple)) {
           host.style.position = prevPosition;
           host.style.overflow = prevOverflow;
+          host.style.inset = prevInset;
         }
       };
       ripple.addEventListener("animationend", done, { once: true });

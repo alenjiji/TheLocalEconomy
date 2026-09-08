@@ -22,8 +22,21 @@ export type Testimonial = {
   company: string;
   /** Optional line under the company; only rendered when present. */
   motto?: string;
-  /** Public path to the film. Empty falls back to the placeholder frame. */
+  /**
+   * Public path to the WebM. Empty falls back to the placeholder frame.
+   *
+   * It must be VP9 **Profile 0** — 8-bit, 4:2:0. Phones only decode Profile 0
+   * (and, on recent chips, Profile 2); a Profile 3 file — 10-bit 4:2:2, which
+   * is what an editing timeline exports by default — plays on a desktop through
+   * a software decoder and silently refuses on every phone. Check a new film
+   * with `ffprobe -show_entries stream=profile,pix_fmt <file>` before adding it.
+   */
   src: string;
+  /**
+   * H.264 MP4 of the same film, offered after the WebM. Safari's WebM support
+   * is recent and partial, so this is what actually plays on an older iPhone.
+   */
+  srcMp4?: string;
   /** Optional poster frame; the placeholder art shows without one. */
   poster: string;
 };
@@ -36,6 +49,7 @@ export const TESTIMONIALS: Testimonial[] = [
     company: "Auto Grade",
     motto: "Definitely for nature",
     src: "/testimonials/video/local_economy_portrait.webm",
+    srcMp4: "/testimonials/video/local_economy_portrait.mp4",
     poster: "",
   },
   {
@@ -44,6 +58,7 @@ export const TESTIMONIALS: Testimonial[] = [
     role: "CEO",
     company: "Nirappil Group",
     src: "/testimonials/video/2nd_content9_x16.webm",
+    srcMp4: "/testimonials/video/2nd_content9_x16.mp4",
     poster: "",
   },
 ];

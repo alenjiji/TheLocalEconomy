@@ -333,6 +333,12 @@
   .logoLink,
   .logo,
   .tagline,
+  /*
+   * `inset: auto` as well as `position: static`. A static box ignores the comp
+   * offsets above, so leaving them declared looks harmless — until something
+   * gives the box a position, at which point they take effect. That is what
+   * made the contact links jump when the tap ripple promoted them.
+   */
   .column,
   .columnHeading,
   .contactIcon,
@@ -340,6 +346,7 @@
   .copyright,
   .legal {
     position: static;
+    inset: auto;
   }
 
   .logoLink {
