@@ -4,9 +4,18 @@
  * in the component.
  */
 .footer {
+  /*
+   * What the real postal address costs the deck, in design units.
+   *
+   * The comp drew a one-line address, so every offset below it was measured
+   * against a 15-unit row. The address is five lines now — 5 x 13.6 x 1.32,
+   * which is 89.8 — so everything under the contact column moves down by the
+   * difference, and so does the footer itself. One number, one place.
+   */
+  --contact-extra: 75;
   position: relative;
   width: 100%;
-  height: calc(408.7 * var(--u));
+  height: calc(408.7 * var(--u) + var(--contact-extra) * var(--u));
   background: #191919;
   overflow: hidden;
 }
@@ -103,12 +112,13 @@
   color: #848484;
 }
 
+/* The rules divide the link band, so they grow with the tallest column in it. */
 .rule {
   position: absolute;
   left: calc(var(--x) * var(--u));
   top: calc(51.12 * var(--u));
   width: max(1px, calc(1 * var(--u)));
-  height: calc(164.4 * var(--u));
+  height: calc(164.4 * var(--u) + var(--contact-extra) * var(--u));
   background: rgba(255, 255, 255, 0.1);
 }
 
@@ -195,34 +205,76 @@
   margin-top: calc(13 * var(--u));
 }
 
+/*
+ * Pulled left off the comp's 1137 to the 49.9-unit gap the programmes column
+ * keeps from its own rule, which is the widest this column can be without
+ * crowding the divider. The postal address needs every unit of it.
+ */
 .contact {
-  left: calc(1137 * var(--u));
+  left: calc(1129 * var(--u));
 }
 
-/* The comp does not pitch the contact rows evenly, so each carries its own. */
+/*
+ * The comp fixes each row at its own offset, which held while every row was
+ * one short line. The real address is five, so the column flows: the pitch is
+ * a gap rather than a number per row, and whatever follows the address is
+ * carried down by it.
+ */
 .contactList {
-  position: static;
+  position: absolute;
+  left: 0;
+  /* Comp row 5412, the first line's cap top, less the 2.1 the type sits low
+     inside its own box. */
+  top: calc(89.5 * var(--u));
+  display: grid;
+  grid-template-columns: calc(28 * var(--u)) 1fr;
+  /* The comp pitches rows 38 apart and each single line is 15 tall. */
+  row-gap: calc(23 * var(--u));
+  /* Out to the same right margin the legal line keeps. */
+  width: calc(230.2 * var(--u));
 }
 
+/* The icon and the text are the row; the <li> is only there for the list. */
 .contactList li {
-  position: static;
+  display: contents;
 }
 
 .contactIcon {
-  position: absolute;
-  left: 0;
-  top: calc(var(--y) * var(--u));
+  position: static;
+  align-self: start;
   width: calc(var(--w) * var(--u));
   height: calc(var(--h) * var(--u));
+  /* Every mark is a different height and was optically placed against its
+     line in the comp; this is that placement, relative to the text box. */
+  margin-top: calc((2.1 - var(--lift)) * var(--u));
 }
 
 .contactLink {
-  position: absolute;
-  left: calc(28 * var(--u));
-  top: calc((var(--y) - 2.1) * var(--u));
+  position: static;
   font-size: calc(15 * var(--u));
   line-height: 1;
   white-space: nowrap;
+}
+
+/*
+ * The address. A size down — the convention for a postal block, and what lets
+ * the longest component sit on one line — with the lines set as a grid so the
+ * leading is ours rather than the strut's.
+ */
+/*
+ * Two classes, because `.column a` further up sets `display` on every link in
+ * the deck and a single class only ties with it on specificity — which the
+ * type selector then breaks the other way.
+ */
+.contactLink.contactBlock {
+  display: block;
+  font-size: calc(13.6 * var(--u));
+  line-height: 1.32;
+  white-space: nowrap;
+}
+
+.contactLine {
+  display: block;
 }
 
 /* --- Base line ---------------------------------------------------------------- */
@@ -236,7 +288,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(241.12 * var(--u));
+  top: calc(241.12 * var(--u) + var(--contact-extra) * var(--u));
   height: max(1px, calc(0.5 * var(--u)));
   background: rgba(255, 255, 255, 0.18);
 }
@@ -244,7 +296,7 @@
 .copyright {
   position: absolute;
   left: calc(80.64 * var(--u));
-  top: calc(256.32 * var(--u));
+  top: calc(256.32 * var(--u) + var(--contact-extra) * var(--u));
   width: calc(300.16 * var(--u));
   height: calc(12.63 * var(--u));
 }
@@ -252,7 +304,7 @@
 .legal {
   position: absolute;
   right: calc(80.8 * var(--u));
-  top: calc(254.82 * var(--u));
+  top: calc(254.82 * var(--u) + var(--contact-extra) * var(--u));
   display: flex;
   gap: calc(8 * var(--u));
   margin: 0;
@@ -278,6 +330,7 @@
  */
 @media (max-width: 1279px) {
   .footer {
+    --contact-extra: 0;
     height: auto;
   }
 
@@ -413,15 +466,44 @@
     gap: 16px;
   }
 
+  /* Comp-positioned at desktop; here the whole column flows with the deck. */
+  .contactList {
+    position: static;
+    inset: auto;
+    width: auto;
+    grid-template-columns: none;
+    row-gap: 16px;
+  }
+
   .contactList li {
     display: flex;
     align-items: center;
     gap: 12px;
   }
 
+  /* A five-line address sits against its pin rather than centred on it. */
+  .contactAddress {
+    align-items: flex-start !important;
+  }
+
+  .contactAddress .contactIcon {
+    margin-top: 14px;
+  }
+
+  /* Matching the desktop rule's two classes, or that one keeps the `--u` size
+     and the address renders at four pixels on a phone. */
+  .contactLink.contactBlock {
+    font-size: 14px;
+    line-height: 1.5;
+    /* Room to wrap again: the hand-set breaks suit a 230-unit column, not a
+       phone held in portrait. */
+    white-space: normal;
+  }
+
   .contactIcon {
     width: calc(var(--w) * 1px);
     height: calc(var(--h) * 1px);
+    margin-top: 0;
     flex: 0 0 auto;
   }
 

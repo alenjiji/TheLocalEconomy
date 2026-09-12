@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import InView from "@/components/motion/InView";
 import SlideDeck from "@/components/motion/SlideDeck";
+import WrittenStory from "./WrittenStory";
 import styles from "./Testimonials.module.css";
 import {
   TESTIMONIALS,
@@ -243,6 +244,9 @@ export default function Testimonials() {
           width={1084}
           height={39}
         />
+
+        {/* The letter first, then the films. */}
+        <WrittenStory />
 
         <div className={`${styles.reel} u-rise`} style={{ "--d": 3 } as React.CSSProperties}>
           <button

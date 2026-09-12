@@ -1,0 +1,394 @@
+/*
+ * The featured written testimonial.
+ *
+ * One dark panel above the film reel, built from the reel card's own parts —
+ * the same #282727 ground, the same grain, the same 26-unit radius — so the
+ * letter and the films read as one section. Offsets are in design units and
+ * scale with `--u`, as everywhere else on the page.
+ */
+.feature {
+  position: relative;
+  display: grid;
+  grid-template-columns: calc(380 * var(--u)) 1fr;
+  grid-template-rows: 1fr auto;
+  width: min(100%, calc(1180 * var(--u)));
+  margin: calc(52 * var(--u)) auto calc(4 * var(--u));
+  border-radius: calc(26 * var(--u));
+  background: #282727;
+  text-align: left;
+  overflow: hidden;
+  /* The panel sits on a light ground and has to lift off it. */
+  box-shadow: 0 calc(18 * var(--u)) calc(46 * var(--u)) rgba(40, 39, 39, 0.16);
+}
+
+/* The grain the reel cards carry, at half strength: this is a far larger
+   surface and the texture reads as dirt long before it reads as paper. */
+.feature::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/section_2/grain.png");
+  background-repeat: repeat;
+  opacity: 0.22;
+  pointer-events: none;
+}
+
+/* Panel entrance ----------------------------------------------------------- */
+
+:global(.js) .feature {
+  opacity: 0;
+  translate: 0 calc(26 * var(--u));
+  transition:
+    opacity 760ms ease,
+    translate 760ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.feature[data-inview="true"] {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* Portrait ------------------------------------------------------------------ */
+
+.portraitCol {
+  position: relative;
+  grid-column: 1;
+  grid-row: 1 / 3;
+  /* The quote sets the panel's height; the picture takes whatever that is. */
+  overflow: hidden;
+}
+
+/*
+ * The frame is what moves, not the image.
+ *
+ * Leaning the <img> itself would fight the reveal, which animates the same
+ * element's scale — so the pointer gets the wrapper and the entrance gets the
+ * picture, and the two compose instead of overwriting each other.
+ */
+.portraitFrame {
+  position: absolute;
+  inset: 0;
+  /* Room for the lean, so no edge of the panel is ever exposed by it. */
+  margin: calc(-14 * var(--u));
+  translate: calc(var(--px, 0) * 9px) calc(var(--py, 0) * 9px);
+  transition: translate 620ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portrait {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Holds the face as the panel's height changes: he sits left of centre and
+     high in the frame. */
+  object-position: 44% 18%;
+}
+
+:global(.js) .portrait {
+  /* Wiped up from the foot, and settling out of a slow push in. */
+  clip-path: inset(0 0 100% 0);
+  scale: 1.1;
+  transition:
+    clip-path 1080ms cubic-bezier(0.22, 1, 0.36, 1) 120ms,
+    scale 1600ms cubic-bezier(0.22, 1, 0.36, 1) 120ms;
+}
+
+.feature[data-inview="true"] .portrait {
+  clip-path: inset(0 0 0 0);
+  scale: 1;
+}
+
+/*
+ * The seam.
+ *
+ * A hard vertical cut between a photograph and a flat panel looks like a
+ * collage. This is the panel's own colour brought back over the edge of the
+ * picture, plus the amber the section uses for emphasis laid along the foot,
+ * which ties the crop to the quote beside it.
+ */
+.portraitWash {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent 62%, rgba(40, 39, 39, 0.55) 100%),
+    linear-gradient(0deg, rgba(245, 166, 35, 0.16) 0%, transparent 34%);
+  pointer-events: none;
+}
+
+/* Quote --------------------------------------------------------------------- */
+
+.quote {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+  padding: calc(56 * var(--u)) calc(60 * var(--u)) 0;
+}
+
+.glyphs {
+  display: block;
+  width: calc(53.58 * var(--u));
+  height: auto;
+  color: #f5a623;
+}
+
+.glyph {
+  transform-origin: 50% 100%;
+}
+
+:global(.js) .glyph {
+  opacity: 0;
+  scale: 0.4;
+  transition:
+    opacity 460ms ease,
+    scale 620ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.glyphSecond {
+  transition-delay: 110ms;
+}
+
+.feature[data-inview="true"] .glyph {
+  opacity: 1;
+  scale: 1;
+}
+
+.body {
+  display: grid;
+  gap: calc(18 * var(--u));
+  margin-top: calc(26 * var(--u));
+}
+
+.paragraph {
+  margin: 0;
+  font-size: calc(18 * var(--u));
+  line-height: 1.66;
+  font-weight: 300;
+  color: #dcd9d7;
+  /* Per-word spans put an end to automatic hyphenation, so the wrap wants all
+     the help it can get. */
+  text-wrap: pretty;
+}
+
+/*
+ * One word at a time.
+ *
+ * `inline-block` is what lets a word be moved at all, and it is also why the
+ * spaces are separate text nodes in the markup — an `inline-block` eats the
+ * whitespace it contains.
+ */
+.word {
+  display: inline-block;
+}
+
+:global(.js) .word {
+  opacity: 0;
+  translate: 0 calc(9 * var(--u));
+  transition:
+    opacity 420ms ease,
+    translate 520ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.feature[data-inview="true"] .word {
+  opacity: 1;
+  translate: 0 0;
+  /* The panel and the quote mark go first; the letter reads itself out after,
+     each word on the delay the component worked out for it. */
+  transition-delay: calc(340ms + var(--wd, 0ms));
+}
+
+/* The one phrase in each paragraph that carries it. */
+.mark {
+  font-weight: 500;
+  color: #f7b53f;
+}
+
+/* Attribution ---------------------------------------------------------------- */
+
+.attribution {
+  grid-column: 2;
+  grid-row: 2;
+  display: grid;
+  gap: calc(5 * var(--u));
+  padding: calc(30 * var(--u)) calc(60 * var(--u)) calc(52 * var(--u));
+}
+
+.rule {
+  width: calc(62 * var(--u));
+  height: max(2px, calc(2.6 * var(--u)));
+  margin-bottom: calc(16 * var(--u));
+  background: #f5a623;
+  transform-origin: 0 50%;
+}
+
+:global(.js) .rule {
+  scale: 0 1;
+  transition: scale 620ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.feature[data-inview="true"] .rule {
+  scale: 1 1;
+  /* After the last word has landed. */
+  transition-delay: 2300ms;
+}
+
+.name {
+  font-size: calc(23 * var(--u));
+  line-height: 1.2;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.role {
+  font-size: calc(17 * var(--u));
+  line-height: 1.2;
+  font-weight: 500;
+  color: #4cc5f4;
+}
+
+:global(.js) .name,
+:global(.js) .role {
+  opacity: 0;
+  translate: 0 calc(10 * var(--u));
+  transition:
+    opacity 520ms ease,
+    translate 620ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.feature[data-inview="true"] .name {
+  opacity: 1;
+  translate: 0 0;
+  transition-delay: 2420ms;
+}
+
+.feature[data-inview="true"] .role {
+  opacity: 1;
+  translate: 0 0;
+  transition-delay: 2520ms;
+}
+
+/* --- Below the comp --------------------------------------------------------
+ * This panel leaves the design unit earlier than the rest of the section, at
+ * 1200 rather than 1023, because it is the only running text on the page: 18
+ * units is 12.8px at 1023, which is a caption, not a paragraph somebody is
+ * going to read. Every clamp below is set so its value at 1200 is exactly what
+ * `--u` gives there, and the two rules meet without a step.
+ */
+@media (max-width: 1199px) {
+  .feature {
+    grid-template-columns: clamp(232px, 26.4vw, 340px) 1fr;
+    /*
+     * 983px is what 1180 design units comes to at 1200, so the panel is the
+     * same width either side of the breakpoint instead of jumping 120px wider
+     * the moment the rule changes. Below about 1070 the section's own width is
+     * the smaller of the two and the panel simply fills it.
+     */
+    width: min(100%, 983px);
+    margin: clamp(30px, 3.6vw, 52px) auto clamp(2px, 0.28vw, 4px);
+    border-radius: clamp(14px, 1.8vw, 26px);
+  }
+
+  .quote {
+    padding: clamp(26px, 3.9vw, 56px) clamp(24px, 4.17vw, 60px) 0;
+  }
+
+  .glyphs {
+    width: clamp(30px, 3.72vw, 54px);
+  }
+
+  .body {
+    gap: clamp(12px, 1.25vw, 18px);
+    margin-top: clamp(16px, 1.8vw, 26px);
+  }
+
+  .paragraph {
+    font-size: clamp(14px, 1.25vw, 18px);
+    line-height: 1.6;
+  }
+
+  .word {
+    translate: 0 6px;
+  }
+
+  .attribution {
+    gap: 4px;
+    padding: clamp(18px, 2.08vw, 30px) clamp(24px, 4.17vw, 60px) clamp(26px, 3.6vw, 52px);
+  }
+
+  .rule {
+    width: clamp(38px, 4.3vw, 62px);
+    height: 2px;
+    margin-bottom: clamp(10px, 1.11vw, 16px);
+  }
+
+  .name {
+    font-size: clamp(16px, 1.6vw, 23px);
+  }
+
+  .role {
+    font-size: clamp(13px, 1.18vw, 17px);
+  }
+}
+
+/*
+ * Stacked.
+ *
+ * A 232px column beside a measure is the narrowest two columns can usefully
+ * be; below that the picture goes over the top as a band. 4:3 keeps enough of
+ * the room behind him to still read as a portrait rather than a crop of a
+ * face, and the wash turns through 90 degrees to become the join.
+ */
+@media (max-width: 719px) {
+  .feature {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  .portraitCol {
+    grid-column: 1;
+    grid-row: 1;
+    aspect-ratio: 4 / 3;
+  }
+
+  .portrait {
+    object-position: 46% 24%;
+  }
+
+  .portraitWash {
+    background:
+      linear-gradient(180deg, transparent 58%, rgba(40, 39, 39, 0.72) 100%),
+      linear-gradient(0deg, rgba(245, 166, 35, 0.16) 0%, transparent 26%);
+  }
+
+  .quote {
+    grid-column: 1;
+    grid-row: 2;
+    padding: clamp(22px, 6vw, 30px) var(--gutter) 0;
+  }
+
+  .attribution {
+    grid-column: 1;
+    grid-row: 3;
+    padding: clamp(16px, 4vw, 22px) var(--gutter) clamp(24px, 7vw, 34px);
+  }
+}
+
+/* Nothing moves, and every end state is the one that was going to be reached. */
+@media (prefers-reduced-motion: reduce) {
+  :global(.js) .feature,
+  :global(.js) .portrait,
+  :global(.js) .glyph,
+  :global(.js) .word,
+  :global(.js) .rule,
+  :global(.js) .name,
+  :global(.js) .role {
+    opacity: 1;
+    translate: none;
+    scale: none;
+    clip-path: none;
+    transition: none;
+  }
+
+  .portraitFrame {
+    translate: none;
+    transition: none;
+  }
+}

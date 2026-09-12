@@ -34,8 +34,8 @@ export default function TermsPage() {
             <p>
               Until they are published, the terms of any engagement are the ones set out in writing
               when you book. For a copy, or for anything you would like clarified first, write to{" "}
-              <a href="mailto:hello@thelocaleconomy.in?subject=Terms%20question">
-                hello@thelocaleconomy.in
+              <a href="mailto:info@thelocaleconomy.in?subject=Terms%20question">
+                info@thelocaleconomy.in
               </a>
               .
             </p>

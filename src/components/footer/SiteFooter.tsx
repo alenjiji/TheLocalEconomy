@@ -3,16 +3,13 @@ import Link from "next/link";
 import InView from "@/components/motion/InView";
 import ConsultationButton from "@/components/ui/ConsultationButton";
 import styles from "./SiteFooter.module.css";
-import { CONTACT_ROWS, DECK_TOP, PROGRAMME_LINKS, QUICK_LINKS } from "@/lib/footer";
+import { CONTACT_ROWS, PROGRAMME_LINKS, QUICK_LINKS } from "@/lib/footer";
 
 /**
  * Anything that stays on the site routes through `next/link`; a `tel:`,
  * `mailto:` or another origin leaves it, and has to be a plain anchor.
  */
 const isInternal = (href: string) => href.startsWith("/");
-
-/** Absolute comp row -> offset from the top of the dark deck, in design units. */
-const row = (y: number) => y - DECK_TOP;
 
 /**
  * Site footer, rebuilt 1:1 from `design-source/web_tle.png` (comp rows
@@ -44,7 +41,7 @@ export default function SiteFooter() {
             This is the end of the journey, so it takes the action. */}
         <ConsultationButton
           className={`${styles.ctaButton} u-rise`}
-          href="mailto:hello@thelocaleconomy.in?subject=Consultation%20request"
+          href="mailto:info@thelocaleconomy.in?subject=Consultation%20request"
         />
         </div>
       </div>
@@ -106,46 +103,59 @@ export default function SiteFooter() {
         >
           <h2 className={styles.columnHeading}>Contact Us</h2>
           <ul className={styles.contactList}>
-            {CONTACT_ROWS.map((c) => (
-              <li key={c.id}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  className={styles.contactIcon}
-                  src={c.icon.src}
-                  alt=""
-                  width={c.icon.width}
-                  height={c.icon.height}
-                  style={
-                    {
-                      "--w": c.icon.width,
-                      "--h": c.icon.height,
-                      "--y": row(c.iconY),
-                    } as React.CSSProperties
-                  }
-            loading="lazy"
-            decoding="async"
-          />
-                {isInternal(c.href) ? (
-                  <Link
-                    className={styles.contactLink}
-                    href={c.href}
-                    style={{ "--y": row(c.textY) } as React.CSSProperties}
-                  >
-                    {c.label}
-                  </Link>
-                ) : (
-                  <a
-                    className={styles.contactLink}
-                    href={c.href}
-                    target={c.external ? "_blank" : undefined}
-                    rel={c.external ? "noopener noreferrer" : undefined}
-                    style={{ "--y": row(c.textY) } as React.CSSProperties}
-                  >
-                    {c.label}
-                  </a>
-                )}
-              </li>
-            ))}
+            {CONTACT_ROWS.map((c) => {
+              const lines = Array.isArray(c.label) ? c.label : [c.label];
+              /* The address is read aloud as one string, not four. */
+              const spoken = lines.join(" ");
+              const body = lines.map((line, i) => (
+                <span key={i} className={styles.contactLine}>
+                  {line}
+                </span>
+              ));
+              const shared = {
+                className: `${styles.contactLink} ${Array.isArray(c.label) ? styles.contactBlock : ""}`,
+                style: { "--lift": c.iconLift } as React.CSSProperties,
+                "aria-label": Array.isArray(c.label) ? spoken : undefined,
+              };
+              return (
+                <li
+                  key={c.id}
+                  className={Array.isArray(c.label) ? styles.contactAddress : undefined}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    className={styles.contactIcon}
+                    src={c.icon.src}
+                    alt=""
+                    width={c.icon.width}
+                    height={c.icon.height}
+                    style={
+                      {
+                        "--w": c.icon.width,
+                        "--h": c.icon.height,
+                        "--lift": c.iconLift,
+                      } as React.CSSProperties
+                    }
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  {isInternal(c.href) ? (
+                    <Link {...shared} href={c.href}>
+                      {body}
+                    </Link>
+                  ) : (
+                    <a
+                      {...shared}
+                      href={c.href}
+                      target={c.external ? "_blank" : undefined}
+                      rel={c.external ? "noopener noreferrer" : undefined}
+                    >
+                      {body}
+                    </a>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </div>
 

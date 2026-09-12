@@ -58,7 +58,7 @@ export const PAYMENT = {
   qr: "/payment/upi-qr.svg",
   note: "Business Mastery Course",
   /** Where a buyer sends proof once they have paid. */
-  confirmTo: "hello@thelocaleconomy.in",
+  confirmTo: "info@thelocaleconomy.in",
   /**
    * Logos for the apps that accept the QR. Drop the marks in at these paths;
    * until then each renders as its initial in a brand-coloured tile.

@@ -35,8 +35,8 @@ export default function PrivacyPage() {
             <p>
               Until it is published, if you have a question about how your details are handled,
               write to{" "}
-              <a href="mailto:hello@thelocaleconomy.in?subject=Privacy%20question">
-                hello@thelocaleconomy.in
+              <a href="mailto:info@thelocaleconomy.in?subject=Privacy%20question">
+                info@thelocaleconomy.in
               </a>{" "}
               and we will answer you directly.
             </p>

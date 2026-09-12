@@ -71,3 +71,66 @@ export const TESTIMONIALS_PER_VIEW = 2;
 
 /** Which page the reel opens on. */
 export const TESTIMONIALS_ACTIVE = 0;
+
+/* -------------------------------------------------------------------------- */
+/* The written testimonial                                                     */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * A stretch of the quote. `mark` sets it in the brand amber — used sparingly,
+ * once per paragraph, on the line that carries the paragraph's point.
+ */
+export type QuoteRun = { text: string; mark?: boolean };
+
+export type WrittenStory = {
+  name: string;
+  role: string;
+  company: string;
+  portrait: string;
+  /** Describes the person, not the photograph; screen readers get the quote. */
+  portraitAlt: string;
+  /** One entry to a paragraph. */
+  body: QuoteRun[][];
+};
+
+/**
+ * Prakash V V's letter, as sent.
+ *
+ * The only editorial change is "Cost-effective" set lower case, which reads as
+ * a slip of the shift key mid-sentence rather than anything meant. The
+ * apostrophes are the typographic ones, and the quoted words keep their
+ * quotation marks because the shift between them is the point being made.
+ */
+export const WRITTEN_STORY: WrittenStory = {
+  name: "Prakash V V",
+  role: "Founder",
+  company: "Super Wash Laundry",
+  portrait: "/testimonials/prakash_testimonial.webp",
+  portraitAlt: "Prakash V V, founder of Super Wash Laundry",
+  body: [
+    [
+      { text: "What I loved most about Local Economy is their " },
+      { text: "360-degree training approach", mark: true },
+      {
+        text: ". It\u2019s not just about marketing or sales \u2014 they cover everything a local business owner needs.",
+      },
+    ],
+    [
+      {
+        text: "Especially, the sessions on Business Strategies and Mindset, were eye-opening for me. They helped me shift ",
+      },
+      {
+        text: "from a \u2018shop owner\u2019 mindset to a true \u2018entrepreneur\u2019 mindset",
+        mark: true,
+      },
+      {
+        text: ". The strategies are not theoretical; they are practical, cost-effective, and made for local economies like ours in Kerala.",
+      },
+    ],
+    [
+      { text: "If you are a local business owner feeling stuck, this Academy is " },
+      { text: "the turning point you need", mark: true },
+      { text: ". It\u2019s a complete ecosystem for growth." },
+    ],
+  ],
+};
