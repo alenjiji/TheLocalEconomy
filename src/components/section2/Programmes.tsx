@@ -20,6 +20,19 @@ function Flourish({ className, style }: { className?: string; style?: React.CSSP
   );
 }
 
+/** The body copy, with the card's `emphasis` phrase — if any — set heavier. */
+function Body({ text, emphasis }: { text: string; emphasis?: string }) {
+  const at = emphasis ? text.indexOf(emphasis) : -1;
+  if (!emphasis || at < 0) return <>{text}</>;
+  return (
+    <>
+      {text.slice(0, at)}
+      <strong className={styles.emphasis}>{emphasis}</strong>
+      {text.slice(at + emphasis.length)}
+    </>
+  );
+}
+
 /**
  * "Comprehensive Brand Programmes", rebuilt 1:1 from
  * `design-source/web_tle.png` with the exports in `public/section_2/`.
@@ -69,7 +82,7 @@ export default function Programmes() {
           <TotalBizFixLockup className={styles.bizFixLockup} />
           <p className={styles.bizFixBody}>{bizFix.body}</p>
           <p className={styles.bizFixName}>Prasanth Sukumaran</p>
-          <p className={styles.bizFixRole}>Business Coach</p>
+          <p className={styles.bizFixRole}>Ace Business Coach</p>
           <PillButton
             className={styles.cta}
             href={bizFix.cta.href}
@@ -126,7 +139,9 @@ export default function Programmes() {
             decoding="async"
           />
           <h3 className={styles.consultancyHeading}>Consultancy</h3>
-          <p className={styles.consultancyBody}>{consultancy.body}</p>
+          <p className={styles.consultancyBody}>
+            <Body text={consultancy.body} emphasis={consultancy.emphasis} />
+          </p>
           <PillButton
             className={styles.cta}
             href={consultancy.cta.href}

@@ -3,6 +3,7 @@ import Link from "next/link";
 import InView from "@/components/motion/InView";
 import styles from "./Services.module.css";
 import { APPROACH, LEVERS, SECTORS } from "@/lib/services";
+import { CONSULTATION_HREF } from "@/lib/contact";
 
 /** The dip-and-rise rule the build repeats under every section eyebrow. */
 function Flourish({ className, style }: { className?: string; style?: React.CSSProperties }) {
@@ -129,7 +130,7 @@ function GrowthJourney() {
         <Link
           className={`${styles.cta} u-liquid u-liquid-amber u-rise`}
           style={{ "--d": 3 } as React.CSSProperties}
-          href="/#consultation"
+          href={CONSULTATION_HREF}
           data-cursor="amber"
         >
           <span>Book a Free Consultation</span>

@@ -8,7 +8,7 @@ import { typeOut, type TypedChar } from "./motion";
  * Computed once at module load from a seeded generator, so the server and the
  * client agree on every delay and React has nothing to complain about.
  *
- * Steps run strictly 01 → 08. Each one types its number, then its label, then
+ * Steps run strictly in numbered order. Each one types its number, then its label, then
  * its sub-head, then its body; the next step starts while the current body is
  * still going.
  *

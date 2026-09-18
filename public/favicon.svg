@@ -1,19 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <title>The Local Economy</title>
   <!--
-    The mark from the header lockup: the cyan tile with its serif E.
+    The mark from the header lockup: the cyan tile with its E.
 
-    Two departures from the lockup, both forced by the size this is seen at.
-    The E is centred — in the lockup it sits hard right in the tile, against the
-    wordmark that follows it, and that offset reads as a misalignment once the
-    wordmark is gone. And it is set at 84% of the tile rather than the
-    lockup's 73%, because the arms of a Didone E are hairlines: at 16px the
-    smaller setting broke into disconnected specks.
+    This is an optical cut for small sizes, not the lockup's letter. The
+    wordmark is set in a Didone, whose arms are hairlines, and a hairline has
+    nowhere to go at 16 pixels: rasterised down, the three arms broke into
+    disconnected grey specks and the stem vanished altogether, which is why the
+    tab icon read as a smudge rather than an E.
+
+    So every stroke here is at least 7 units of the 64 — 1.75px at 16, which is
+    the least that survives antialiasing with its edges intact — and the letter
+    keeps the lockup's proportions instead of its weights: a tall, narrow E,
+    the middle arm shorter than the other two, sitting on the brand cyan.
+
+    The full Didone lockup is still what appears everywhere it is read at size,
+    in the header and the footer. This is the same mark at the one size where
+    its contrast cannot be drawn.
   -->
   <rect width="64" height="64" fill="#00adee"/>
-  <g id="mark" transform="translate(-9.069 -4.674) scale(1.4340)" fill="#fff">
-    <path d="M33.95,10.83c.75.88,1.34,1.78,1.76,2.71.42.93.72,1.69.9,2.29h.68V6.83h-17.3v.74h6.67c1.72,0,3.18.33,4.37.97,1.19.65,2.17,1.41,2.92,2.29Z"/>
-    <path d="M33.95,40.32c.75-.88,1.34-1.78,1.76-2.71.42-.93.72-1.69.9-2.29h.68v9h-17.3v-.74h6.67c1.72,0,3.18-.33,4.37-.97,1.19-.65,2.17-1.41,2.92-2.29Z"/>
-    <path d="M24.89,25.21c.82.42,1.52.99,2.08,1.71.56.72,1.01,1.55,1.34,2.5.33.95.62,1.93.87,2.95h.68V15.99h-.68c-.25,1.19-.56,2.27-.95,3.24-.39.97-.88,1.79-1.47,2.48-.6.68-1.34,1.21-2.24,1.58-.9.37-1.99.55-3.29.55h-1.24v.74h1.82c1.23,0,2.26.21,3.08.63Z"/>
+  <g fill="#ffffff">
+    <!-- Stem, full height, carrying the three arms. -->
+    <rect x="17" y="12" width="8.5" height="40"/>
+    <rect x="17" y="12" width="30" height="8"/>
+    <rect x="17" y="28.5" width="23" height="7"/>
+    <rect x="17" y="44" width="30" height="8"/>
   </g>
 </svg>

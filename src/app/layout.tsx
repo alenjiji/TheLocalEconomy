@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Manrope } from "next/font/google";
 import "./globals.css";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL, pageMetadata } from "@/lib/seo";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -18,12 +19,16 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "The Local Economy",
-  description:
-    "Total transformation of your business with our one-month programme.",
+  metadataBase: new URL(SITE_URL),
+  ...pageMetadata({
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    path: "/",
+  }),
   /*
    * The tab icon is the mark from the header lockup — the cyan tile and its
-   * serif E — adapted for the size it is seen at. See public/favicon.svg.
+   * E — redrawn for the size it is seen at, because the lockup's Didone has
+   * hairline arms that do not survive 16 pixels. See public/favicon.svg.
    *
    * Declared here rather than through the app/icon.* file convention because
    * this build is a static export and these are plain files in /public: what

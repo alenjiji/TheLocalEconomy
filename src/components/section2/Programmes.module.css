@@ -376,6 +376,12 @@
   color: #ffffff;
 }
 
+/* Inter is loaded to 600, so that is the bold — a bare <strong> would ask for
+   700 and get a synthesised weight. */
+.emphasis {
+  font-weight: 600;
+}
+
 /* --- Below the comp -----------------------------------------------------
  * Under 1280px the row re-flows to as many cards as fit, each capped at 440px
  * so nothing balloons on a tablet. Each card becomes a container and derives

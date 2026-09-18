@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { pageMetadata } from "@/lib/seo";
+
 import SiteHeader from "@/components/nav/SiteHeader";
 import SiteFooter from "@/components/footer/SiteFooter";
 import LegalPage from "@/components/legal/LegalPage";
@@ -7,12 +9,16 @@ import Cursor from "@/components/ui/Cursor";
 import TouchFeedback from "@/components/ui/TouchFeedback";
 import styles from "@/components/legal/LegalPage.module.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Terms & Conditions — The Local Economy",
-  description: "The terms that apply to The Local Economy's programmes and services.",
-  // See the note in `privacy/page.tsx`.
-  robots: { index: false, follow: true },
-};
+  description:
+    "The terms that apply to The Local Economy's programmes and services.",
+  path: "/terms",
+  extra: {
+    // See the note in `privacy/page.tsx`.
+    robots: { index: false, follow: true },
+  },
+});
 
 /*
  * PLACEHOLDER. Replace the body below with the terms your legal adviser writes,

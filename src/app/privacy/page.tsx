@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { pageMetadata } from "@/lib/seo";
+
 import SiteHeader from "@/components/nav/SiteHeader";
 import SiteFooter from "@/components/footer/SiteFooter";
 import LegalPage from "@/components/legal/LegalPage";
@@ -7,13 +9,17 @@ import Cursor from "@/components/ui/Cursor";
 import TouchFeedback from "@/components/ui/TouchFeedback";
 import styles from "@/components/legal/LegalPage.module.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Privacy Policy — The Local Economy",
-  description: "How The Local Economy handles the details you share with us.",
-  // Left out of search until the real policy is written: an unfinished legal
-  // page is not something anyone should be able to find and rely on.
-  robots: { index: false, follow: true },
-};
+  description:
+    "How The Local Economy handles the details you share with us.",
+  path: "/privacy",
+  extra: {
+    // Left out of search until the real policy is written: an unfinished legal
+    // page is not something anyone should be able to find and rely on.
+    robots: { index: false, follow: true },
+  },
+});
 
 /*
  * PLACEHOLDER. Replace the body below with the policy your legal adviser

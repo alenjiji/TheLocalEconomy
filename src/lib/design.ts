@@ -43,7 +43,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "Programmes", href: "/#programmes" },
   { label: "Testimonial", href: "/#testimonial" },
   { label: "Our Sevices", href: "/services" },
-  { label: "Contact Us", href: "/#contact" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 /**
@@ -57,9 +57,13 @@ export const NAV_ITEMS: NavItem[] = [
  *   so the mark starts there and hands over as you scroll rather than sitting
  *   on Home the whole way down.
  * - A page path is current on its own path.
+ * - "Programmes" is also current on any programme's own page.
  */
 export function isNavItemActive(item: NavItem, pathname: string, section?: string | null) {
   const onLanding = pathname === "/";
+  // A programme's own page belongs to "Programmes", which is a section of the
+  // landing page everywhere else.
+  if (item.href === "/#programmes" && pathname.startsWith("/programmes/")) return true;
   if (item.href.startsWith("/#")) return onLanding && section === item.href.slice(2);
   if (item.href === "/") return onLanding && !section;
   return pathname === item.href || pathname === `${item.href}/`;

@@ -1,16 +1,19 @@
 import type { Metadata } from "next";
 
+import { pageMetadata } from "@/lib/seo";
+
 import SiteHeader from "@/components/nav/SiteHeader";
 import SiteFooter from "@/components/footer/SiteFooter";
 import About from "@/components/about/About";
 import Cursor from "@/components/ui/Cursor";
 import TouchFeedback from "@/components/ui/TouchFeedback";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "About Us — The Local Economy",
   description:
     "Not just a consultancy. A growth engine for businesses, built for Indian SMEs competing on the world stage.",
-};
+  path: "/about",
+});
 
 export default function AboutPage() {
   return (

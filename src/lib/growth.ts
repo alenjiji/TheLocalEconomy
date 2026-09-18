@@ -26,16 +26,11 @@ export type GrowthSlide = {
   headline: InkSpan[];
   body: string;
   bodyWidth: number;
-  cta: { href: string; label: string; tone: "amber" | "cyan" };
 };
 
 /** Every slide's icon label wraps at the same measure in the comp. */
 export const LABEL_WIDTH = 140;
 
-/*
- * Every slide's CTA lands on the services page, for the same reason the
- * programme cards do — it is where the offer is described in full.
- */
 export const GROWTH_SLIDES: GrowthSlide[] = [
   {
     id: "transformation",
@@ -54,11 +49,6 @@ export const GROWTH_SLIDES: GrowthSlide[] = [
     ],
     body: "Where India's best businesses learn to think, operate, and grow like world-class enterprises.",
     bodyWidth: 316,
-    cta: {
-      href: "/services",
-      label: "Join for Business Success",
-      tone: "cyan",
-    },
   },
   {
     id: "growth-framework",
@@ -73,11 +63,6 @@ export const GROWTH_SLIDES: GrowthSlide[] = [
     headline: [{ text: "We Mean " }, { text: "Business.", tone: "amber" }],
     body: "Sales, profit, systems, leadership; we build the complete machinery that takes your business from local to legendary.",
     bodyWidth: 341,
-    cta: {
-      href: "/services",
-      label: "Start the Journey",
-      tone: "amber",
-    },
   },
   {
     id: "sme-coaching",
@@ -95,11 +80,6 @@ export const GROWTH_SLIDES: GrowthSlide[] = [
     ],
     body: "We turn busy business owners into confident business leaders with systems, strategy, and lasting growth.",
     bodyWidth: 368,
-    cta: {
-      href: "/services",
-      label: "See What We Do",
-      tone: "cyan",
-    },
   },
 ];
 

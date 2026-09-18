@@ -1,0 +1,1030 @@
+/*
+ * A programme page.
+ *
+ * Four bands in the rhythm the rest of the site keeps — grained dark, light,
+ * #282727, light — and then the footer's cyan call to action. The furniture is
+ * the services page's: the 1160-unit column, the eyebrow over its flourish,
+ * the 44-unit headings, #0093c9 for an accent on a light ground. Design units
+ * above 1024, plain lengths below.
+ */
+.inner {
+  width: min(100% - 2 * var(--gutter), calc(1160 * var(--u)));
+  margin: 0 auto;
+}
+
+.amber {
+  color: #f5a623;
+}
+
+.cyan {
+  color: #00adee;
+}
+
+/* --- Heading furniture ------------------------------------------------------ */
+
+.eyebrow {
+  margin: 0;
+  font-size: calc(27 * var(--u));
+  line-height: 1;
+  font-weight: 600;
+  text-align: center;
+  color: #f5a623;
+}
+
+.flourish {
+  display: block;
+  width: calc(140 * var(--u));
+  height: auto;
+  margin: calc(13 * var(--u)) auto 0;
+  color: #f5a623;
+}
+
+.eyebrowStart {
+  font-size: calc(22 * var(--u));
+  text-align: left;
+}
+
+.flourishStart {
+  width: calc(118 * var(--u));
+  margin-left: 0;
+}
+
+.heading {
+  margin: calc(26 * var(--u)) 0 0;
+  font-size: calc(44 * var(--u));
+  line-height: 1.16;
+  font-weight: 700;
+  text-align: center;
+  color: #ffffff;
+}
+
+.lede {
+  width: min(100%, calc(820 * var(--u)));
+  margin: calc(24 * var(--u)) auto 0;
+  font-size: calc(19 * var(--u));
+  line-height: 1.55;
+  font-weight: 300;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+/* On a light band: the section ink, and the deeper cyan for accents. */
+.eyebrowInk,
+.flourishInk {
+  color: #282727;
+}
+
+.headingInk {
+  color: #282727;
+}
+
+.headingInk .cyan,
+.headingInk .amber,
+.alsoHeading .cyan,
+.alsoHeading .amber,
+.ink {
+  color: #0093c9;
+}
+
+.ledeInk {
+  color: #4a4848;
+}
+
+/* --- Opening ---------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  /* Clears the fixed header, which overlays rather than pushes. */
+  padding: calc(196 * var(--u)) 0 calc(104 * var(--u));
+  background-color: var(--ground);
+  background-image: var(--ground-grain);
+  background-repeat: repeat;
+  overflow: hidden;
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) calc(430 * var(--u));
+  gap: calc(84 * var(--u));
+  align-items: center;
+}
+
+.title {
+  margin: calc(22 * var(--u)) 0 0;
+  font-size: calc(64 * var(--u));
+  line-height: 1.06;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+}
+
+.summary {
+  max-width: calc(600 * var(--u));
+  margin: calc(24 * var(--u)) 0 0;
+  font-size: calc(22 * var(--u));
+  line-height: 1.5;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.84);
+}
+
+/* Inter is loaded to 600, so that is the bold. */
+.summary strong {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.byline {
+  margin: calc(12 * var(--u)) 0 0;
+  font-size: calc(18 * var(--u));
+  font-weight: 500;
+  color: #00adee;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: calc(36 * var(--u)) 0 0;
+  border-top: max(1px, calc(1 * var(--u))) solid rgba(255, 255, 255, 0.12);
+  border-bottom: max(1px, calc(1 * var(--u))) solid rgba(255, 255, 255, 0.12);
+}
+
+.fact {
+  padding: calc(18 * var(--u)) calc(18 * var(--u)) calc(20 * var(--u)) 0;
+}
+
+.fact + .fact {
+  padding-left: calc(20 * var(--u));
+  border-left: max(1px, calc(1 * var(--u))) solid rgba(255, 255, 255, 0.12);
+}
+
+.factLabel {
+  font-size: calc(13 * var(--u));
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.factValue {
+  margin: calc(7 * var(--u)) 0 0;
+  font-size: calc(18 * var(--u));
+  line-height: 1.3;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(14 * var(--u));
+  margin-top: calc(36 * var(--u));
+}
+
+.actionsCentre {
+  justify-content: center;
+  margin-top: calc(64 * var(--u));
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(10 * var(--u));
+  height: calc(56 * var(--u));
+  border-radius: calc(7 * var(--u));
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.primary {
+  padding: 0 calc(28 * var(--u));
+  border: max(1px, calc(1 * var(--u))) solid #ffc166;
+  background: #f5a623;
+  color: #282727;
+  font-size: calc(20 * var(--u));
+  --liquid-reach: calc(640 * var(--u));
+}
+
+.primaryCyan {
+  border-color: #43d3ff;
+  background: #00adee;
+  color: #ffffff;
+}
+
+.primary svg {
+  width: calc(22 * var(--u));
+  height: calc(22 * var(--u));
+}
+
+.secondary {
+  padding: 0 calc(22 * var(--u));
+  border: max(1px, calc(1 * var(--u))) solid rgba(255, 255, 255, 0.24);
+  color: #ffffff;
+  font-size: calc(18 * var(--u));
+  font-weight: 500;
+  transition:
+    border-color 200ms ease,
+    background-color 200ms ease;
+}
+
+.secondary svg {
+  width: calc(22 * var(--u));
+  height: calc(22 * var(--u));
+  color: #00adee;
+}
+
+@media (hover: hover) {
+  .secondary:hover {
+    border-color: #00adee;
+    background: rgba(0, 173, 238, 0.08);
+  }
+}
+
+.secondary:focus-visible {
+  border-color: #00adee;
+}
+
+.heroArt {
+  position: relative;
+}
+
+/* The lean toward the pointer, as on the home page's cards. */
+.lean {
+  translate: calc(var(--px, 0) * 12px) calc(var(--py, 0) * 12px);
+  transition: translate 620ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* --- Artwork ---------------------------------------------------------------
+ * The home page's card, less its copy. The frame is the query container and
+ * `--a` is one unit of the card's own 410.67-unit width, so every offset below
+ * is the card's and the composition holds at any size.
+ */
+.art {
+  position: relative;
+  container-type: inline-size;
+  aspect-ratio: 410.67 / 500;
+  border-radius: calc(16 * var(--u));
+  overflow: hidden;
+  box-shadow: 0 calc(30 * var(--u)) calc(60 * var(--u)) rgba(0, 0, 0, 0.35);
+}
+
+.artDark {
+  background-color: var(--ground);
+  background-image: linear-gradient(rgba(88, 88, 88, 0.355), rgba(88, 88, 88, 0.355)),
+    var(--ground-grain);
+  background-repeat: repeat;
+}
+
+.artLight {
+  background: #d3d3d3;
+}
+
+.artInner {
+  --a: calc(100cqw / 410.67);
+  position: absolute;
+  inset: 0;
+}
+
+.artInner img {
+  max-width: none;
+  transition: scale 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.bizFixPortrait {
+  position: absolute;
+  left: calc(191 * var(--a));
+  top: calc(33.1 * var(--a));
+  width: calc(338.3 * var(--a));
+  height: calc(552.39 * var(--a));
+  transform-origin: 40% 30%;
+}
+
+.bizFixLockup {
+  position: absolute;
+  left: calc(38.02 * var(--a));
+  top: calc(56.06 * var(--a));
+  width: calc(174.25 * var(--a));
+  height: calc(225.66 * var(--a));
+}
+
+.artCaption {
+  position: absolute;
+  left: calc(40 * var(--a));
+  top: calc(402 * var(--a));
+  display: grid;
+  gap: calc(4 * var(--a));
+  margin: 0;
+}
+
+.artName {
+  font-size: calc(21 * var(--a));
+  line-height: 1.15;
+  font-weight: 600;
+  color: #00adee;
+}
+
+.artRole {
+  font-size: calc(17 * var(--a));
+  line-height: 1.2;
+  font-weight: 300;
+  color: #ffffff;
+}
+
+.checkupPhoto {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: calc(306.6 * var(--a));
+  overflow: hidden;
+}
+
+/* Placed rather than fitted, for the reasons given on the home page's card:
+   it drops the dark doorway and keeps him and the framework card in frame. */
+.checkupPhoto img {
+  position: absolute;
+  left: calc(-216.4 * var(--a));
+  top: calc(-129.8 * var(--a));
+  width: calc(627.1 * var(--a));
+  height: calc(632 * var(--a));
+  transform-origin: calc(421.7 * var(--a)) calc(283.1 * var(--a));
+}
+
+.checkupLockup {
+  position: absolute;
+  left: calc(36.51 * var(--a));
+  top: calc(342 * var(--a));
+  width: calc(170 * var(--a));
+  height: calc(123.14 * var(--a));
+}
+
+.consultancyArt {
+  position: absolute;
+  left: calc(-83.13 * var(--a));
+  top: calc(1 * var(--a));
+  width: calc(542.21 * var(--a));
+  height: calc(361.47 * var(--a));
+}
+
+.consultancyWord {
+  position: absolute;
+  left: calc(38.6 * var(--a));
+  top: calc(353.17 * var(--a));
+  margin: 0;
+  font-size: calc(42.41 * var(--a));
+  line-height: 1;
+  font-weight: 600;
+  color: #f5a623;
+}
+
+/* Under the word, rather than at the caption's usual height. */
+.consultancyWord ~ .artCaption {
+  top: calc(420 * var(--a));
+}
+
+/*
+ * As a thumbnail it fills the height of its card, however long the text beside
+ * it runs. A grid item with an aspect ratio does not stretch on its own, so
+ * the ratio becomes a minimum instead; the composition is anchored to the top,
+ * so any extra height is just more of the card's ground under it.
+ */
+.artCompact {
+  align-self: stretch;
+  aspect-ratio: auto;
+  min-height: calc(190 * var(--u) * 500 / 410.67);
+  box-shadow: none;
+  border-radius: 0;
+}
+
+/* --- What it covers --------------------------------------------------------- */
+
+.focus {
+  position: relative;
+  padding: calc(96 * var(--u)) 0 calc(104 * var(--u));
+  background: #edebeb;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: calc(24 * var(--u));
+  margin: calc(56 * var(--u)) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/*
+ * Three to a row and centred, so a seventh card sits in the middle of its own
+ * row rather than hard left under the first column.
+ */
+.card {
+  flex: 0 0 calc((100% - 2 * 24 * var(--u)) / 3);
+  display: grid;
+  align-content: start;
+  gap: calc(10 * var(--u));
+  padding: calc(28 * var(--u)) calc(28 * var(--u)) calc(30 * var(--u));
+  border: max(1px, calc(1 * var(--u))) solid rgba(40, 39, 39, 0.08);
+  border-radius: calc(14 * var(--u));
+  background: #ffffff;
+  box-shadow: 0 calc(10 * var(--u)) calc(28 * var(--u)) rgba(40, 39, 39, 0.06);
+}
+
+.tiles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: calc(18 * var(--u));
+  margin: calc(52 * var(--u)) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tile {
+  flex: 0 1 calc((100% - 3 * 18 * var(--u)) / 4);
+  display: flex;
+  align-items: baseline;
+  gap: calc(12 * var(--u));
+  padding: calc(22 * var(--u)) calc(24 * var(--u));
+  border: max(1px, calc(1 * var(--u))) solid rgba(40, 39, 39, 0.08);
+  border-radius: calc(12 * var(--u));
+  background: #ffffff;
+  box-shadow: 0 calc(8 * var(--u)) calc(22 * var(--u)) rgba(40, 39, 39, 0.05);
+}
+
+/* The flow section's device for counting things out, darkened for a light
+   ground: #f5a623 on white is too faint to read at this size. */
+.kicker {
+  font-size: calc(15 * var(--u));
+  line-height: 1.2;
+  font-weight: 600;
+  color: #a8660a;
+}
+
+.tile .kicker {
+  font-size: calc(18 * var(--u));
+}
+
+.cardTitle {
+  font-size: calc(21 * var(--u));
+  line-height: 1.25;
+  font-weight: 700;
+  color: #282727;
+}
+
+.tile .cardTitle {
+  font-size: calc(19 * var(--u));
+  font-weight: 600;
+}
+
+.cardBody {
+  font-size: calc(16 * var(--u));
+  line-height: 1.5;
+  font-weight: 300;
+  color: #4a4848;
+}
+
+.card,
+.tile {
+  transition:
+    opacity 720ms ease,
+    translate 720ms cubic-bezier(0.16, 1, 0.3, 1),
+    scale 720ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 320ms ease;
+  transition-delay:
+    calc(var(--d, 0) * 70ms),
+    calc(var(--d, 0) * 70ms),
+    calc(var(--d, 0) * 70ms),
+    0s;
+}
+
+@media (hover: hover) {
+  .focus .card:hover,
+  .focus .tile:hover {
+    box-shadow: 0 calc(16 * var(--u)) calc(36 * var(--u)) rgba(40, 39, 39, 0.12);
+  }
+}
+
+.alsoHeading {
+  margin: calc(72 * var(--u)) 0 0;
+  font-size: calc(34 * var(--u));
+  line-height: 1.2;
+  font-weight: 700;
+  text-align: center;
+  color: #282727;
+}
+
+.also {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: calc(12 * var(--u));
+  margin: calc(32 * var(--u)) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.alsoItem {
+  padding: calc(12 * var(--u)) calc(22 * var(--u));
+  border: max(1px, calc(1 * var(--u))) solid rgba(40, 39, 39, 0.18);
+  border-radius: 999px;
+  background: #ffffff;
+  font-size: calc(17 * var(--u));
+  line-height: 1.2;
+  font-weight: 500;
+  color: #282727;
+}
+
+/* --- How we work ------------------------------------------------------------ */
+
+.approach {
+  position: relative;
+  padding: calc(92 * var(--u)) 0 calc(104 * var(--u));
+  background: #282727;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: calc(40 * var(--u));
+  margin: calc(64 * var(--u)) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  display: grid;
+  align-content: start;
+}
+
+/* One box height for all four drawings, so the copy under them lines up. */
+.stepIconBox {
+  display: flex;
+  align-items: flex-end;
+  height: calc(118 * var(--u));
+}
+
+/* All four at one scale, as the services page draws them: a wide drawing is
+   wide and a squat one squat, rather than each forced into the same box. */
+.stepIcon {
+  width: calc(var(--iw) * 0.906 * var(--u));
+  height: calc(var(--ih) * 0.906 * var(--u));
+  max-width: none;
+}
+
+.stepNumber {
+  margin-top: calc(26 * var(--u));
+  font-size: calc(16 * var(--u));
+  font-weight: 600;
+  color: #f5a623;
+}
+
+.stepHeading {
+  margin-top: calc(6 * var(--u));
+  font-size: calc(21 * var(--u));
+  line-height: 1.25;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.stepBody {
+  margin-top: calc(10 * var(--u));
+  font-size: calc(16 * var(--u));
+  line-height: 1.5;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* --- The other two ---------------------------------------------------------- */
+
+.others {
+  position: relative;
+  padding: calc(88 * var(--u)) 0 calc(96 * var(--u));
+  background: #edebeb;
+}
+
+.othersHeading {
+  margin: 0;
+  font-size: calc(36 * var(--u));
+  line-height: 1.2;
+  font-weight: 700;
+  text-align: center;
+  color: #282727;
+}
+
+.otherList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: calc(28 * var(--u));
+  margin: calc(48 * var(--u)) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.other {
+  display: grid;
+  grid-template-columns: calc(190 * var(--u)) 1fr;
+  height: 100%;
+  border: max(1px, calc(1 * var(--u))) solid rgba(40, 39, 39, 0.08);
+  border-radius: calc(14 * var(--u));
+  background: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 calc(10 * var(--u)) calc(28 * var(--u)) rgba(40, 39, 39, 0.06);
+  transition:
+    box-shadow 320ms ease,
+    translate 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.otherText {
+  display: grid;
+  align-content: center;
+  gap: calc(10 * var(--u));
+  padding: calc(28 * var(--u));
+}
+
+.otherName {
+  font-size: calc(24 * var(--u));
+  line-height: 1.2;
+  font-weight: 700;
+  color: #282727;
+}
+
+.otherSummary {
+  font-size: calc(16 * var(--u));
+  line-height: 1.5;
+  font-weight: 300;
+  color: #4a4848;
+}
+
+.otherMore {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(8 * var(--u));
+  margin-top: calc(6 * var(--u));
+  font-size: calc(17 * var(--u));
+  font-weight: 600;
+  color: #a8660a;
+}
+
+.otherMoreCyan {
+  color: #0093c9;
+}
+
+.otherMore svg {
+  width: calc(18 * var(--u));
+  height: calc(18 * var(--u));
+  transition: translate 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (hover: hover) {
+  .other:hover {
+    translate: 0 -4px;
+    box-shadow: 0 calc(18 * var(--u)) calc(40 * var(--u)) rgba(40, 39, 39, 0.14);
+  }
+
+  .other:hover .artInner img {
+    scale: 1.04;
+  }
+
+  .other:hover .otherMore svg {
+    translate: 4px 0;
+  }
+}
+
+.other:focus-visible {
+  outline: 2px solid #0093c9;
+  outline-offset: 3px;
+}
+
+/* --- Below the comp ---------------------------------------------------------- */
+
+@media (max-width: 1023px) {
+  .inner {
+    width: min(100% - 2 * var(--gutter), 720px);
+  }
+
+  .eyebrow {
+    font-size: clamp(19px, 2.6vw, 27px);
+  }
+
+  .flourish {
+    width: clamp(105px, 12vw, 140px);
+  }
+
+  .eyebrowStart {
+    font-size: clamp(17px, 2.2vw, 22px);
+  }
+
+  .flourishStart {
+    width: clamp(92px, 10vw, 118px);
+  }
+
+  .heading {
+    margin-top: clamp(16px, 3vw, 26px);
+    font-size: clamp(26px, 4.4vw, 44px);
+  }
+
+  .lede {
+    width: min(100%, 620px);
+    margin-top: clamp(16px, 3vw, 24px);
+    font-size: clamp(15px, 1.9vw, 19px);
+  }
+
+  .hero {
+    padding: clamp(104px, 22vw, 196px) 0 clamp(56px, 10vw, 104px);
+  }
+
+  .heroGrid {
+    grid-template-columns: 1fr;
+    gap: clamp(40px, 8vw, 64px);
+  }
+
+  .title {
+    margin-top: clamp(14px, 2.4vw, 22px);
+    font-size: clamp(36px, 8.4vw, 64px);
+  }
+
+  .summary {
+    max-width: none;
+    margin-top: clamp(16px, 3vw, 24px);
+    font-size: clamp(17px, 4.3vw, 22px);
+  }
+
+  .byline {
+    margin-top: 10px;
+    font-size: clamp(15px, 3.8vw, 18px);
+  }
+
+  .facts {
+    margin-top: clamp(26px, 5vw, 36px);
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+  }
+
+  .fact {
+    padding: 16px 14px 18px 0;
+  }
+
+  .fact + .fact {
+    padding-left: 16px;
+    border-left-width: 1px;
+  }
+
+  .factLabel {
+    font-size: 12px;
+  }
+
+  .factValue {
+    margin-top: 6px;
+    font-size: clamp(15px, 3.8vw, 18px);
+  }
+
+  .actions {
+    gap: 12px;
+    margin-top: clamp(26px, 5vw, 36px);
+  }
+
+  .actionsCentre {
+    margin-top: clamp(40px, 8vw, 64px);
+  }
+
+  .primary,
+  .secondary {
+    gap: 10px;
+    height: 54px;
+    border-width: 1px;
+    border-radius: 7px;
+  }
+
+  .primary {
+    padding: 0 26px;
+    font-size: 18px;
+  }
+
+  .secondary {
+    padding: 0 20px;
+    font-size: 17px;
+  }
+
+  .primary svg,
+  .secondary svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .heroArt {
+    width: min(100%, 400px);
+    margin: 0 auto;
+  }
+
+  .art {
+    border-radius: 14px;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+  }
+
+  .artCompact {
+    min-height: calc(clamp(120px, 30vw, 190px) * 500 / 410.67);
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .focus {
+    padding: clamp(56px, 10vw, 96px) 0 clamp(64px, 11vw, 104px);
+  }
+
+  .cards {
+    gap: 16px;
+    margin-top: clamp(32px, 6vw, 56px);
+  }
+
+  .card {
+    flex: 0 0 calc((100% - 16px) / 2);
+    gap: 8px;
+    padding: 22px 22px 24px;
+    border-width: 1px;
+    border-radius: 14px;
+  }
+
+  .tiles {
+    gap: 12px;
+    margin-top: clamp(32px, 6vw, 52px);
+  }
+
+  .tile {
+    flex: 0 1 calc((100% - 12px) / 2);
+    gap: 10px;
+    padding: 16px 18px;
+    border-width: 1px;
+    border-radius: 12px;
+  }
+
+  .kicker {
+    font-size: 14px;
+  }
+
+  .tile .kicker {
+    font-size: 16px;
+  }
+
+  .cardTitle {
+    font-size: clamp(17px, 2.4vw, 21px);
+  }
+
+  .tile .cardTitle {
+    font-size: clamp(16px, 2.2vw, 19px);
+  }
+
+  .cardBody {
+    font-size: 15px;
+  }
+
+  .alsoHeading {
+    margin-top: clamp(48px, 9vw, 72px);
+    font-size: clamp(24px, 4vw, 34px);
+  }
+
+  .also {
+    gap: 10px;
+    margin-top: clamp(22px, 4vw, 32px);
+  }
+
+  .alsoItem {
+    padding: 10px 18px;
+    border-width: 1px;
+    font-size: 15px;
+  }
+
+  .approach {
+    padding: clamp(56px, 10vw, 92px) 0 clamp(64px, 11vw, 104px);
+  }
+
+  .steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px 28px;
+    margin-top: clamp(36px, 7vw, 64px);
+  }
+
+  .stepIconBox {
+    height: 96px;
+  }
+
+  .stepIcon {
+    width: calc(var(--iw) * 0.78px);
+    height: calc(var(--ih) * 0.78px);
+  }
+
+  .stepNumber {
+    margin-top: 18px;
+    font-size: 14px;
+  }
+
+  .stepHeading {
+    margin-top: 4px;
+    font-size: clamp(17px, 2.4vw, 21px);
+  }
+
+  .stepBody {
+    margin-top: 8px;
+    font-size: 15px;
+  }
+
+  .others {
+    padding: clamp(56px, 10vw, 88px) 0 clamp(64px, 11vw, 96px);
+  }
+
+  .othersHeading {
+    font-size: clamp(24px, 4vw, 36px);
+  }
+
+  .otherList {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: clamp(28px, 5vw, 48px);
+  }
+
+  .other {
+    grid-template-columns: clamp(120px, 30vw, 190px) 1fr;
+    border-width: 1px;
+    border-radius: 14px;
+  }
+
+  .otherText {
+    gap: 6px;
+    padding: clamp(16px, 4vw, 28px);
+  }
+
+  .otherName {
+    font-size: clamp(18px, 4.6vw, 24px);
+  }
+
+  .otherSummary {
+    font-size: clamp(14px, 3.6vw, 16px);
+    line-height: 1.45;
+  }
+
+  .otherMore {
+    gap: 6px;
+    margin-top: 4px;
+    font-size: 15px;
+  }
+
+  .otherMore svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Three facts in a row stop fitting; they stack with a rule between. */
+  .facts {
+    grid-template-columns: 1fr;
+  }
+
+  .fact,
+  .fact + .fact {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 0;
+    border-left: 0;
+  }
+
+  .fact + .fact {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .factValue {
+    margin: 0;
+    text-align: right;
+  }
+
+  .card {
+    flex-basis: 100%;
+  }
+
+  .actions .primary,
+  .actions .secondary {
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .tile {
+    flex-basis: 100%;
+  }
+
+  .steps {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lean,
+  .other,
+  .artInner img,
+  .otherMore svg {
+    transition: none;
+  }
+}

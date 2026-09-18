@@ -212,26 +212,27 @@
 }
 
 /*
- * Sits low, not dead centre.
+ * Low in the frame, below the speaker and below the caption.
  *
- * The three posters are title cards: the name and the company mark occupy the
- * upper two thirds and the bottom is empty. Measured off the files, the ink
- * stops at 62% of the height on one and 68.5% on the other, so a button centred
- * at 50% lands squarely on the logo — which is the one thing the card is there
- * to show. `--play-y` drops it into the clear band below that instead; the
- * frame is 9:16 and the button is about 15% of its height, so 82% clears both
- * with room to spare. Raise it back to 50% if the posters ever change to
- * full-bleed photographs, where a centred button is the right call.
+ * The posters are frames from the films themselves: a face in the upper half
+ * and the film's own burnt-in caption across the chest. On the Nirappil frame
+ * that caption runs from 66% to 79% of the height, which left no band a
+ * 127-unit button could sit in without covering either the face or the words.
+ *
+ * So the button is the course preview's 96 units — the two video players on
+ * the page now match — and sits at 88.9%, where its ring clears the caption by
+ * a hair over one percent and stays 24 units off the foot of the frame. Check
+ * a new poster against this before swapping it in.
  */
 .play {
-  --play-y: 82%;
+  --play-y: 88.9%;
   position: absolute;
   left: 50%;
   top: var(--play-y);
-  width: calc(127 * var(--u));
-  height: calc(127 * var(--u));
-  margin: calc(-63.5 * var(--u)) 0 0 calc(-63.5 * var(--u));
-  padding: calc(31 * var(--u));
+  width: calc(96 * var(--u));
+  height: calc(96 * var(--u));
+  margin: calc(-48 * var(--u)) 0 0 calc(-48 * var(--u));
+  padding: 0;
   border: 0;
   border-radius: 50%;
   background: #00adee;
@@ -466,12 +467,12 @@
     border-radius: clamp(14px, 2.4vw, 26px);
   }
 
+  /* The course preview's phone size, so the two players still match. */
   .play {
-    width: clamp(56px, 11vw, 127px);
-    height: clamp(56px, 11vw, 127px);
-    margin: clamp(-63.5px, -5.5vw, -28px) 0 0 clamp(-63.5px, -5.5vw, -28px);
-    padding: clamp(14px, 2.7vw, 31px);
-    box-shadow: 0 0 0 clamp(3px, 0.6vw, 7px) rgba(0, 92, 128, 0.5);
+    width: 64px;
+    height: 64px;
+    margin: -32px 0 0 -32px;
+    box-shadow: 0 0 0 4px rgba(0, 92, 128, 0.5);
   }
 
   .caption {

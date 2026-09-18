@@ -1,6 +1,7 @@
 "use client";
 
 import styles from "./ConsultationButton.module.css";
+import { CONSULTATION_HREF } from "@/lib/contact";
 import { useLiquid } from "./useLiquid";
 
 /** Arrow lifted verbatim from `public/hero/navbar_Button.svg`. */
@@ -9,11 +10,12 @@ const ARROW =
 
 /**
  * The amber "Book a Consultation" button, shared by the nav bar and the
- * footer's call to action — the comp draws them identically.
+ * footer's call to action — the comp draws them identically. Every one of
+ * them opens the enquiry form.
  */
 export default function ConsultationButton({
-  /* The footer's call-to-action band. Absolute, so it resolves from any page. */
-  href = "/#consultation",
+  /* The enquiry form, with a consultation already chosen. */
+  href = CONSULTATION_HREF,
   className,
 }: {
   href?: string;

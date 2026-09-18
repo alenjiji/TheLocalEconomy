@@ -36,13 +36,7 @@ export default function SiteFooter() {
             loading="lazy"
             decoding="async"
           />
-        {/* The one consultation button that must not point at `#consultation`:
-            it lives inside that band, so scrolling to it would do nothing.
-            This is the end of the journey, so it takes the action. */}
-        <ConsultationButton
-          className={`${styles.ctaButton} u-rise`}
-          href="mailto:info@thelocaleconomy.in?subject=Consultation%20request"
-        />
+        <ConsultationButton className={`${styles.ctaButton} u-rise`} />
         </div>
       </div>
 

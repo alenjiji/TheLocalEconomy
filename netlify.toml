@@ -1,3 +1,8 @@
 [build]
   command = "npm run build"
   publish = "out"
+
+# The enquiry form's WhatsApp alert. Netlify runs `submission-created` by name
+# on every form submission; see the file for the variables it needs.
+[functions]
+  directory = "netlify/functions"

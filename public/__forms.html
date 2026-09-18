@@ -1,0 +1,33 @@
+<!doctype html>
+<!--
+  Netlify Forms registration. Not a page anyone visits.
+
+  Netlify only accepts submissions for forms it finds in the deployed HTML, and
+  it finds them by reading static files at deploy time. The real form on
+  /contact is rendered by React, so this copy declares the same form — same
+  name, same field names — and the page posts its submissions here.
+
+  Keep the field names in step with `src/components/contact/EnquiryForm.tsx`.
+  A field the page sends that is not declared here is silently dropped.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>Enquiry form</title>
+  </head>
+  <body>
+    <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="contact" />
+      <input name="bot-field" />
+      <input name="name" />
+      <input name="phone" type="tel" />
+      <input name="email" type="email" />
+      <input name="business" />
+      <input name="city" />
+      <input name="interest" />
+      <input name="preference" />
+      <textarea name="message"></textarea>
+    </form>
+  </body>
+</html>

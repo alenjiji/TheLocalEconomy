@@ -4,22 +4,32 @@
  *
  * Everything a client would want to edit lives here rather than in the markup.
  */
+import { CONTACT } from "./contact";
 
 export type CourseMeta = { id: string; icon: "modules" | "language" | "access"; label: string };
 
 export const COURSE = {
   title: "Business Mastery Course",
   /** Rendered on its own line under the title. */
-  subtitle: "Malayalam",
-  provider: "The Local Economy",
+  subtitle: "(Malayalam)",
   blurb:
     "The programme Prasanth teaches in the room, recorded end to end. Work through it at your own pace and keep it for good.",
   meta: [
-    { id: "modules", icon: "modules", label: "2 modules" },
-    { id: "language", icon: "language", label: "Malayalam" },
-    { id: "access", icon: "access", label: "Lifetime access" },
+    { id: "steps", icon: "modules", label: "Steps for Business Growth" },
+    { id: "duration", icon: "access", label: "One Month Program" },
   ] as CourseMeta[],
   price: { amount: "1,999.00", was: "4,500", currency: "₹" },
+  /**
+   * How "Join Now" takes a sign-up.
+   *
+   * "whatsapp" opens a chat with the business with the message below already
+   * typed. "upi" opens the payment overlay with the QR instead — it is switched
+   * off for now, and switching it back on is this one value.
+   */
+  checkout: "whatsapp" as "whatsapp" | "upi",
+  cta: "Join Now",
+  whatsappMessage:
+    "Hi, I would like to join the Business Mastery Course (Malayalam). Please share the details.",
   /**
    * The preview film. 1080x1920, so the frame it sits in is portrait.
    *
@@ -58,7 +68,7 @@ export const PAYMENT = {
   qr: "/payment/upi-qr.svg",
   note: "Business Mastery Course",
   /** Where a buyer sends proof once they have paid. */
-  confirmTo: "info@thelocaleconomy.in",
+  confirmTo: CONTACT.email,
   /**
    * Logos for the apps that accept the QR. Drop the marks in at these paths;
    * until then each renders as its initial in a brand-coloured tile.

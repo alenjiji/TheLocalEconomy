@@ -164,7 +164,7 @@ export default function SiteHeader() {
             </ul>
           </nav>
 
-          <ConsultationButton className={styles.cta} href="/#consultation" />
+          <ConsultationButton className={styles.cta} />
 
           <button
             className={styles.menuButton}
@@ -204,7 +204,7 @@ export default function SiteHeader() {
             ))}
           </ul>
         </nav>
-        <ConsultationButton className={styles.panelCta} href="/#consultation" />
+        <ConsultationButton className={styles.panelCta} />
       </div>
 
       <button

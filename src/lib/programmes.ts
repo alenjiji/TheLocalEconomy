@@ -8,14 +8,16 @@ export type ProgrammeCard = {
   /** Card surface: dark cards carry the grain texture, the light one does not. */
   tone: "dark" | "light";
   body: string;
+  /** A phrase inside `body` to set in the heavier weight. */
+  emphasis?: string;
   /** Width the body copy wraps at, so the line breaks match the comp. */
   bodyWidth: number;
   cta: { href: string; label: string; tone: "amber" | "cyan" };
 };
 
 /*
- * Every card's CTA lands on the services page: it carries the detail these
- * three summarise, and there are no per-programme pages to point at yet.
+ * Every card reads "Go for More" and opens that programme's own page, under
+ * /programmes/<id> — the ids here are the page slugs.
  */
 export const PROGRAMME_CARDS: ProgrammeCard[] = [
   {
@@ -24,8 +26,8 @@ export const PROGRAMME_CARDS: ProgrammeCard[] = [
     body: "Your profit, accounts and sales, all cleared up in 30 days. An annual month-by-month programme.",
     bodyWidth: 190,
     cta: {
-      href: "/services",
-      label: "Join the Programme",
+      href: "/programmes/total-biz-fix",
+      label: "Go for More",
       tone: "amber",
     },
   },
@@ -35,8 +37,8 @@ export const PROGRAMME_CARDS: ProgrammeCard[] = [
     body: "An online personal diagnostic programme built for Kerala's business owners.",
     bodyWidth: 170,
     cta: {
-      href: "/services",
-      label: "Find your Cure",
+      href: "/programmes/business-checkup",
+      label: "Go for More",
       tone: "cyan",
     },
   },
@@ -44,9 +46,10 @@ export const PROGRAMME_CARDS: ProgrammeCard[] = [
     id: "consultancy",
     tone: "dark",
     body: "Consult in person with Prasanth Sukumaran for solutions at all stages of your business growth.",
+    emphasis: "Prasanth Sukumaran",
     bodyWidth: 312,
     cta: {
-      href: "/services",
+      href: "/programmes/consultancy",
       label: "Go for More",
       tone: "amber",
     },

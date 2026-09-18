@@ -6,6 +6,8 @@
  * four lines, so that column is laid out in flow and only its icons carry
  * numbers.
  */
+import { CONTACT } from "./contact";
+
 export type FooterLink = { label: string; href: string };
 
 /*
@@ -19,18 +21,17 @@ export const QUICK_LINKS: FooterLink[] = [
   { label: "Programmes", href: "/#programmes" },
   { label: "Testimonial", href: "/#testimonial" },
   { label: "Our Services", href: "/services" },
-  { label: "Contact Us", href: "/#contact" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 /*
- * Every programme is described on the services page — there are no per
- * programme pages yet — so they all land there rather than on anchors that do
- * not exist. Give any of them its own page and only this list changes.
+ * The three programmes with a page of their own link to it; the other two are
+ * described on the services page.
  */
 export const PROGRAMME_LINKS: FooterLink[] = [
-  { label: "Total BIZ FIX", href: "/services" },
-  { label: "360° Business Checkup", href: "/services" },
-  { label: "Consultancy", href: "/services" },
+  { label: "Total BIZ FIX", href: "/programmes/total-biz-fix" },
+  { label: "360° Business Checkup", href: "/programmes/business-checkup" },
+  { label: "Consultancy", href: "/programmes/consultancy" },
   { label: "SME Business Coaching", href: "/services" },
   { label: "360° Growth Framework", href: "/services" },
 ];
@@ -60,35 +61,23 @@ export const CONTACT_ROWS: ContactRow[] = [
   {
     id: "phone",
     icon: { src: "/footer/icon_1.svg", width: 15.56, height: 15.59 },
-    label: "+91-8086441054",
-    href: "tel:+918086441054",
+    label: CONTACT.phoneDisplay,
+    href: `tel:${CONTACT.phoneE164}`,
     iconLift: 3.84,
   },
   {
     id: "email",
     icon: { src: "/footer/icon_2.svg", width: 16.63, height: 11.7 },
-    label: "info@thelocaleconomy.in",
-    href: "mailto:info@thelocaleconomy.in",
+    label: CONTACT.email,
+    href: `mailto:${CONTACT.email}`,
     iconLift: 1.28,
   },
   {
     id: "address",
     icon: { src: "/footer/icon_3.svg", width: 14.4, height: 17.02 },
-    /*
-     * One address component to a line, the way a letter is addressed: the
-     * column is far too narrow to hold the whole thing, and breaking it
-     * deliberately beats letting it wrap mid-phrase. The building name is left
-     * off because the logo directly above already carries it. Post town and
-     * PIN are one unit, held together with non-breaking spaces.
-     */
-    label: [
-      "Ground Floor, MSS Arcade",
-      "TC No. 73/1970-2",
-      "Manacaud Market Junction",
-      "Manacaud",
-      "Thiruvananthapuram\u00a0-\u00a0695009",
-    ],
-    href: "https://maps.app.goo.gl/ecNTg59LoHG8Rhsc6",
+    /* One address component to a line — see `CONTACT.addressLines`. */
+    label: [...CONTACT.addressLines],
+    href: CONTACT.mapUrl,
     external: true,
     iconLift: 3.52,
   },
@@ -96,7 +85,7 @@ export const CONTACT_ROWS: ContactRow[] = [
     id: "social",
     icon: { src: "/footer/icon_4.svg", width: 15.36, height: 15.36 },
     label: "Let's Connect!",
-    href: "/#consultation",
+    href: "/contact",
     iconLift: 2.08,
   },
 ];

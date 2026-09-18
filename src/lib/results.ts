@@ -160,9 +160,12 @@ export const STEPS: Step[] = [
     label: "System",
     heading: "Systems That Run the Show",
     body: "Standard operating procedures, delegation frameworks, and workflows for consistency and freedom.",
-    at: 0.5275,
+    /* Has the whole descent to itself now that 06 has moved down into the
+       valley, so it sits halfway down that straight rather than tucked under
+       the peak. */
+    at: 0.566,
     side: "right",
-    width: 214,
+    width: 232,
   },
   {
     id: "leadership",
@@ -170,14 +173,10 @@ export const STEPS: Step[] = [
     label: "Leadership",
     heading: "Decisions Made With Clarity",
     body: "New markets, new verticals, new cities, with a structured roadmap, no chaos and zero guesswork.",
-    at: 0.6005,
-    side: "right",
-    /* The pocket right of the descent and left of the climb to 08. */
-    /* Pushed down rather than 05 being pushed up: the two share this side of
-       the descent, and lifting 05 took its heading off the top of the canvas. */
-    width: 194,
-    dx: 14,
-    dy: 45,
+    /* The valley 07 used to hold: the widest clear pocket on the board. */
+    at: 0.728,
+    side: "below",
+    width: 348,
   },
   {
     id: "expansion",
@@ -185,16 +184,7 @@ export const STEPS: Step[] = [
     label: "Expansion",
     heading: "Expansion is in Order",
     body: "Know exactly where you are, where you're going, and the precise steps to get there.",
-    at: 0.728,
-    side: "below",
-    width: 348,
-  },
-  {
-    id: "result",
-    number: "08.",
-    label: "Result",
-    heading: "Total Business Clarity",
-    body: "With the core pillars aligned, gain the confidence and clarity to run a self-sustaining, highly profitable enterprise.",
+    /* The last marker, on the run-out where the flow levels off. */
     at: 0.9255,
     side: "below",
     width: 220,

@@ -2,14 +2,15 @@
  * Growth carousel — offsets in design units off the comp (rows 1780–2272),
  * scaled by `--u` exactly as the sections above it.
  *
- * 400 rather than the comp's 492: the arrows and dots that filled the last 170
- * units advertised slides this build does not have, so they are gone and the
- * band closes up behind them.
+ * 343 rather than the comp's 492. The arrows and dots advertised slides this
+ * build does not have, and the buttons under each column have gone too, so the
+ * band closes up to the copy: the icons hang 75 units below the top and the
+ * longest body ends at 268, and the same 75 is left beneath it.
  */
 .section {
   position: relative;
   width: 100%;
-  height: calc(400 * var(--u));
+  height: calc(343 * var(--u));
   background-color: var(--ground);
   background-image: var(--ground-grain);
   background-repeat: repeat;
@@ -41,31 +42,30 @@
   top: 0;
   width: calc(1280 * var(--u));
   height: 100%;
-  --col-w: calc(1280 / 3 * var(--u));
-  /* Left inset of every column's content, measured off the comp. */
-  --pad: calc(47 * var(--u));
 }
 
+/* Centred on the copy it divides: from just under the icons' top edge to just
+   above the last line of the longest body. */
 .rule {
   position: absolute;
-  left: calc(var(--col) * var(--col-w));
-  top: calc(82.2 * var(--u));
+  left: calc(var(--x) * var(--u));
+  top: calc(78 * var(--u));
   width: max(1px, calc(0.72 * var(--u)));
-  height: calc(192.2 * var(--u));
+  height: calc(187 * var(--u));
   background: rgba(255, 255, 255, 0.3);
 }
 
 /*
- * The slide box holds its own composition: icon down to CTA, 379.67 x 322.01
- * design units. Keeping it self-contained lets the fluid layout re-use every
+ * The slide box holds its own composition, icon down to the last line of the
+ * body. Keeping it self-contained lets the fluid layout re-use every
  * offset inside it unchanged.
  */
 .slide {
   position: absolute;
-  left: calc(var(--col) * var(--col-w) + var(--pad));
+  left: calc(var(--x) * var(--u));
   top: 0;
-  width: calc(var(--col-w) - var(--pad));
-  height: calc(322.01 * var(--u));
+  width: calc(var(--col-w) * var(--u));
+  height: calc(268 * var(--u));
 }
 
 /*
@@ -106,12 +106,13 @@
  * Hung from a fixed top rather than from the body's last line. The comp
  * bottom-anchors this block, which meant the middle slide's three-line body
  * pushed its headline a whole line above the other two and the row read as
- * ragged. The CTA sits on its own fixed line below, so nothing has to move.
+ * ragged. It hangs from the same top edge as the icon, so moving that edge
+ * moves the whole composition.
  */
 .copy {
   position: absolute;
   left: 0;
-  top: calc(179.5 * var(--u));
+  top: calc((var(--head-top) + 104.5) * var(--u));
 }
 
 .headline {
@@ -174,14 +175,6 @@
   color: #f5a623;
 }
 
-/* --- CTA ----------------------------------------------------------------- */
-
-/* Geometry lives in PillButton; only its place on the slide is set here. */
-.cta {
-  left: 0;
-  top: calc(282.5 * var(--u));
-}
-
 /* --- Below the comp -----------------------------------------------------
  * Under 1280px the row re-flows to as many slides as fit, each capped at
  * 400px. Every slide becomes a container and derives `--u` from its own
@@ -190,7 +183,7 @@
 @media (max-width: 1279px) {
   .section {
     height: auto;
-    padding: clamp(48px, 7vw, 88px) 0 clamp(56px, 8vw, 96px);
+    padding: clamp(48px, 7vw, 88px) 0;
   }
 
   .track {
@@ -203,7 +196,8 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: clamp(40px, 6vw, 64px) 40px;
+    /* Wider than the space inside a column, so each one reads as a group. */
+    gap: clamp(52px, 8vw, 72px) 40px;
     padding: 0 var(--gutter);
   }
 
@@ -211,6 +205,13 @@
     display: none;
   }
 
+  /*
+   * Stacked, each column is laid out in flow and is as tall as its own copy.
+   * A fixed box has to be tall enough for the longest body, which left a
+   * two-line column with a line's worth of dead space under it and made the
+   * gaps between columns uneven. The sizes still come from `--u`, so the
+   * composition keeps the desktop proportions.
+   */
   .slide {
     position: relative;
     left: auto;
@@ -219,9 +220,50 @@
     max-width: 400px;
     width: auto;
     height: auto;
-    aspect-ratio: 379.67 / 322.01;
+    display: grid;
+    /*
+     * Not in `--u`. The slide is its own query container, and a container unit
+     * resolves against the element's nearest *ancestor* container — so on the
+     * slide itself `100cqw` is the viewport, which at 900 wide pushed the label
+     * 120px off its icon. The icon column takes the icon's own width (which is
+     * resolved inside the slide), and 17.4 of 379.67 is 4.583%.
+     */
+    grid-template-columns: auto 1fr;
+    column-gap: 4.583%;
+    align-items: start;
+    /* A column beside a taller one is stretched to match it, and without this
+       the grid shares that height out across its rows and drops the headline. */
+    align-content: start;
     container-type: inline-size;
     --u: calc(100cqw / 379.67);
+  }
+
+  .icon,
+  .label,
+  .copy {
+    position: static;
+  }
+
+  /* The cap line of the label's first row on the icon's top edge, as above. */
+  /* Three rows reserved whatever the label runs to, so headlines line up
+     across columns that sit side by side. */
+  .label {
+    width: auto;
+    max-width: calc(140 * var(--u));
+    min-height: calc(3 * 20.88 * var(--u));
+    margin-top: calc(-3.4 * var(--u));
+  }
+
+  /* 104.5 below the icon's top at desktop, less the label's three rows. */
+
+  .copy {
+    grid-column: 1 / -1;
+    margin-top: calc(45.26 * var(--u));
+  }
+
+  .body {
+    width: auto;
+    max-width: calc(var(--body-w) * var(--u));
   }
 
 }

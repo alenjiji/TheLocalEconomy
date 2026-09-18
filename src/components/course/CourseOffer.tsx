@@ -6,6 +6,7 @@ import InView from "@/components/motion/InView";
 import PaymentOverlay from "./PaymentOverlay";
 import styles from "./CourseOffer.module.css";
 import { COURSE } from "@/lib/course";
+import { whatsappLink } from "@/lib/contact";
 
 /** The dip-and-rise rule the comp repeats under section headings. */
 function Flourish({ className, style }: { className?: string; style?: React.CSSProperties }) {
@@ -125,7 +126,6 @@ export default function CourseOffer() {
               {COURSE.title}
               <span className={styles.titleSub}>{COURSE.subtitle}</span>
             </h3>
-            <p className={styles.provider}>{COURSE.provider}</p>
             <p className={styles.blurb}>{COURSE.blurb}</p>
 
             <ul className={styles.meta}>
@@ -159,13 +159,16 @@ export default function CourseOffer() {
               </span>
             </p>
 
-            <button
-              className={`${styles.buy} u-liquid u-liquid-amber`}
-              type="button"
-              data-cursor="amber"
-              onClick={() => setPayOpen(true)}
-            >
-              <span>Buy Now</span>
+            {COURSE.checkout === "whatsapp" ? (
+              <a
+                className={`${styles.buy} u-liquid u-liquid-amber`}
+                href={whatsappLink(COURSE.whatsappMessage)}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-cursor="amber"
+                aria-label={`${COURSE.cta} — opens WhatsApp`}
+              >
+                <span>{COURSE.cta}</span>
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path
                   d="M4 12h15M13 6l6 6-6 6"
@@ -176,12 +179,35 @@ export default function CourseOffer() {
                   strokeLinejoin="round"
                 />
               </svg>
-            </button>
+              </a>
+            ) : (
+              <button
+                className={`${styles.buy} u-liquid u-liquid-amber`}
+                type="button"
+                data-cursor="amber"
+                onClick={() => setPayOpen(true)}
+              >
+                <span>{COURSE.cta}</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M4 12h15M13 6l6 6-6 6"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              </button>
+            )}
           </div>
         </div>
       </div>
 
-      <PaymentOverlay open={payOpen} onClose={() => setPayOpen(false)} />
+      {/* Off while sign-ups go through WhatsApp; see `COURSE.checkout`. */}
+      {COURSE.checkout === "upi" ? (
+        <PaymentOverlay open={payOpen} onClose={() => setPayOpen(false)} />
+      ) : null}
     </InView>
   );
 }
