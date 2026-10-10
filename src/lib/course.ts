@@ -39,7 +39,7 @@ export const COURSE = {
    */
   video: {
     src: "/course/video-01.webm",
-    poster: "/course/Course_thumb.jpg",
+    poster: "/course/Course_thumb.webp",
     width: 1080,
     height: 1920,
   },

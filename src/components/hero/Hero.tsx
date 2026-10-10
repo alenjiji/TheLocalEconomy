@@ -28,7 +28,8 @@ export default function Hero() {
       <div className={styles.stage}>
         {/* Split in two: the heavy raster plane drifts as one, and the vector
             curves, ticks and readouts animate individually. Together they
-            reproduce the single `bg-elements.svg` the comp exports.
+            reproduce the single `bg-elements.svg` the comp exports
+            (now in `design-source/hero/`).
 
             Wrapped in an observer that keeps reporting: every animation in here
             loops forever, and there is no reason to spend frames on them once
@@ -40,12 +41,25 @@ export default function Hero() {
           once={false}
           aria-hidden="true"
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            className={`${styles.backdropArt} ${backdrop.plane}`}
-            src="/hero/bg-elements-static.svg"
-            alt=""
-          />
+          {/*
+            Two WebP cuts rather than the 1.2MB export it was drawn from. The
+            artwork is a soft, out-of-focus graph: 750KB crossed the wire for
+            something that rasterises to 31KB, and the phone takes a smaller
+            cut again because it crops the sides away. The source SVGs live in
+            `design-source/hero/`; `scripts/make-hero-backdrop.mjs` re-cuts
+            these from them.
+          */}
+          <picture>
+            <source media="(max-width: 899px)" srcSet="/hero/bg-elements-mobile.webp" />
+            <img
+              className={`${styles.backdropArt} ${backdrop.plane}`}
+              src="/hero/bg-elements.webp"
+              alt=""
+              width={3000}
+              height={3120}
+              fetchPriority="high"
+            />
+          </picture>
           <HeroBackdropMotion className={`${styles.backdropArt} ${backdrop.motion}`} />
         </InView>
 

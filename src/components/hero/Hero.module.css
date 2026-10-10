@@ -19,7 +19,7 @@
 }
 
 /*
- * `bg-elements.svg` is drawn at 1:1 and hangs off the top-left of the stage.
+ * The backdrop is drawn at 1:1 and hangs off the top-left of the stage.
  * In the comp it fades out towards the left so the headline stays readable;
  * the mask reproduces that ramp (fully hidden at x=0, fully visible by x=700).
  */
@@ -405,13 +405,26 @@
     display: contents;
   }
 
+  /*
+   * `portrait-mobile.webp` is 1150 x 1428 with him inside it edge to edge but
+   * not touching: 900 units wide leaves about 42 units of board either side of
+   * the figure, and 1122 tall carries him a couple of units past the foot of
+   * the stage (1701) — rounding at some widths would otherwise leave a hairline
+   * of ground beneath him — so the hero's own edge makes the only cut.
+   *
+   * The height is written out rather than left to `auto` because the two cuts
+   * in the <picture> have different shapes — 2946 x 4128 against 1150 x 1428 —
+   * and the width/height attributes on the <img> are the desktop one's. Left to
+   * resolve on load, the box would be laid out at the wrong ratio first and
+   * jump when the file arrived.
+   */
   .portrait {
     --portrait-opacity: 1;
     position: absolute;
-    left: calc(100 * var(--mh));
-    top: calc(505 * var(--mh));
-    width: calc(800 * var(--mh));
-    height: auto;
+    left: calc(30 * var(--mh));
+    top: calc(583 * var(--mh));
+    width: calc(900 * var(--mh));
+    height: calc(1122 * var(--mh));
     max-width: none;
     opacity: var(--portrait-opacity);
   }

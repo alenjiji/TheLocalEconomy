@@ -53,7 +53,7 @@ export const TESTIMONIALS: Testimonial[] = [
     motto: "Definitely for nature",
     src: "/testimonials/video/local_economy_portrait.webm",
     srcMp4: "/testimonials/video/local_economy_portrait.mp4",
-    poster: "/testimonials/video/auto_grade_thumb.jpg",
+    poster: "/testimonials/video/auto_grade_thumb.webp",
   },
   {
     id: "nirappil",
@@ -62,7 +62,7 @@ export const TESTIMONIALS: Testimonial[] = [
     company: "Nirappil Group",
     src: "/testimonials/video/2nd_content9_x16.webm",
     srcMp4: "/testimonials/video/2nd_content9_x16.mp4",
-    poster: "/testimonials/video/nirappil_thumb.jpg",
+    poster: "/testimonials/video/nirappil_thumb.webp",
   },
 ];
 

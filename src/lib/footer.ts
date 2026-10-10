@@ -32,8 +32,6 @@ export const PROGRAMME_LINKS: FooterLink[] = [
   { label: "Total BIZ FIX", href: "/programmes/total-biz-fix" },
   { label: "360° Business Checkup", href: "/programmes/business-checkup" },
   { label: "Consultancy", href: "/programmes/consultancy" },
-  { label: "SME Business Coaching", href: "/services" },
-  { label: "360° Growth Framework", href: "/services" },
 ];
 
 export type ContactRow = {

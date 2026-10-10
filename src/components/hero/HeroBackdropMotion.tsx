@@ -4,7 +4,7 @@ import styles from "./HeroBackdrop.module.css";
  * The animated half of `bg-elements.svg`.
  *
  * That export is 1.2MB, almost all of it embedded rasters, so it stays an
- * `<img>` (`bg-elements-static.svg`). The ~19KB of vector inside it — the two
+ * `<img>` (`bg-elements.webp`). The ~19KB of vector inside it — the two
  * data curves, nine tick marks and six numeric readouts — is inlined here so
  * each piece can be animated on its own. The two files are complementary: laid
  * over each other they reproduce the original exactly.
