@@ -3,6 +3,10 @@
  *
  * Layer order matches the comp: flat ground, the masked data-graph artwork,
  * the cut-out portrait, then the type. The nav bar sits above all of it.
+ *
+ * The unit is `--uf`, not `--u`: this is the screen the visitor lands on, so
+ * the board is fitted to the window's height as well as its width. See the
+ * note on `--uf` in `globals.css`.
  */
 .hero {
   position: relative;
@@ -11,10 +15,16 @@
   overflow: hidden;
 }
 
+/*
+ * Centred, because on a window wider in proportion than the comp the board is
+ * narrower than the viewport. What shows either side of it is `.hero`'s own
+ * ground, which is the colour the backdrop artwork is flattened onto and fades
+ * to at its edges — so there is no seam, and no letterbox.
+ */
 .stage {
   position: relative;
-  width: calc(1440 * var(--u));
-  height: calc(956 * var(--u));
+  width: calc(1440 * var(--uf));
+  height: calc(956 * var(--uf));
   margin: 0 auto;
 }
 
@@ -29,22 +39,22 @@
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0,
-    #000 calc(700 * var(--u))
+    #000 calc(700 * var(--uf))
   );
   mask-image: linear-gradient(
     to right,
     transparent 0,
-    #000 calc(700 * var(--u))
+    #000 calc(700 * var(--uf))
   );
   pointer-events: none;
 }
 
 .backdropArt {
   position: absolute;
-  left: calc(-164.5 * var(--u));
-  top: calc(-363.44 * var(--u));
-  width: calc(1624.35 * var(--u));
-  height: calc(1689.2 * var(--u));
+  left: calc(-164.5 * var(--uf));
+  top: calc(-363.44 * var(--uf));
+  width: calc(1624.35 * var(--uf));
+  height: calc(1689.2 * var(--uf));
   max-width: none;
 }
 
@@ -66,10 +76,10 @@
  */
 .portrait {
   position: absolute;
-  left: calc(740.84 * var(--u));
-  top: calc(177 * var(--u));
-  width: calc(660 * var(--u));
-  height: calc(924.7 * var(--u));
+  left: calc(740.84 * var(--uf));
+  top: calc(177 * var(--uf));
+  width: calc(660 * var(--uf));
+  height: calc(924.7 * var(--uf));
   max-width: none;
   z-index: 1;
 }
@@ -90,10 +100,10 @@
  */
 .title {
   position: absolute;
-  left: calc(78.24 * var(--u));
-  top: calc(412.8 * var(--u));
-  width: calc(520 * var(--u));
-  height: calc(211.3 * var(--u));
+  left: calc(78.24 * var(--uf));
+  top: calc(412.8 * var(--uf));
+  width: calc(520 * var(--uf));
+  height: calc(211.3 * var(--uf));
   margin: 0;
 }
 
@@ -125,7 +135,7 @@
 @keyframes title-line {
   from {
     opacity: 0;
-    transform: translate3d(0, calc(26 * var(--u)), 0);
+    transform: translate3d(0, calc(26 * var(--uf)), 0);
   }
   to {
     opacity: 1;
@@ -135,26 +145,26 @@
 
 .name {
   position: absolute;
-  left: calc(80.28 * var(--u));
-  top: calc(681 * var(--u));
-  width: calc(261.3 * var(--u));
-  height: calc(20.04 * var(--u));
+  left: calc(80.28 * var(--uf));
+  top: calc(681 * var(--uf));
+  width: calc(261.3 * var(--uf));
+  height: calc(20.04 * var(--uf));
 }
 
 .company {
   position: absolute;
-  left: calc(79.8 * var(--u));
-  top: calc(708.5 * var(--u));
-  width: calc(219.4 * var(--u));
-  height: calc(21.17 * var(--u));
+  left: calc(79.8 * var(--uf));
+  top: calc(708.5 * var(--uf));
+  width: calc(219.4 * var(--uf));
+  height: calc(21.17 * var(--uf));
 }
 
 .flourish {
   position: absolute;
-  left: calc(124.8 * var(--u));
-  top: calc(745.3 * var(--u));
-  width: calc(131 * var(--u));
-  height: calc(7.24 * var(--u));
+  left: calc(124.8 * var(--uf));
+  top: calc(745.3 * var(--uf));
+  width: calc(131 * var(--uf));
+  height: calc(7.24 * var(--uf));
 }
 
 /* --- Below the comp -----------------------------------------------------
@@ -287,7 +297,7 @@
 @keyframes rise-in {
   from {
     opacity: 0;
-    transform: translate3d(0, calc(16 * var(--u)), 0);
+    transform: translate3d(0, calc(16 * var(--uf)), 0);
   }
   to {
     opacity: 1;
@@ -322,7 +332,7 @@
 @keyframes portrait-in {
   from {
     opacity: 0;
-    transform: translate3d(calc(18 * var(--u)), 0, 0) scale(1.035);
+    transform: translate3d(calc(18 * var(--uf)), 0, 0) scale(1.035);
   }
   to {
     /* Resting opacity is a variable: below the comp the portrait sits back as
@@ -338,7 +348,7 @@
     transform: translate3d(0, 0, 0);
   }
   50% {
-    transform: translate3d(0, calc(-7 * var(--u)), 0);
+    transform: translate3d(0, calc(-7 * var(--uf)), 0);
   }
 }
 

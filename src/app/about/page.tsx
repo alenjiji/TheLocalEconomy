@@ -5,7 +5,6 @@ import { pageMetadata } from "@/lib/seo";
 import SiteHeader from "@/components/nav/SiteHeader";
 import SiteFooter from "@/components/footer/SiteFooter";
 import About from "@/components/about/About";
-import Cursor from "@/components/ui/Cursor";
 import TouchFeedback from "@/components/ui/TouchFeedback";
 
 export const metadata: Metadata = pageMetadata({
@@ -23,8 +22,8 @@ export default function AboutPage() {
         <About />
       </main>
       <SiteFooter />
-      {/* Both no-op on the pointer type they are not for. */}
-      <Cursor />
+      {/* A no-op on the pointer type it is not for: the ripple never fires
+          for a mouse. */}
       <TouchFeedback />
     </>
   );

@@ -7,7 +7,6 @@ import { PROGRAMME_PAGES, programmePage, programmeHref } from "@/lib/programmePa
 import SiteHeader from "@/components/nav/SiteHeader";
 import SiteFooter from "@/components/footer/SiteFooter";
 import ProgrammeDetail from "@/components/programme/ProgrammeDetail";
-import Cursor from "@/components/ui/Cursor";
 import TouchFeedback from "@/components/ui/TouchFeedback";
 
 type Params = { params: Promise<{ slug: string }> };
@@ -41,8 +40,8 @@ export default async function ProgrammeRoute({ params }: Params) {
         <ProgrammeDetail page={page} />
       </main>
       <SiteFooter />
-      {/* Both no-op on the pointer type they are not for. */}
-      <Cursor />
+      {/* A no-op on the pointer type it is not for: the ripple never fires
+          for a mouse. */}
       <TouchFeedback />
     </>
   );

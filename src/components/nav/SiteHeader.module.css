@@ -321,7 +321,7 @@
   }
 
   .bar {
-    height: calc(144.56 * var(--u));
+    height: calc(144.56 * var(--uf));
   }
 
   .bar::before {
@@ -334,7 +334,7 @@
 
   .stage {
     display: block;
-    width: calc(1440 * var(--u));
+    width: calc(1440 * var(--uf));
     margin: 0 auto;
     padding: 0;
     /*
@@ -349,7 +349,7 @@
      * where the comp measures 110.52 — which leaves equal padding at both ends
      * in every state between.
      */
-    transform: translateY(calc((-14.377 - 8.688 * var(--p)) * var(--u)))
+    transform: translateY(calc((-14.377 - 8.688 * var(--p)) * var(--uf)))
       scale(var(--bar-scale));
     transform-origin: 50% 0;
     /* Promoted so the per-frame rescale composites instead of re-rasterising
@@ -359,13 +359,13 @@
 
   .logoLink {
     position: absolute;
-    left: calc(67.52 * var(--u));
-    top: calc(59.16 * var(--u));
+    left: calc(67.52 * var(--uf));
+    top: calc(59.16 * var(--uf));
   }
 
   .logo {
-    width: calc(170.04 * var(--u));
-    height: calc(51.47 * var(--u));
+    width: calc(170.04 * var(--uf));
+    height: calc(51.47 * var(--uf));
   }
 
   /*
@@ -381,17 +381,17 @@
    */
   .links {
     position: absolute;
-    left: calc(282 * var(--u));
-    top: calc(89.4 * var(--u) - 0.8635em);
+    left: calc(282 * var(--uf));
+    top: calc(89.4 * var(--uf) - 0.8635em);
     display: flex;
     align-items: baseline;
-    gap: calc(32 * var(--u));
+    gap: calc(32 * var(--uf));
     margin: 0;
   }
 
   .link {
     position: relative;
-    font-size: calc(19.57 * var(--u));
+    font-size: calc(19.57 * var(--uf));
   }
 
   /*
@@ -406,23 +406,24 @@
    */
   .link::after {
     left: 0;
-    top: calc(23.6 * var(--u));
+    top: calc(23.6 * var(--uf));
     width: 100%;
-    height: max(1px, calc(0.5 * var(--u)));
+    height: max(1px, calc(0.5 * var(--uf)));
   }
 
   .stage .cta {
-    /* Back to the page unit. The compact rule below 1280 turns this button
-       into its own container and redefines `--u` from `cqw`; without resetting
-       it here that unit leaks in and throws the button off-screen. */
-    --u: calc(min(100vw, 1920px) / 1440);
+    /* Back to the page unit — the fold's one, so the button scales with the
+       bar it sits in. The compact rule below 1280 turns this button into its
+       own container and redefines `--u` from `cqw`; without resetting it here
+       that unit leaks in and throws the button off-screen. */
+    --u: var(--uf);
     --cta-position: absolute;
     container-type: normal;
     position: absolute;
-    left: calc(1046.08 * var(--u));
-    top: calc(56.76 * var(--u));
-    width: calc(326.4 * var(--u));
-    height: calc(53.76 * var(--u));
+    left: calc(1046.08 * var(--uf));
+    top: calc(56.76 * var(--uf));
+    width: calc(326.4 * var(--uf));
+    height: calc(53.76 * var(--uf));
     aspect-ratio: auto;
   }
 }

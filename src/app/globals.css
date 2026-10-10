@@ -23,6 +23,26 @@
   /* Capped at 1920 rather than 1600: past 1600 the layout was letterboxed on
      an ordinary large monitor instead of using the screen. */
   --u: calc(min(100vw, 1920px) / 1440);
+  /*
+   * The fold's unit.
+   *
+   * `--u` sizes the board off the window's width alone. That is right for a
+   * section you scroll to and wrong for the one you land on: a 1879 x 950
+   * laptop is far wider in proportion than the 1440 x 956 comp, so the board
+   * came out 1247 tall under a 189 navbar and the sign-off fell 300px below
+   * the fold.
+   *
+   * 890 is the board height the first screen has to hold — the composition
+   * runs down to the flourish at 752.5 and the comp carries air beneath it —
+   * so once the window is shorter than that ratio the header and hero scale
+   * off the height instead. The ground this leaves at the sides is the same
+   * #282727 the backdrop artwork already fades to at its own edges, so the
+   * composition reads as centred rather than letterboxed.
+   *
+   * Only the fold uses this. Everything below it keeps scaling off the width,
+   * where there is as much height as the page needs.
+   */
+  --uf: min(var(--u), calc(100svh / 890));
   --font-sans: var(--font-inter), "Inter", "Helvetica Neue", Arial, sans-serif;
   /* Page gutter, also used by the header row once it compacts. */
   --gutter: clamp(24px, 4vw, 64px);
@@ -69,6 +89,24 @@ svg {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+/*
+ * The hand on everything that is clicked.
+ *
+ * `a[href]` gets it from the UA stylesheet; a `button` does not — Chrome and
+ * Safari draw the plain arrow over one. While this build painted its own
+ * pointer that distinction did not show, so it was only set where a module
+ * happened to need it. Now the system cursor is back, it has to be stated.
+ *
+ * Element selectors, so any module rule that means something different —
+ * `.submit:disabled` is `progress`, `.arrow:disabled` is `default` — still
+ * wins on specificity.
+ */
+button,
+summary,
+[role="button"] {
+  cursor: pointer;
 }
 
 /*
